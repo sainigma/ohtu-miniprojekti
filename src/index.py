@@ -1,2 +1,2 @@
 print("hallo")
-print("moro")
+print("moi")

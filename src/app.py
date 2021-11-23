@@ -5,10 +5,13 @@ class App:
         print("Welcome to Bookmarker!")
         while True:
             command = input("Give command: ")
-            if command == "quit":
+            if command == "q":
                 print("See you again!")
                 break
+            elif command == "add":
+                #TODO
+                pass
             else:
-                print("Acceptable commands: quit")
+                print("Acceptable commands: 'q' - quit, 'add' - add a new bookmark")
 
 app = App()

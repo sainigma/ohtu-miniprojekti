@@ -1,0 +1,139 @@
+{
+  "db":[
+    {
+      "id:":2344,
+      "title":"Minimientry",
+      "tags":[]
+    },
+    {
+      "id":0,
+      "title":"Esimerkkientry",
+      "tags":[
+        {
+          "type":"Tagin tyyppi",
+          "content":"Tagin sisältö"
+        },
+        {
+          "type":"Tagin tyyppi",
+          "content":"Tagit palautetaan listoina"
+        },
+        {
+          "type":"Tagin tyyppi",
+          "content":"Tagit tallennetaan erilliseen tauluun, tässä valmiiksi aggregoituna"
+        }
+      ]
+    },
+    {
+      "id":1,
+      "title":"Clean Code: A Handbook of Agile Software Craftsmanship",
+      "tags":[
+        {
+          "type":"Kirjoittaja",
+          "content":"Robert Martin"
+        },
+        {
+          "type":"tyyppi",
+          "content":"Kirja"
+        },
+        {
+          "type":"ISBN",
+          "content":"978-0132350884"
+        },
+        {
+          "type":"Tagit",
+          "content":"Ohjelmointi"
+        },
+        {
+          "type":"Tagit",
+          "content":"design patterns"
+        },
+        {
+          "type":"Related courses",
+          "content": "TKT20006 Ohjelmistotuotanto"
+        }
+      ]
+    },
+    {
+      "id":3,
+      "title":"Merge sort algorithm",
+      "tags":[
+        {
+          "type":"URL",
+          "content":"https://www.youtube.com/watch?v=TzeBrDU-JaY"
+        },
+        {
+          "type":"Related courses",
+          "content":"TKT20001 Tietorakenteet ja algoritmit"
+        },
+        {
+          "type":"Tyyppi",
+          "content":"video"
+        },
+        {
+          "type":"Kommentti",
+          "content":"Hyvä selitys merge sortin toiminnasta esimerkin avulla"
+        }
+      ]
+    },
+    {
+      "id":4,
+      "title":"Consistency models",
+      "tags":[
+        {
+          "type":"Kirjoittaja",
+          "content":""
+        },
+        {
+          "type":"URL",
+          "content":"https://dev.to/napicellatwit/consistency-models-52l"
+        },
+        {
+          "type":"Tyyppi",
+          "content":"Blogpost"
+        },
+        {
+          "type":"Related courses",
+          "content":"TKT21001 Tietokannan suunnittelu"
+        },
+        {
+          "type":"Related courses",
+          "content":"CSM13001 Distributed Systems"
+        }
+      ]
+    },
+    {
+      "id":5,
+      "title":"Jim Benson on Personal Kanban, Lean Coffee and collaboration",
+      "tags":[
+        {
+          "type":"Author",
+          "content":"Sami Honkonen"
+        },
+        {
+          "type":"Podcastin nimi",
+          "content":"Boss Level Podcast"
+        },
+        {
+          "type":"Kuvaus",
+          "content":"Personal Kanban, which is an approach to dealing with the overload of stuff you need to deal with.\nWe dig into into its two simple rules, visualizing work and limiting work in progress.\nWe then walk through Lean Coffee, which is a simple and effective way to run your meetings."
+        },
+        {
+          "type":"Tyyppi",
+          "content":"Podcast"
+        },
+        {
+          "type":"Tagit",
+          "content":"Kanban"
+        },
+        {
+          "type":"Tagit",
+          "content":"Lean Coffee"
+        },
+        {
+          "type":"Related courses",
+          "content":"TKT20006 Ohjelmistotuotanto"
+        }
+      ]
+    }
+  ]
+}

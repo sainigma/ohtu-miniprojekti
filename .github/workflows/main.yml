@@ -21,5 +21,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run tests
-        run: poetry run pytest src/tests
+        run: poetry run coverage run --branch -m pytest
+      - name: Coverage report
+        run: poetry run coverage xml
 

@@ -8,5 +8,7 @@ class App:
             if command == "quit":
                 print("See you again!")
                 break
+            else:
+                print("Acceptable commands: quit")
 
 app = App()

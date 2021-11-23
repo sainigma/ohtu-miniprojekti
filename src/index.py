@@ -1,3 +1,7 @@
-print("moro")
-print("jou")
-print("yeehaw")
+from app import app
+
+def main():
+    app.run()
+
+if __name__ == "__main__":
+    main()

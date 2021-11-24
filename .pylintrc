@@ -2,6 +2,10 @@
 
 ignore=tests,index.py
 
+good-names: id, db
+
+bad-names: it, obj, object, entry # Use explicit "bookmark" where applicable
+
 [MESSAGE CONTROL]
 
 disable=print-statement,
@@ -87,7 +91,12 @@ disable=print-statement,
         missing-function-docstring,
         missing-class-docstring,
         missing-docstring,
-        no-self-use
+        no-self-use,
+
+        too-few-public-methods,
+        trailing-whitespace,
+        redefined-builtin,
+        unspecified-encoding
 
 [FORMAT]
 

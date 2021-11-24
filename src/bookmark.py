@@ -4,3 +4,4 @@ from dataclasses import dataclass
 class Bookmark:
     id:str
     title:str
+    

@@ -8,9 +8,8 @@ class App:
             if command == "q":
                 print("See you again!")
                 break
-            elif command == "add":
-                #TODO
-                pass
+            if command == "add":
+                print("Add-command is not yet implemented")
             else:
                 print("Acceptable commands: 'q' - quit, 'add' - add a new bookmark")
 

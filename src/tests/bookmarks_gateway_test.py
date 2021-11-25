@@ -1,7 +1,7 @@
 import unittest
-from controllers.database_controller import DatabaseController
+from gateways.bookmarks_gateway import BookmarksGateway
 
-class DatabaseTest(unittest.TestCase):
+class BookmarksGatewayTest(unittest.TestCase):
     def setUp(self):
         self.mockEntry = {
             "title":"Mockentry",
@@ -16,7 +16,7 @@ class DatabaseTest(unittest.TestCase):
                     },
                 ]
             }
-        self.db = DatabaseController("./src/tests/dummy.json")
+        self.db = BookmarksGateway("./src/tests/dummy.json")
 
     def test_database_initializes(self):
         dbLength = len(self.db.get())

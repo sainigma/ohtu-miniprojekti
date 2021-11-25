@@ -1,5 +1,5 @@
 import unittest
-from bookmark import Bookmark
+from entities.bookmark import Bookmark
 
 class TestBookmark(unittest.TestCase):
     def setUp(self):

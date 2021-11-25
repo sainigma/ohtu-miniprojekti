@@ -1,6 +1,7 @@
 class StubIO:
     """
-    Implementation based on https://github.com/ohjelmistotuotanto-hy/syksy2021-python/blob/master/koodi/viikko3/login-robot/src/stub_io.py
+    Implementation based on 
+    https://github.com/ohjelmistotuotanto-hy/syksy2021-python/blob/master/koodi/viikko3/login-robot/src/stub_io.py
     """
     def __init__(self, inputs=None):
         self.inputs = inputs or []

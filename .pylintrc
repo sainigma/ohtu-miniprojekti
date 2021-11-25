@@ -2,7 +2,7 @@
 
 ignore=tests,index.py
 
-good-names: id, db
+good-names: id, db, ui
 
 bad-names: it, obj, object, entry # Use explicit "bookmark" where applicable
 
@@ -96,7 +96,8 @@ disable=print-statement,
         too-few-public-methods,
         trailing-whitespace,
         redefined-builtin,
-        unspecified-encoding
+        unspecified-encoding,
+	unused-argument
 
 [FORMAT]
 

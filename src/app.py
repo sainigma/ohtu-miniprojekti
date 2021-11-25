@@ -1,21 +1,24 @@
+from ui.console_io import ConsoleIO
+
 class App:
-    def __init__(self):
-        pass
+    def __init__(self, ui):
+        self.ui = ui
+        
     def run(self):
-        print("Welcome to Bookmarker!")
+        self.ui.write("Welcome to Bookmarker!")
         while True:
-            command = input("Give command: ")
+            command = self.ui.read("Give command: ")
             if command == "q":
-                print("See you again!")
+                self.ui.write("See you again!")
                 break
             if command == "add":
-                print("Add-command is not yet implemented")
+                self.ui.write("Add-command is not yet implemented")
             elif command == "show":
-                print("Show-command is not yet implemented")
+                self.ui.write("Show-command is not yet implemented")
             elif command == "edit":
-                print("Edit-command is not yet implemented")
+                self.ui.write("Edit-command is not yet implemented")
             else:
-                print("""
+                self.ui.write("""
                 Acceptable commands:
                 'q' - quit,
                 'add' - add a new bookmark,
@@ -23,4 +26,4 @@ class App:
                 'edit' - edit a bookmark
                 """)
 
-app = App()
+app = App(ui=ConsoleIO())

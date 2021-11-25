@@ -10,7 +10,17 @@ class App:
                 break
             if command == "add":
                 print("Add-command is not yet implemented")
+            elif command == "show":
+                print("Show-command is not yet implemented")
+            elif command == "edit":
+                print("Edit-command is not yet implemented")
             else:
-                print("Acceptable commands: 'q' - quit, 'add' - add a new bookmark")
+                print("""
+                Acceptable commands:
+                'q' - quit,
+                'add' - add a new bookmark,
+                'show' - show given amount of bookmarks,
+                'edit' - edit a bookmark
+                """)
 
 app = App()

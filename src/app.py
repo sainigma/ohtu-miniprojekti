@@ -29,6 +29,8 @@ class App:
             self.show()
         elif input == "edit":
             self.ui.write("Edit-command is not yet implemented")
+        elif input == "search":
+            self.search()
         else:
             self.usage()
 
@@ -52,6 +54,15 @@ class App:
         bookmarks_amount = self.repository.bookmarks_amount() + 1
         bookmarks = self.repository.get(None, 0, bookmarks_amount)
         for bookmark in bookmarks:
+            self.ui.write(bookmark["title"])
+    
+    def search(self):
+        term = self.ui.read("Term: ")
+        self.search_by_title(term)
+    
+    def search_by_title(self, title):
+        bookmark = self.repository.find_by_title(title)
+        if not bookmark is None:
             self.ui.write(bookmark["title"])
 
     def edit(self):

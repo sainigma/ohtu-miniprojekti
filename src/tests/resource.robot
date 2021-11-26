@@ -18,6 +18,10 @@ Input Show Command
     Input  show
     Read Command
 
+Input Find Command
+    Input  search
+    Read Command
+
 Input Empty Command
     #[Arguments]  ${EMPTY}
     Input  ${EMPTY}

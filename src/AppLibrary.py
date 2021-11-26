@@ -19,6 +19,9 @@ class AppLibrary:
     
     def read_title(self):
         self._app.add_bookmark(self._io.read(prompt=""))
+    
+    def read_search_term(self):
+        self._app.search_by_title(self._io.read(prompt=""))
 
     def output_should_contain(self, value):
         output = self._io.output

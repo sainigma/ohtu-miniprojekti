@@ -22,6 +22,14 @@ Test Show Command
     Input Show Command
     Output Should Contain  Tuntematon Sotilas
 
+Test Find Command
+    Add Bookmark  Tuntematon Sotilas
+    Input Find Command
+    Prompt Should Contain  Term:${SPACE}
+    Input  Tuntema
+    Read Search Term
+    Output Should Contain  Tuntematon Sotilas
+
 Test Empty Command
     Input Empty Command
     Output Should Contain  Acceptable commands:

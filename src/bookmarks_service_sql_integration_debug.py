@@ -24,3 +24,6 @@ print(bookmarks.get())
 print("pituus:", len(bookmarks.get()))
 b = bookmarks.get(id=1)
 print(b['title'])
+
+f = bookmarks.findByTitle("Mock%")
+print(f)

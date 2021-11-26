@@ -35,7 +35,16 @@ class BookmarksServiceSQL:
 
         return bookmarkID
 
+    def parseBookmarkList(self, bookmarks):
+        return list(map(lambda bookmark: {"id":bookmark[0], "title":bookmark[1]}, bookmarks))
+
+    def findByTitle(self, title):
+        query = f'select * from Bookmarks where title like "{title}"'
+        result = self.db.execute(query)
+        return self.parseBookmarkList(result)
+
     def find(self, params):
+
         pass
 
     def parseTags(self,tags):
@@ -61,19 +70,19 @@ class BookmarksServiceSQL:
         if id is None:
             query = "select id, title from Bookmarks"
             result = self.db.execute(query)
-        else:
-            bookmarkQuery = f"select b.id, b.title from Bookmarks b where id = {id}"
-            bookmark = self.db.execute(bookmarkQuery)
-            if len(bookmark) > 0:
-                bookmark = bookmark[0]
-            else:
-                return None
+            return self.parseBookmarkList(result)
 
-            tagsQuery = f"select tagtype.title, tag.content from Tags tag \
-                left join Tagtypes tagtype on tag.tagtypeid = tagtype.id where tag.bookmarkid = {bookmark[0]}"
-            tags = self.db.execute(tagsQuery)
-            return self.resultToBookmark(bookmark, tags)
-        return result
+        bookmarkQuery = f"select b.id, b.title from Bookmarks b where id = {id}"
+        bookmark = self.db.execute(bookmarkQuery)
+        if len(bookmark) > 0:
+            bookmark = bookmark[0]
+        else:
+            return None
+
+        tagsQuery = f"select tagtype.title, tag.content from Tags tag \
+            left join Tagtypes tagtype on tag.tagtypeid = tagtype.id where tag.bookmarkid = {bookmark[0]}"
+        tags = self.db.execute(tagsQuery)
+        return self.resultToBookmark(bookmark, tags)
 
     def remove(self, bookmark_id):
         query = f"delete from Bookmarks where id = {bookmark_id}"

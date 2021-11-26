@@ -39,3 +39,9 @@ class AppLibrary:
     
     def welcome(self):
         self._app.welcome()
+
+    def reset(self):
+        self._app.repository.clear()
+    
+    def add_bookmark(self, title):
+        self._app.add_bookmark(title)

@@ -5,6 +5,5 @@ __pycache__
 *$py.class
 .coverage
 htmlcov
-log.html
 output.xml
 report.html

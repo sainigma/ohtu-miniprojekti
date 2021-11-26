@@ -2,11 +2,11 @@ from ui.stub_io import StubIO
 from app import App
 
 
-
 class AppLibrary:
     '''
         References from course material
     '''
+
     def __init__(self):
         self._io = StubIO()
         self._app = App(self._io)
@@ -21,4 +21,3 @@ class AppLibrary:
             raise AssertionError(
                 f"Output \"{value}\" is not in {str(outputs)}"
             )
-    

@@ -2,7 +2,7 @@ import json
 import random
 
 
-class BookmarksGateway:
+class BookmarksRepository:
     def __init__(self, dbpath="./src/tests/dummy.json"):
         self.db = []
         with open(dbpath) as file:

@@ -17,3 +17,7 @@ From poetry shell:
 `pytest src/tests` to run unit-tests
 
 `pylint src` to run lint
+
+### Definition of done
+
+User story is tested with Robot Framework. Main functionalities are tested as well.

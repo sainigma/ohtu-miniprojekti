@@ -1,7 +1,7 @@
-from ui.console_io import ConsoleIO
+from ui.console_io import console_io as default_console_io
 
 class App:
-    def __init__(self, ui):
+    def __init__(self, ui=default_console_io):
         self.ui = ui
         
     def run(self):
@@ -55,4 +55,4 @@ class App:
 
 
 
-app = App(ui=ConsoleIO())
+app = App()

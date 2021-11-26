@@ -98,7 +98,8 @@ disable=print-statement,
         redefined-builtin,
         unspecified-encoding,
 	unused-argument,
-        invalid-name
+        invalid-name,
+        missing-final-newline
 
 [FORMAT]
 

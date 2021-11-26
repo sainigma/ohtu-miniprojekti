@@ -1,4 +1,6 @@
 from ui.console_io import console_io as default_console_io
+from entities.bookmark import Bookmark
+from repositories.bookmarks_repository import BookmarksRepository
 
 
 class App:
@@ -19,7 +21,7 @@ class App:
         if input == "q":
             self.quit()
         if input == "add":
-            self.ui.write("Add-command is not yet implemented")
+            self.add()
         elif input == "show":
             self.ui.write("Show-command is not yet implemented")
         elif input == "edit":
@@ -34,7 +36,9 @@ class App:
         self.ui.write("See you again!")
 
     def add(self):
-        self.ui.write("Add-command is not yet implemented")
+        title = self.ui.read("Title: ")
+        bookmark = Bookmark(title)
+        BookmarksRepository().insert(bookmark.get_bookmark())
 
     def show(self):
         self.ui.write("Show-command is not yet implemented")

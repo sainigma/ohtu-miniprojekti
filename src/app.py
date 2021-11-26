@@ -62,7 +62,7 @@ class App:
     
     def search_by_title(self, title):
         self.ui.write(
-            "".join(
+            "\n".join(
                 [bookmark["title"] for bookmark in self.repository.find_by_title(title)]
                 )
             )

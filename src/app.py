@@ -40,7 +40,7 @@ class App:
         sys.exit()
 
     def add(self):
-        title = self.ui.read("Title:")
+        title = self.ui.read("Title: ")
         self.add_bookmark(title)
     
     def add_bookmark(self, title):

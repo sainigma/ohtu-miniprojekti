@@ -11,7 +11,7 @@ Test Welcome
 
 Test Add Command
     Input Add Command
-    Prompt Should Contain  Title: 
+    Prompt Should Contain  Title:${SPACE}
     Input  Tuntematon sotilas
     Read Title
     Output Should Contain  Bookmark "Tuntematon sotilas" created!

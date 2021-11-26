@@ -1,21 +1,22 @@
 import unittest
 from repositories.bookmarks_repository import BookmarksRepository
 
+
 class BookmarksRepositoryTest(unittest.TestCase):
     def setUp(self):
         self.mockEntry = {
-            "title":"Mockentry",
-                "tags":[
-                    {
-                        "type":"Kirjoittaja",
-                        "content":"Asd Dasd"
-                    },
-                    {
-                        "type":"tyyppi",
-                        "content":"Testidata"
-                    },
-                ]
-            }
+            "title": "Mockentry",
+            "tags": [
+                {
+                    "type": "Kirjoittaja",
+                    "content": "Asd Dasd"
+                },
+                {
+                    "type": "tyyppi",
+                    "content": "Testidata"
+                },
+            ]
+        }
         self.db = BookmarksRepository("./src/tests/dummy.json")
 
     def test_database_initializes(self):
@@ -31,13 +32,14 @@ class BookmarksRepositoryTest(unittest.TestCase):
         if obj != None:
             id = self.mockEntry["id"]
             title = self.mockEntry["title"]
-            self.assertTrue((dbLength1 > dbLength0) and obj["id"] == id and obj["title"] == title)
+            self.assertTrue((dbLength1 > dbLength0)
+                            and obj["id"] == id and obj["title"] == title)
         else:
             self.assertTrue(False)
 
     def test_entry_validation_works(self):
         dbLength0 = len(self.db.get())
-        obj = {"tilte":"asd","tasg":[]}
+        obj = {"tilte": "asd", "tasg": []}
         id = self.db.insert(obj)
         dbLength1 = len(self.db.get())
         self.assertTrue(id == -1 and dbLength0 == dbLength1)

@@ -33,7 +33,7 @@ class BookmarksRepository:
         print(id)
         if id is None:
             return self.db[start: start + bookmarks]
-        
+
         for bookmark in self.db:
             if bookmark["id"] == id:
                 return bookmark

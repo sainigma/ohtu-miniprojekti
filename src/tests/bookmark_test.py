@@ -1,6 +1,7 @@
 import unittest
 from entities.bookmark import Bookmark
 
+
 class TestBookmark(unittest.TestCase):
     def setUp(self):
         self.bookmark = Bookmark("2222", "Kirja")

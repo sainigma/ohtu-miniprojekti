@@ -15,7 +15,7 @@ class AppLibrary:
         self._io.set_input(value)
     
     def read_command(self):
-        self._app.parse_input(self._io.read(prompt=""))
+        self._app.parse_command(self._io.read(prompt=""))
     
     def read_title(self):
         self._app.add_bookmark(self._io.read(prompt=""))

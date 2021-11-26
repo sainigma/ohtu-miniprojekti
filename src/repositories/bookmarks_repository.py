@@ -50,6 +50,9 @@ class BookmarksRepository:
     def bookmarks_amount(self):
         return len(self.db)
     
+    def find_by_title(self, title: str):
+        return [bookmark for bookmark in self.db if title in bookmark["title"]]
+    
     def clear(self):
         self.db.clear()
 

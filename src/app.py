@@ -61,9 +61,12 @@ class App:
         self.search_by_title(term)
     
     def search_by_title(self, title):
-        bookmark = self.repository.find_by_title(title)
-        if not bookmark is None:
-            self.ui.write(bookmark["title"])
+        self.ui.write(
+            "".join(
+                [bookmark["title"] for bookmark in self.repository.find_by_title(title)]
+                )
+            )
+        
 
     def edit(self):
         self.ui.write("Edit-command is not yet implemented")

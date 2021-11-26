@@ -2,6 +2,7 @@
 #Test Setup   Start App
 Resource  resource.robot
 Test Setup  Start
+Test Teardown  Reset
 
 *** Test Cases ***
 Test Welcome
@@ -17,8 +18,9 @@ Test Add Command
 
 
 Test Show Command
+    Add Bookmark  Tuntematon Sotilas
     Input Show Command
-    Output Should Contain  Tuntematon sotilas
+    Output Should Contain  Tuntematon Sotilas
 
 
 *** Keywords ***

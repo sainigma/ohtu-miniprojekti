@@ -34,6 +34,7 @@ class App:
 
     def quit(self):
         self.ui.write("See you again!")
+        exit()
 
     def add(self):
         title = self.ui.read("Title: ")

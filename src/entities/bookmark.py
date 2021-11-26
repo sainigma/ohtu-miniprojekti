@@ -1,6 +1,5 @@
 class Bookmark:
-    def __init__(self, id, name):
-        self.id = id
+    def __init__(self, name):
         self.title = name
         self.tags = set()
     
@@ -18,7 +17,6 @@ class Bookmark:
     def get_bookmark(self):
         # create and return a dictionary with bookmark object fields
         bookmark = {
-            "id":   self.id,
             "name": self.title,
             "tags": self.tags
         }

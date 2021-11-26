@@ -14,12 +14,12 @@ class App:
         while True:
 
             command = self.read_input()
-            self.parse_input(command)
+            self.parse_command(command)
 
     def read_input(self):
         return self.ui.read("Give command: ")
 
-    def parse_input(self, input):
+    def parse_command(self, input):
         input = input.strip()
         if input == "q":
             self.quit()

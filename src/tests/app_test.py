@@ -12,4 +12,4 @@ class AppTest(unittest.TestCase):
     def test_welcome_message(self):
 
         self.app.welcome()
-        self.assertEqual(self.io.outputs[0], "Welcome to Bookmarker!")
+        self.assertEqual(self.io.output[0], "Welcome to Bookmarker!")

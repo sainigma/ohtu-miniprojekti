@@ -25,7 +25,7 @@ class App:
         if input == "add":
             self.add()
         elif input == "show":
-            self.ui.write("Show-command is not yet implemented")
+            self.show()
         elif input == "edit":
             self.ui.write("Edit-command is not yet implemented")
         else:
@@ -45,7 +45,10 @@ class App:
         self.ui.write(f"Bookmark '{bookmark.title}' created!")
 
     def show(self):
-        self.ui.write("Show-command is not yet implemented")
+        bookmarks_amount = self.repository.bookmarks_amount() + 1
+        bookmarks = self.repository.get(None, 0, bookmarks_amount)
+        for bookmark in bookmarks:
+            self.ui.write(bookmark["title"])
 
     def edit(self):
         self.ui.write("Edit-command is not yet implemented")

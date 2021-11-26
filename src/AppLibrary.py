@@ -1,5 +1,5 @@
 from app import App
-from stub_io import StubIO
+from ui.stub_io import StubIO
 
 
 class AppLibrary:
@@ -21,3 +21,5 @@ class AppLibrary:
                 f"Output \"{value}\" is not in {str(outputs)}"
             )
     
+    def welcome(self):
+        self._app.welcome()

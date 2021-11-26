@@ -1,3 +1,4 @@
+import sys
 from ui.console_io import console_io as default_console_io
 from entities.bookmark import Bookmark
 from repositories.bookmarks_repository import BookmarksRepository
@@ -34,7 +35,7 @@ class App:
 
     def quit(self):
         self.ui.write("See you again!")
-        exit()
+        sys.exit()
 
     def add(self):
         title = self.ui.read("Title: ")

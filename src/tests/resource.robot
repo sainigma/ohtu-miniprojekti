@@ -2,6 +2,9 @@
 Library  ../app.py
 Library  ../AppLibrary.py
 
+*** Variables ***
+${EMPTY}   ""
+
 *** Keywords ***
 Input Quit Command
     Input  q
@@ -13,6 +16,11 @@ Input Add Command
 
 Input Show Command
     Input  show
+    Read Command
+
+Input Empty Command
+    #[Arguments]  ${EMPTY}
+    Input  ${EMPTY}
     Read Command
 
 

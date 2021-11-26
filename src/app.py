@@ -20,6 +20,7 @@ class App:
         return self.ui.read("Give command: ")
 
     def parse_input(self, input):
+        input = input.strip()
         if input == "q":
             self.quit()
         if input == "add":

@@ -8,3 +8,5 @@ class ConsoleIO:
 
     def read(self, prompt) -> str:
         return input(prompt)
+
+console_io = ConsoleIO()

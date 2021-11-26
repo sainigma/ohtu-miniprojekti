@@ -1,6 +1,6 @@
 *** Settings ***
 Library  ../app.py
-Library  ../AppLibrary.py
+Library  AppLibrary.py
 
 *** Variables ***
 ${EMPTY}   ""
@@ -19,7 +19,6 @@ Input Show Command
     Read Command
 
 Input Empty Command
-    #[Arguments]  ${EMPTY}
     Input  ${EMPTY}
     Read Command
 

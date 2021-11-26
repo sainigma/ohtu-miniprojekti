@@ -21,3 +21,10 @@ class Bookmark:
             "tags": self.tags
         }
         return bookmark
+    
+    def __str__(self):
+        tagStr = ""
+        for i in self.tags:
+            tagStr += f"{i}  "
+        return (f"title: {self.title}\n"
+                f"tags:  {tagStr}")

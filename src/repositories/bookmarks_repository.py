@@ -49,5 +49,8 @@ class BookmarksRepository:
     
     def bookmarks_amount(self):
         return len(self.db)
+    
+    def clear(self):
+        self.db.clear()
 
 bookmark_repository = BookmarksRepository()

@@ -42,6 +42,7 @@ class App:
         title = self.ui.read("Title: ")
         bookmark = Bookmark(title)
         self.repository.insert(bookmark.get_bookmark())
+        self.ui.write(f"Bookmark '{bookmark.title}' created!")
 
     def show(self):
         self.ui.write("Show-command is not yet implemented")

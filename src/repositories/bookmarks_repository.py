@@ -46,5 +46,8 @@ class BookmarksRepository:
             return False
         self.db.remove(bookmark)
         return True
+    
+    def bookmarks_amount(self):
+        return len(self.db)
 
 bookmark_repository = BookmarksRepository()

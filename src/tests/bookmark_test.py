@@ -27,7 +27,7 @@ class TestBookmark(unittest.TestCase):
 
         self.assertDictEqual(self.bookmark.get_bookmark(),
         {
-        "name": "Kirja",
+        "title": "Kirja",
         "tags": {"tira", "tärkeä"}})
     
     def test_find_tag_returns_true_if_found(self):

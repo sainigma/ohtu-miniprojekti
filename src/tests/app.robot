@@ -10,8 +10,9 @@ Test Welcome
 
 Test Add Command
     Input Add Command
-    Output Should Contain  Title:
+    Prompt Should Contain  Title: 
     Input  Tuntematon sotilas
+    Read Input
     Output Should Contain  Bookmark "Tuntematon sotilas" created!
 
 
@@ -23,5 +24,3 @@ Test Show Command
 *** Keywords ***
 Start
     Welcome
-
-

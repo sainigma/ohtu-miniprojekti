@@ -1,6 +1,6 @@
 class Bookmark:
-    def __init__(self, name):
-        self.title = name
+    def __init__(self, title):
+        self.title = title
         self.tags = set()
     
     def add_tag(self, tag):
@@ -17,7 +17,7 @@ class Bookmark:
     def get_bookmark(self):
         # create and return a dictionary with bookmark object fields
         bookmark = {
-            "name": self.title,
+            "title": self.title,
             "tags": self.tags
         }
         return bookmark

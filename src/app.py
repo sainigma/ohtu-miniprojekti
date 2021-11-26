@@ -1,12 +1,13 @@
 import sys
 from ui.console_io import console_io as default_console_io
 from entities.bookmark import Bookmark
-from repositories.bookmarks_repository import BookmarksRepository
+from repositories.bookmarks_repository import bookmark_repository as default_bookmark_repository
 
 
 class App:
-    def __init__(self, ui=default_console_io):
+    def __init__(self, ui=default_console_io, repository=default_bookmark_repository):
         self.ui = ui
+        self.repository = repository
 
     def run(self):
         self.welcome()
@@ -40,7 +41,7 @@ class App:
     def add(self):
         title = self.ui.read("Title: ")
         bookmark = Bookmark(title)
-        BookmarksRepository().insert(bookmark.get_bookmark())
+        self.repository.insert(bookmark.get_bookmark())
 
     def show(self):
         self.ui.write("Show-command is not yet implemented")

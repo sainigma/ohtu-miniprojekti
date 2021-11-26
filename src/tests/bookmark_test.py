@@ -4,12 +4,11 @@ from entities.bookmark import Bookmark
 
 class TestBookmark(unittest.TestCase):
     def setUp(self):
-        self.bookmark = Bookmark("2222", "Kirja")
+        self.bookmark = Bookmark("Kirja")
 
     def test_constructor_creates_bookmark(self):
-        bookmark = Bookmark("123456", "Kirja")
+        bookmark = Bookmark("Kirja")
 
-        self.assertEqual(bookmark.id, "123456")
         self.assertEqual(bookmark.title, "Kirja")
     
     def test_add_tag_functions_properly(self):
@@ -27,7 +26,7 @@ class TestBookmark(unittest.TestCase):
         self.bookmark.add_tag("tärkeä")
 
         self.assertDictEqual(self.bookmark.get_bookmark(),
-        {"id": "2222",
+        {
         "name": "Kirja",
         "tags": {"tira", "tärkeä"}})
     

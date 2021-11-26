@@ -46,3 +46,5 @@ class BookmarksRepository:
             return False
         self.db.remove(bookmark)
         return True
+
+bookmark_repository = BookmarksRepository()

@@ -7,5 +7,5 @@ __pycache__
 htmlcov
 output.xml
 report.html
+*.db
 log.html
-

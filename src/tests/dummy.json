@@ -98,6 +98,10 @@
         {
           "type":"Related courses",
           "content":"CSM13001 Distributed Systems"
+        },
+        {
+          "type":"Related courses",
+          "content":"TKT20006 Ohjelmistotuotanto"
         }
       ]
     },

@@ -5,14 +5,14 @@ Library  ../AppLibrary.py
 *** Keywords ***
 Input Quit Command
     Input  q
-    Read Input
+    Read Command
 
 Input Add Command
     Input  add
-    Read Input
+    Read Command
 
 Input Show Command
     Input  show
-    Read Input
+    Read Command
 
 

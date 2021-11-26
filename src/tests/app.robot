@@ -12,13 +12,13 @@ Test Add Command
     Input Add Command
     Prompt Should Contain  Title: 
     Input  Tuntematon sotilas
-    Read Input
+    Read Title
     Output Should Contain  Bookmark "Tuntematon sotilas" created!
 
 
 Test Show Command
     Input Show Command
-    Output Should Contain  Show-command is not yet implemented
+    Output Should Contain  Tuntematon sotilas
 
 
 *** Keywords ***

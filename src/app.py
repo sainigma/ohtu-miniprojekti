@@ -40,9 +40,12 @@ class App:
 
     def add(self):
         title = self.ui.read("Title:")
+        self.add_bookmark(title)
+    
+    def add_bookmark(self, title):
         bookmark = Bookmark(title)
         self.repository.insert(bookmark.get_bookmark())
-        self.ui.write(f"Bookmark '{title}' created!")
+        self.ui.write(f'Bookmark "{title}" created!')
 
     def show(self):
         bookmarks_amount = self.repository.bookmarks_amount() + 1

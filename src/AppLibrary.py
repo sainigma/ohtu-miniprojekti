@@ -14,9 +14,11 @@ class AppLibrary:
     def input(self, value):
         self._io.set_input(value)
     
-    def read_input(self):
-        #print(self._io.inputs)
-        self._app.parse_input(self._io.read(""))
+    def read_command(self):
+        self._app.parse_input(self._io.read(prompt=""))
+    
+    def read_title(self):
+        self._app.add_bookmark(self._io.read(prompt=""))
 
     def output_should_contain(self, value):
         output = self._io.output

@@ -1,5 +1,6 @@
+from ui.stub_io import StubIO
 from app import App
-from stub_io import StubIO
+
 
 
 class AppLibrary:

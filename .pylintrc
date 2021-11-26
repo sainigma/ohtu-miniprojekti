@@ -97,7 +97,8 @@ disable=print-statement,
         trailing-whitespace,
         redefined-builtin,
         unspecified-encoding,
-	unused-argument
+	unused-argument,
+        invalid-name
 
 [FORMAT]
 

@@ -3,11 +3,8 @@
 __pycache__
 *.py[cod]
 *$py.class
-<<<<<<< HEAD
 .coverage
 htmlcov
-=======
 log.html
 output.xml
 report.html
->>>>>>> b0ee51ee213f718f6b81550353e16c9ad108469e

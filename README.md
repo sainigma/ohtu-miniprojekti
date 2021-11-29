@@ -26,4 +26,10 @@ From poetry shell:
 
 ### Definition of done
 
-User story is tested with Robot Framework. Main functionalities are tested as well.
+User story is tested with Robot Framework.
+
+Main functionalities are tested.
+
+CI-tests are passed.
+
+Acceptance criteria met.

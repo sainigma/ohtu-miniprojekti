@@ -18,10 +18,9 @@ class BookmarksServiceSQL:
         self.db.execute(f'insert into Tags (bookmarkid, tagtypeid, content) \
             values ({bookmarkID}, {tagTypeID}, "{tag["content"]}")')
 
-    # Vastaanottaa dict-objektin, jolla on tietueina title ja tags
-    # Joko tähän tai bookmarkkiin typecast bookmark -> dict
-    # Palauttaa onnistuneessa luonnissa bookmarkin id:n tietokannassa, muutoin -1
     def insert(self, bookmark):
+        """Palauttaa onnistuneessa luonnissa bookmarkin id:n tietokannassa, muutoin -1
+        """
         if not self.validate(bookmark):
             return -1
         
@@ -63,16 +62,13 @@ class BookmarksServiceSQL:
             "title":bookmark[1],
             "tags":self._parse_tags(tags)
         }
+    
+    def get_all(self, start=0, bookmarks=None):
+        query = "select id, title from Bookmarks;"
+        result = self.db.execute(query)
+        return self._parse_bookmark_list(result)
 
-    # Palauttaa oletuksena kaiken, yksittäisen entryn jos id on asetettu haussa
-    # ja valikoiman jos params on asetettu. Palauttaa listan dict-objekteja
-    # start ja bookmarks määrittää mistä kohdasta listaa entryjä haetaan ja kuinka monta
-    def get(self, id=None, start=0, bookmarks=10):
-        if id is None:
-            query = "select id, title from Bookmarks;"
-            result = self.db.execute(query)
-            return self._parse_bookmark_list(result)
-
+    def get_one(self, id):
         bookmarkQuery = f"select b.id, b.title from Bookmarks b where id = {id}"
         bookmark = self.db.execute(bookmarkQuery)
         if len(bookmark) > 0:

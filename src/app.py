@@ -51,8 +51,7 @@ class App:
         self.ui.write(f'Bookmark "{title}" created!')
 
     def show(self):
-        bookmarks_amount = self.repository.bookmarks_amount() + 1
-        bookmarks = self.repository.get(None, 0, bookmarks_amount)
+        bookmarks = self.repository.get_all()
         for bookmark in bookmarks:
             self.ui.write(bookmark["title"])
     

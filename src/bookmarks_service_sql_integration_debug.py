@@ -21,9 +21,9 @@ mockEntry = {
 
 print(bookmarks.insert(mockEntry))
 print(bookmarks.insert(mockEntry))
-print(bookmarks.get())
-print("pituus:", len(bookmarks.get()))
-b = bookmarks.get(id=1)
+print(bookmarks.get_all())
+print("pituus:", len(bookmarks.get_all()))
+b = bookmarks.get_one(id=1)
 print(b['title'])
 
 f = bookmarks.find_by_title("Mock*")

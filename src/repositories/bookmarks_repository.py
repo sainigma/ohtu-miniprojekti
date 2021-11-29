@@ -28,22 +28,20 @@ class BookmarksRepository:
         self.db.append(bookmark)
         return new_id
 
-    # Palauttaa oletuksena kaiken, yksittäisen entryn jos id on asetettu haussa
-    # ja valikoiman jos params on asetettu. Palauttaa listan dict-objekteja
-    # start ja bookmarks määrittää mistä kohdasta listaa entryjä haetaan ja kuinka monta
-    def get(self, id=None, start=0, bookmarks=10):
-        print(id)
-        if id is None:
-            return self.db[start: start + bookmarks]
-
+    def get_one(self, id):
         for bookmark in self.db:
             if bookmark["id"] == id:
                 return bookmark
 
         return None
+    
+    def get_all(self, start=0, n_bookmarks=None):
+        if n_bookmarks is None:
+            return self.db
+        return self.db[start: start + n_bookmarks]
 
     def remove(self, bookmark_id):
-        bookmark = self.get(bookmark_id)
+        bookmark = self.get_one(bookmark_id)
         if bookmark is None:
             return False
         self.db.remove(bookmark)

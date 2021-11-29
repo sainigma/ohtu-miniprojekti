@@ -1,12 +1,14 @@
 import json
 import random
+from os import getenv
 
 
 class BookmarksRepository:
-    def __init__(self, dbpath="./src/tests/dummy.json"):
+    def __init__(self, dbpath):
         self.db = []
-        with open(dbpath) as file:
-            self.db = json.load(file)['db']
+        if dbpath:
+            with open(dbpath) as file:
+                self.db = json.load(file)['db']
 
     def validate(self, bookmark):
         if "title" in bookmark and "tags" in bookmark:
@@ -56,4 +58,11 @@ class BookmarksRepository:
     def clear(self):
         self.db.clear()
 
-bookmark_repository = BookmarksRepository()
+
+def get_dummy_db_path():
+    if getenv("USE_DUMMY_DB") == "True":
+        return "./src/tests/dummy.json"
+    else:
+        return None
+
+bookmark_repository = BookmarksRepository(dbpath=get_dummy_db_path())

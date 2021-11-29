@@ -2,6 +2,7 @@ import unittest
 import json
 from repositories.app_repository import AppRepository
 from services.bookmarks_service_sql import BookmarksServiceSQL
+from repositories.bookmarks_repository import BookmarksRepository
 
 class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):
@@ -71,11 +72,19 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         self.assertTrue(dbLength0 == dbLength1)
 
     def test_finding_by_title(self):
-        bookmarks = self.db.findByTitle("Jim Benson%")
+        bookmarks = self.db.find_by_title("Jim Benson*")
         self.assertTrue(bookmarks[0]['title'] == "Jim Benson on Personal Kanban, Lean Coffee and collaboration")
     
-    '''
     def test_finding_by_title_broad_results(self):
-        bookmarks = self.db.findByTitle('%\entry')
+        bookmarks = self.db.find_by_title('*entry')
         self.assertTrue(len(bookmarks) == 2)
-    '''
+
+    # poista kun bookmarksrepository tarpeeton
+    def test_class_complies_with_previous_version(self):
+        old_methods = dir(BookmarksRepository)
+        current_methods = dir(BookmarksServiceSQL)
+        for method in old_methods:
+            if method not in current_methods:
+                print(method)
+                self.assertTrue(False)
+        self.assertTrue(True)

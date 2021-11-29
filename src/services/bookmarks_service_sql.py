@@ -7,7 +7,7 @@ class BookmarksServiceSQL:
             return True
         return False
 
-    def insertTag(self, tag, bookmarkID):
+    def insert_tag(self, tag, bookmarkID):
         idArr = self.db.execute(f'select id from TagTypes where title = "{tag["type"]}"')
         
         if len(idArr) < 1:
@@ -31,23 +31,24 @@ class BookmarksServiceSQL:
         
         #1-n ongelma, tän voi todnäk toteuttaa yhdelläkin komennolla
         for tag in bookmark["tags"]:
-            self.insertTag(tag, bookmarkID)
+            self.insert_tag(tag, bookmarkID)
 
         return bookmarkID
 
-    def parseBookmarkList(self, bookmarks):
+    def _parse_bookmark_list(self, bookmarks):
         return list(map(lambda bookmark: {"id":bookmark[0], "title":bookmark[1]}, bookmarks))
 
-    def findByTitle(self, title):
-        query = f'select * from Bookmarks where title like "{title}"'
+    def find_by_title(self, title):
+        searchString = title.replace('*','%')
+        query = f'select * from Bookmarks where title like "{searchString}"'
         result = self.db.execute(query)
-        return self.parseBookmarkList(result)
+        return self._parse_bookmark_list(result)
 
     def find(self, params):
 
         pass
 
-    def parseTags(self,tags):
+    def _parse_tags(self,tags):
         result = []
         for tag in tags:
             result.append({
@@ -56,11 +57,11 @@ class BookmarksServiceSQL:
             })
         return result
 
-    def resultToBookmark(self, bookmark, tags):
+    def _result_to_bookmark(self, bookmark, tags):
         return {
             "id":bookmark[0],
             "title":bookmark[1],
-            "tags":self.parseTags(tags)
+            "tags":self._parse_tags(tags)
         }
 
     # Palauttaa oletuksena kaiken, yksittäisen entryn jos id on asetettu haussa
@@ -68,9 +69,9 @@ class BookmarksServiceSQL:
     # start ja bookmarks määrittää mistä kohdasta listaa entryjä haetaan ja kuinka monta
     def get(self, id=None, start=0, bookmarks=10):
         if id is None:
-            query = "select id, title from Bookmarks"
+            query = "select id, title from Bookmarks;"
             result = self.db.execute(query)
-            return self.parseBookmarkList(result)
+            return self._parse_bookmark_list(result)
 
         bookmarkQuery = f"select b.id, b.title from Bookmarks b where id = {id}"
         bookmark = self.db.execute(bookmarkQuery)
@@ -82,9 +83,17 @@ class BookmarksServiceSQL:
         tagsQuery = f"select tagtype.title, tag.content from Tags tag \
             left join Tagtypes tagtype on tag.tagtypeid = tagtype.id where tag.bookmarkid = {bookmark[0]}"
         tags = self.db.execute(tagsQuery)
-        return self.resultToBookmark(bookmark, tags)
+        return self._result_to_bookmark(bookmark, tags)
+
+    def bookmarks_amount(self):
+        query = "select count(id) from Bookmarks;"
+        result = self.db.execute(query)
+        return result[0][0]
 
     def remove(self, bookmark_id):
         query = f"delete from Bookmarks where id = {bookmark_id}"
         self.db.execute(query)
         return True
+
+    def clear(self):
+        pass

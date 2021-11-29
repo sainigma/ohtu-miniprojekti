@@ -47,7 +47,7 @@ class App:
     
     def add_bookmark(self, title):
         bookmark = Bookmark(title)
-        self.repository.insert(bookmark.get_bookmark())
+        self.repository.insert(bookmark.as_dict())
         self.ui.write(f'Bookmark "{title}" created!')
 
     def show(self):

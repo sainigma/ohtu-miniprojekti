@@ -12,27 +12,39 @@ class TestBookmark(unittest.TestCase):
         self.assertEqual(bookmark.title, "Kirja")
     
     def test_add_tag_functions_properly(self):
-        self.bookmark.add_tag("tira")
+        self.bookmark.add_tag("kurssi", "tira")
+        tag = self.bookmark.as_dict()['tags'][0]
+        self.assertTrue(tag['type'] == 'kurssi')
+        self.assertTrue(tag['content'] == 'tira')
 
-        self.assertIn("tira", self.bookmark.tags)
-    
     def test_no_duplicate_tags_allowed(self):
-        self.bookmark.add_tag("Tira")
-        self.bookmark.add_tag("tira")
-        self.assertSetEqual(self.bookmark.tags, {"tira"})
-
-    def test_get_bookmark_returns_correct_dict(self):
-        self.bookmark.add_tag("tira")
-        self.bookmark.add_tag("tärkeä")
-
-        self.assertDictEqual(self.bookmark.get_bookmark(),
-        {
-        "title": "Kirja",
-        "tags": {"tira", "tärkeä"}})
+        self.bookmark.add_tag("Kurssi", "Tira")
+        self.bookmark.add_tag("Kurssi", "TiRa")
+        tags = self.bookmark.as_dict()['tags']
+        self.assertTrue(len(tags) == 1)
     
-    def test_find_tag_returns_true_if_found(self):
-        self.bookmark.add_tag("tira")
-        self.bookmark.add_tag("tärkeä")
-        self.assertTrue(self.bookmark.find_tag("tira"))
-        self.assertTrue(self.bookmark.find_tag("tärkeä"))
-        self.assertFalse(self.bookmark.find_tag("ei löydy"))
+    def test_get_bookmark_returns_correct_dict(self):
+        self.bookmark.add_tag("kurssi", "tira")
+        self.bookmark.add_tag("prioriteetti", "tärkeä")
+
+        bookmark_dict = self.bookmark.as_dict()
+        target_dict = {
+            'title':'Kirja',
+            'tags':[
+                {
+                    'type':'kurssi',
+                    'content':'tira'
+                },{
+                    'type':'prioriteetti',
+                    'content':'tärkeä'
+                }
+            ]
+        }
+        self.assertDictEqual(bookmark_dict, target_dict)
+
+    def test_find_tag_by_type_returns_true_if_found(self):
+        self.bookmark.add_tag("Kurssi", "tira")
+        self.bookmark.add_tag("prioriteetti", "tärkeä")
+        self.assertTrue(self.bookmark.find_tag_by_type("kUrssI"))
+        self.assertTrue(self.bookmark.find_tag_by_type("priorITEetti"))
+        self.assertFalse(self.bookmark.find_tag_by_type("ei löydy"))

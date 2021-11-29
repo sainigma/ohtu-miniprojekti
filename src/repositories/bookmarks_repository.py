@@ -62,7 +62,6 @@ class BookmarksRepository:
 def get_dummy_db_path():
     if getenv("USE_DUMMY_DB") == "True":
         return "./src/tests/dummy.json"
-    else:
-        return None
+    return None
 
 bookmark_repository = BookmarksRepository(dbpath=get_dummy_db_path())

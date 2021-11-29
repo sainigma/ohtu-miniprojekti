@@ -18,18 +18,20 @@ Go to the virtual environment with `poetry shell`
 
 From poetry shell:
 
-`python3 src/index.py` to run the application
+`invoke start` to run the application
 
-`pytest src/tests` to run unit-tests
+`invoke verify` to run unit-tests, Robot-tests and lint.
 
-`pylint src` to run lint
+See [tasks.py](https://github.com/sainigma/ohtu-miniprojekti/blob/main/tasks.py) for all invoke tasks.
 
 ### Definition of done
 
-User story is tested with Robot Framework.
+User story is tested with Robot Framework imitating end-user behaviour.
 
-Main functionalities are tested.
+Main functionalities are manually tested.
 
-CI-tests are passed.
+Our CI-pipeline passes.
+
+\>70% Code coverage for unit-tests.
 
 Acceptance criteria met.

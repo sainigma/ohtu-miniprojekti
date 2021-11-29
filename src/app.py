@@ -52,8 +52,11 @@ class App:
 
     def show(self):
         bookmarks = self.repository.get_all()
-        for bookmark in bookmarks:
-            self.ui.write(bookmark["title"])
+        if not bookmarks:
+            self.ui.write("No bookmarks")
+        else:
+            for bookmark in bookmarks:
+                self.ui.write(bookmark["title"])
     
     def search(self):
         term = self.ui.read("Term: ")

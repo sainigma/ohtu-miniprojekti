@@ -16,7 +16,7 @@ class Bookmark:
         if tag_hash not in self.tagHashes:
             self.tags.append(tag)
             self.tagHashes[tag_hash] = 1
-    
+
     def find_tag_by_type(self, tagType):
         '''search for tag, return true if found, false if not
         '''

@@ -1,5 +1,6 @@
+
 from entities.bookmark import Bookmark
-from services.url_validator import _validate_url
+from services.url_validator import get_url
 
 class Add:
     def __init__(self, io, repository):
@@ -11,7 +12,7 @@ class Add:
         self.add_bookmark(url)
     
     def add_bookmark(self, url):
-        if not validate_url(url):
+        if not get_url(url):
             self.io.write("Error: URL not found")
             return
         bookmark = Bookmark(url)
@@ -38,6 +39,14 @@ class Edit:
     
     def execute(self):
         self.io.write("Edit-command is not yet implemented")
+
+class Delete:
+    def __init__(self, io, repository):
+        self.io = io
+        self.repository = repository
+    
+    def execute(self):
+        self.io.write("Delete-command incomplete")
 
 class Search:
     def __init__(self, io, repository):

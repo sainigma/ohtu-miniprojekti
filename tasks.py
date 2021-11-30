@@ -6,11 +6,11 @@ def start(ctx):
 
 @task
 def test(ctx):
-    ctx.run("pytest src")
+    ctx.run("export TESTING=True; pytest src")
 
 @task
 def coverage(ctx):
-    ctx.run("coverage run --branc -m pytest src")
+    ctx.run("export TESTING=True; coverage run --branc -m pytest src")
 
 @task
 def coverage_report(ctx):
@@ -26,7 +26,7 @@ def format(ctx):
 
 @task
 def robot(ctx):
-    ctx.run("robot src")
+    ctx.run("export TESTING=True; robot src")
 
 @task
 def verify(ctx):

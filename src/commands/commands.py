@@ -1,5 +1,5 @@
 from entities.bookmark import Bookmark
-from services.url_validator import validate_url
+from services.url_validator import _validate_url
 
 class Add:
     def __init__(self, io, repository):

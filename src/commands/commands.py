@@ -12,7 +12,8 @@ class Add:
     
     def add_bookmark(self, url):
         if not validate_url(url):
-            self.io.write("URL not found")
+            self.io.write("Error: URL not found")
+            return
         bookmark = Bookmark(url)
         self.repository.insert(bookmark.as_dict())
         self.io.write(f'Bookmark "{url}" created!')

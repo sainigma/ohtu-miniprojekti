@@ -34,5 +34,5 @@ b.add_tag("Kurssi", "CS 123218")
 b.add_tag("Kurssi", "CS 324879")
 bookmarks.insert(b.as_dict())
 f = bookmarks.find_by_title("*tsik*")[0]
-full_b = bookmarks.get(id = f['id'])
+full_b = bookmarks.get_one(id = f['id'])
 print(full_b)

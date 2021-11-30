@@ -14,13 +14,17 @@ Test Add Command
     Prompt Should Contain  Title:${SPACE}
     Input  Tuntematon sotilas
     Read Title
-    Output Should Contain  Bookmark "Tuntematon sotilas" created!
+    Output Should Be  Bookmark "Tuntematon sotilas" created!
 
+
+Test Show Empty Command
+    Input Show Command
+    Output Should Be  No bookmarks
 
 Test Show Command
     Add Bookmark  Tuntematon Sotilas
     Input Show Command
-    Output Should Contain  Tuntematon Sotilas
+    Output Should Be  Tuntematon Sotilas
 
 Test Find Command
     Add Bookmark  Tuntematon Sotilas
@@ -28,7 +32,7 @@ Test Find Command
     Prompt Should Contain  Term:${SPACE}
     Input  Tuntema
     Read Search Term
-    Output Should Contain  Tuntematon Sotilas
+    Output Should Be  Tuntematon Sotilas
 
 Test Empty Command
     Input Empty Command

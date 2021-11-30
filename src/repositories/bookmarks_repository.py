@@ -1,12 +1,14 @@
 import json
 import random
+from os import getenv
 
 
 class BookmarksRepository:
-    def __init__(self, dbpath="./src/tests/dummy.json"):
+    def __init__(self, dbpath):
         self.db = []
-        with open(dbpath) as file:
-            self.db = json.load(file)['db']
+        if dbpath:
+            with open(dbpath) as file:
+                self.db = json.load(file)['db']
 
     def validate(self, bookmark):
         if "title" in bookmark and "tags" in bookmark:
@@ -26,22 +28,20 @@ class BookmarksRepository:
         self.db.append(bookmark)
         return new_id
 
-    # Palauttaa oletuksena kaiken, yksittäisen entryn jos id on asetettu haussa
-    # ja valikoiman jos params on asetettu. Palauttaa listan dict-objekteja
-    # start ja bookmarks määrittää mistä kohdasta listaa entryjä haetaan ja kuinka monta
-    def get(self, id=None, start=0, bookmarks=10):
-        print(id)
-        if id is None:
-            return self.db[start: start + bookmarks]
-
+    def get_one(self, id):
         for bookmark in self.db:
             if bookmark["id"] == id:
                 return bookmark
 
         return None
+    
+    def get_all(self, start=0, n_bookmarks=None):
+        if n_bookmarks is None:
+            return self.db
+        return self.db[start: start + n_bookmarks]
 
     def remove(self, bookmark_id):
-        bookmark = self.get(bookmark_id)
+        bookmark = self.get_one(bookmark_id)
         if bookmark is None:
             return False
         self.db.remove(bookmark)
@@ -56,4 +56,10 @@ class BookmarksRepository:
     def clear(self):
         self.db.clear()
 
-bookmark_repository = BookmarksRepository()
+
+def get_dummy_db_path():
+    if getenv("USE_DUMMY_DB") == "True":
+        return "./src/tests/dummy.json"
+    return None
+
+bookmark_repository = BookmarksRepository(dbpath=get_dummy_db_path())

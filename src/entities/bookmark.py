@@ -1,9 +1,13 @@
 class Bookmark:
-    def __init__(self, title):
-        self.title = title
+    def __init__(self, url):
         self.tags = []
         self.tagHashes = {}
+        self.url = url
+        self.fetch_title()
     
+    def fetch_title(self):
+        self.title = self.url
+
     def add_tag(self, tagType, tagContent):
         '''add tag if not already found
         '''
@@ -30,6 +34,7 @@ class Bookmark:
         '''
         bookmark = {
             "title": self.title,
+            "url": self.url,
             "tags": self.tags
         }
         return bookmark
@@ -39,4 +44,5 @@ class Bookmark:
         for tag in self.tags:
             tagStr += f"{tag['content']}  "
         return (f"title: {self.title}\n"
+                f"url: {self.url}\n"
                 f"tags:  {tagStr}")

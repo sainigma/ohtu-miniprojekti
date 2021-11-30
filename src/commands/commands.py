@@ -36,6 +36,14 @@ class Edit:
     def execute(self):
         self.io.write("Edit-command is not yet implemented")
 
+class Delete:
+    def __init__(self, io, repository):
+        self.io = io
+        self.repository = repository
+    
+    def execute(self):
+        self.io.write("Delete-command incomplete")
+
 class Search:
     def __init__(self, io, repository):
         self.io = io

@@ -1,4 +1,3 @@
-import sys
 from ui.console_io import console_io as default_console_io
 from entities.bookmark import Bookmark
 from repositories.bookmarks_repository import bookmark_repository as default_bookmark_repository
@@ -14,8 +13,6 @@ class AppUi:
 
     def parse_command(self, input):
         input = input.strip()
-        if input == "q":
-            self.quit()
         if input == "add":
             self.add()
         elif input == "show":
@@ -29,10 +26,6 @@ class AppUi:
 
     def welcome(self):
         self.ui.write("Welcome to Bookmarker!")
-
-    def quit(self):
-        self.ui.write("See you again!")
-        sys.exit()
 
     def add(self):
         title = self.ui.read("Title: ")

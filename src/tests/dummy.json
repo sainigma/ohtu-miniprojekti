@@ -3,11 +3,13 @@
     {
       "id":2344,
       "title":"Minimientry",
+      "url":"https://www.google.com",
       "tags":[]
     },
     {
       "id":0,
       "title":"Esimerkkientry",
+      "url":"https://www.google.com",
       "tags":[
         {
           "type":"Tagin tyyppi",
@@ -26,6 +28,7 @@
     {
       "id":1,
       "title":"Clean Code: A Handbook of Agile Software Craftsmanship",
+      "url":"https://www.google.com",
       "tags":[
         {
           "type":"Kirjoittaja",
@@ -56,6 +59,7 @@
     {
       "id":3,
       "title":"Merge sort algorithm",
+      "url":"https://www.google.com",
       "tags":[
         {
           "type":"URL",
@@ -78,6 +82,7 @@
     {
       "id":4,
       "title":"Consistency models",
+      "url":"https://www.google.com",
       "tags":[
         {
           "type":"Kirjoittaja",
@@ -108,6 +113,7 @@
     {
       "id":5,
       "title":"Jim Benson on Personal Kanban, Lean Coffee and collaboration",
+      "url":"https://www.google.com",
       "tags":[
         {
           "type":"Author",

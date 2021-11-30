@@ -8,16 +8,17 @@ class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):
         self.mockEntry = {
             "title":"Mockentry",
-                "tags":[
-                    {
-                        "type":"Kirjoittaja",
-                        "content":"Asd Dasd"
-                    },
-                    {
-                        "type":"tyyppi",
-                        "content":"Testidata"
-                    },
-                ]
+            "url":"Mockentry",
+            "tags":[
+                {
+                    "type":"Kirjoittaja",
+                    "content":"Asd Dasd"
+                },
+                {
+                    "type":"tyyppi",
+                    "content":"Testidata"
+                },
+            ]
             }
         appRepository = AppRepository('./src/tests/dummy.db', True)
         self.db = BookmarksServiceSQL(appRepository)

@@ -13,14 +13,13 @@ def validate_url(url):
 def get_url(url):
     if not validate_url(url):
         return None
-    
-
     try:
         result = requests.get(url)
         if result.status_code == 200:
             return {
                 'headers':result.headers,
-                'content':result.content
+                'content':result.content,
+                'status':200
             }
         return None
     except requests.ConnectionError as exception:

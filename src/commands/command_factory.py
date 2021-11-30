@@ -1,4 +1,4 @@
-from commands.commands import Add, Show, Edit, Search, Unknown
+from commands.commands import Add, Show, Edit, Search, Unknown, Delete
 
 
 class CommandFactory:

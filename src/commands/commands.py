@@ -1,5 +1,5 @@
 from entities.bookmark import Bookmark
-
+from services.url_validator import validate_url
 
 class Add:
     def __init__(self, io, repository):
@@ -7,13 +7,15 @@ class Add:
         self.repository = repository
     
     def execute(self):
-        title = self.io.read("Title: ")
-        self.add_bookmark(title)
+        url = self.io.read("Url: ")
+        self.add_bookmark(url)
     
-    def add_bookmark(self, title):
-        bookmark = Bookmark(title)
+    def add_bookmark(self, url):
+        if not validate_url(url):
+            self.io.write("URL not found")
+        bookmark = Bookmark(url)
         self.repository.insert(bookmark.as_dict())
-        self.io.write(f'Bookmark "{title}" created!')
+        self.io.write(f'Bookmark "{url}" created!')
 
 class Show:
     def __init__(self, io, repository):

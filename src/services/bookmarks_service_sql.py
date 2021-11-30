@@ -56,13 +56,14 @@ class BookmarksServiceSQL:
         return self._parse_bookmark_list(result)
 
     def find_by_tag(self, tag):
+        '''
         tag_template1 = "kurssi:CS 120931"
         tag_template2 = "kirja:Asd"
         tag_template3 = "*:fdsjlkj"
+        '''
         pass
 
     def find(self, params):
-
         pass
 
     def _parse_tags(self,tags):
@@ -87,7 +88,8 @@ class BookmarksServiceSQL:
         return self._parse_bookmark_list(result)
 
     def get_one(self, id):
-        bookmarkQuery = f"select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid where b.id = {id}"
+        bookmarkQuery = f"select b.id, b.title, u.url from Bookmarks b \
+            left join Urls u on u.id = b.urlid where b.id = {id}"
         bookmark = self.db.execute(bookmarkQuery)
         if len(bookmark) > 0:
             bookmark = bookmark[0]

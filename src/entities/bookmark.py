@@ -1,12 +1,9 @@
 class Bookmark:
-    def __init__(self, url):
+    def __init__(self, title, url=None):
         self.tags = []
         self.tagHashes = {}
+        self.title = title
         self.url = url
-        self.fetch_title()
-    
-    def fetch_title(self):
-        self.title = self.url
 
     def add_tag(self, tagType, tagContent):
         '''add tag if not already found

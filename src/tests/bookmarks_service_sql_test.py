@@ -19,7 +19,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
                     "content":"Testidata"
                 },
             ]
-            }
+        }
         appRepository = AppRepository('./src/tests/dummy.db', True)
         self.db = BookmarksServiceSQL(appRepository)
 

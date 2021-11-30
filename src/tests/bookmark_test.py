@@ -5,13 +5,13 @@ from entities.bookmark import Bookmark
 
 class TestBookmark(unittest.TestCase):
     def setUp(self):
-        self.bookmark = Bookmark("https://www.google.com")
+        self.bookmark = Bookmark("Google", "https://www.google.com")
 
     def test_constructor_creates_bookmark(self):
-        bookmark = Bookmark("https://www.google.com")
+        bookmark = Bookmark("Google", "https://www.google.com")
 
         self.assertEqual(bookmark.url, "https://www.google.com")
-        #self.assertEqual(bookmark.title, "Google")
+        self.assertEqual(bookmark.title, "Google")
     
     def test_add_tag_functions_properly(self):
         self.bookmark.add_tag("kurssi", "tira")
@@ -31,7 +31,7 @@ class TestBookmark(unittest.TestCase):
 
         bookmark_dict = self.bookmark.as_dict()
         target_dict = {
-            'title':'https://www.google.com',
+            'title':'Google',
             'url':'https://www.google.com',
             'tags':[
                 {

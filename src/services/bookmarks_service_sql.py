@@ -3,7 +3,7 @@ class BookmarksServiceSQL:
         self.db = databaseConnection
 
     def validate(self, bookmark):
-        if "title" in bookmark and "tags" in bookmark:
+        if "title" in bookmark and "tags" in bookmark and "url" in bookmark:
             return True
         return False
 
@@ -18,13 +18,25 @@ class BookmarksServiceSQL:
         self.db.execute(f'insert into Tags (bookmarkid, tagtypeid, content) \
             values ({bookmarkID}, {tagTypeID}, "{tag["content"]}")')
 
+    def insert_url(self, url):
+        query = 'select id from Urls where url = "{url}";'
+        result = self.db.execute(query)
+        if len(result) > 0:
+            return result[0][0]
+        
+        query = 'insert into Urls (url) values ("{url}");'
+        self.db.execute(query)
+        return self.db.execute('select max(id) from Urls')[0][0]
+
     def insert(self, bookmark):
         """Palauttaa onnistuneessa luonnissa bookmarkin id:n tietokannassa, muutoin -1
         """
         if not self.validate(bookmark):
             return -1
         
-        addBookmarkQuery = f'insert into Bookmarks (title) values ("{bookmark["title"]}");'
+        urlId = self.insert_url(bookmark["url"])
+
+        addBookmarkQuery = f'insert into Bookmarks (title, urlid) values ("{bookmark["title"]}", {urlId});'
         self.db.execute(addBookmarkQuery)
         bookmarkID = self.db.execute('select max(id) from Bookmarks')[0][0]
         
@@ -42,6 +54,12 @@ class BookmarksServiceSQL:
         query = f'select * from Bookmarks where title like "{searchString}"'
         result = self.db.execute(query)
         return self._parse_bookmark_list(result)
+
+    def find_by_tag(self, tag):
+        tag_template1 = "kurssi:CS 120931"
+        tag_template2 = "kirja:Asd"
+        tag_template3 = "*:fdsjlkj"
+        pass
 
     def find(self, params):
 
@@ -64,12 +82,12 @@ class BookmarksServiceSQL:
         }
     
     def get_all(self, start=0, bookmarks=None):
-        query = "select id, title from Bookmarks;"
+        query = "select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid;"
         result = self.db.execute(query)
         return self._parse_bookmark_list(result)
 
     def get_one(self, id):
-        bookmarkQuery = f"select b.id, b.title from Bookmarks b where id = {id}"
+        bookmarkQuery = f"select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid where b.id = {id}"
         bookmark = self.db.execute(bookmarkQuery)
         if len(bookmark) > 0:
             bookmark = bookmark[0]
@@ -89,6 +107,7 @@ class BookmarksServiceSQL:
     def remove(self, bookmark_id):
         query = f"delete from Bookmarks where id = {bookmark_id}"
         self.db.execute(query)
+        # Tarkasta orpoutuuko bookmarkin resurssit
         return True
 
     def clear(self):

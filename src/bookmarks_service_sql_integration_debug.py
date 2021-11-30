@@ -6,17 +6,18 @@ repo = AppRepository(reinitialize=True)
 bookmarks = BookmarksServiceSQL(repo)
 
 mockEntry = {
-  "title":"Mockentry",
-      "tags":[
-          {
-              "type":"Kirjoittaja",
-              "content":"Asd Dasd"
-          },
-          {
-              "type":"tyyppi",
-              "content":"Testidata"
-          },
-      ]
+    "title":"Mockentry",
+    "url":"Mockentry",
+    "tags":[
+        {
+            "type":"Kirjoittaja",
+            "content":"Asd Dasd"
+        },
+        {
+            "type":"tyyppi",
+            "content":"Testidata"
+        },
+    ]
 }
 
 print(bookmarks.insert(mockEntry))

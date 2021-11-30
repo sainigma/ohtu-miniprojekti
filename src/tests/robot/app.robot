@@ -13,7 +13,7 @@ Test Add Command
     Input Add Command
     Prompt Should Contain  Title:${SPACE}
     Input  Tuntematon sotilas
-    Read Title
+    Execute Command
     Output Should Be  Bookmark "Tuntematon sotilas" created!
 
 
@@ -31,7 +31,7 @@ Test Find Command
     Input Find Command
     Prompt Should Contain  Term:${SPACE}
     Input  Tuntema
-    Read Search Term
+    Execute Command
     Output Should Be  Tuntematon Sotilas
 
 Test Empty Command

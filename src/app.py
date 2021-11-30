@@ -13,6 +13,7 @@ class App:
             if command == "q":
                 sys.exit()
             self.ui.parse_command(command)
+            self.ui.execute_command()
 
 
 app = App()

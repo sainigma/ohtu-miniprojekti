@@ -16,12 +16,9 @@ class AppLibrary:
     
     def read_command(self):
         self._app.parse_command(self._io.read(prompt=""))
-    
-    def read_title(self):
-        self._app.add_bookmark(self._io.read(prompt=""))
-    
-    def read_search_term(self):
-        self._app.search_by_title(self._io.read(prompt=""))
+
+    def execute_command(self):
+        self._app.execute_command()
 
     def output_should_contain(self, value):
         output = self._io.output
@@ -53,4 +50,7 @@ class AppLibrary:
         self._app.repository.clear()
     
     def add_bookmark(self, title):
-        self._app.add_bookmark(title)
+        self.input("add")
+        self.read_command()
+        self.input(title)
+        self.execute_command()

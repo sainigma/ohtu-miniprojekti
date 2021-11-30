@@ -1,7 +1,7 @@
 import re
 import requests
 
-def validate_url(url: str):
+def _validate_url(url):
     pattern = r'(http[s]*|ftp):\/\/[A-Za-z\.\/]*'
     matches = re.match(pattern, url)
     
@@ -9,8 +9,8 @@ def validate_url(url: str):
         return True
     return False
 
-def get_url(url: str):
-    if not validate_url(url):
+def _get_url(url):
+    if not _validate_url(url):
         return None
     try:
         result = requests.get(url)
@@ -22,4 +22,9 @@ def get_url(url: str):
             }
         return None
     except requests.ConnectionError as exception:
-        return None
+        return False
+
+def _fake_validate_url(url):
+    return True
+
+get_url = _validate_url

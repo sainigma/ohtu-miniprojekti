@@ -1,5 +1,5 @@
 from ui.stub_io import StubIO
-from app import App
+from ui.app_ui import AppUi
 
 
 class AppLibrary:
@@ -9,7 +9,7 @@ class AppLibrary:
 
     def __init__(self):
         self._io = StubIO()
-        self._app = App(self._io)
+        self._app = AppUi(self._io)
 
     def input(self, value):
         self._io.set_input(value)

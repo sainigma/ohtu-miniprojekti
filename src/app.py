@@ -23,7 +23,9 @@ class App:
         input = input.strip()
         if input == "q":
             self.quit()
-        if input == "add":
+        if input == "h":
+            self.help()
+        elif input == "add":
             self.add()
         elif input == "show":
             self.show()
@@ -35,11 +37,16 @@ class App:
             self.usage()
 
     def welcome(self):
-        self.ui.write("Welcome to Bookmarker!")
+        self.ui.write("Welcome to Bookmarker!\nType 'h' for help\n")
 
     def quit(self):
         self.ui.write("See you again!")
         sys.exit()
+
+    def help(self):
+        self.ui.write("""
+            ### Write some help output here ###
+        """)
 
     def add(self):
         title = self.ui.read("Title: ")
@@ -69,7 +76,6 @@ class App:
                 )
             )
         
-
     def edit(self):
         self.ui.write("Edit-command is not yet implemented")
 
@@ -77,6 +83,7 @@ class App:
         self.ui.write("""
             Acceptable commands:
             'q' - quit,
+            'h' - help,
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'edit' - edit a bookmark

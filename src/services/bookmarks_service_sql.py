@@ -61,10 +61,10 @@ class BookmarksServiceSQL:
         tag_template2 = "kirja:Asd"
         tag_template3 = "*:fdsjlkj"
         '''
-        pass
+        return None
 
     def find(self, params):
-        pass
+        return None
 
     def _parse_tags(self,tags):
         result = []

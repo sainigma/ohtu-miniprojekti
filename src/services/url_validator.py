@@ -1,4 +1,3 @@
-from os import getenv
 import re
 import requests
 
@@ -22,5 +21,5 @@ def get_url(url):
                 'status':200
             }
         return None
-    except requests.ConnectionError as exception:
+    except requests.ConnectionError:
         return False

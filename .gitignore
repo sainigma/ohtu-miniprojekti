@@ -10,3 +10,4 @@ report.html
 *.db
 log.html
 *.code-workspace
+src/debug.py

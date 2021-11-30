@@ -33,3 +33,16 @@ class TestCommands(unittest.TestCase):
         search.execute()
 
         self.io.write.assert_called_with("Test")
+    
+    def test_print_accepted_commands_when_unknown_command_was_given(self):
+        unknown = Unknown(self.io)
+
+        unknown.execute()
+
+        self.io.write.assert_called_with("""
+            Acceptable commands:
+            'q' - quit,
+            'add' - add a new bookmark,
+            'show' - show given amount of bookmarks,
+            'edit' - edit a bookmark
+        """)

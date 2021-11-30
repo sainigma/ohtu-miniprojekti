@@ -35,3 +35,8 @@ Our CI-pipeline passes.
 \>70% Code coverage for unit-tests.
 
 Acceptance criteria met.
+
+### Robot tests
+
+- [resource.robot](https://github.com/sainigma/ohtu-miniprojekti/blob/main/src/tests/resource.robot)
+- [app.robot](https://github.com/sainigma/ohtu-miniprojekti/blob/main/src/tests/app.robot)

@@ -1,5 +1,6 @@
 class Bookmark:
     def __init__(self, title, url=None):
+        self.id = None
         self.tags = []
         self.tagHashes = {}
         self.title = title
@@ -18,7 +19,7 @@ class Bookmark:
             self.tags.append(tag)
             self.tagHashes[tag_hash] = 1
 
-    def find_tag_by_type(self, tagType):
+    def has_tag(self, tagType):
         '''search for tag, return true if found, false if not
         '''
         for tag in self.tags:

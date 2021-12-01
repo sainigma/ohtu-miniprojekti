@@ -15,7 +15,7 @@ class AppUi:
 
     def parse_command(self, input):
         input = input.strip()
-        self.command = self.command_factory.set_command(input)
+        self.command = self.command_factory.get_command(input)
     
     def execute_command(self):
         self.command.execute()

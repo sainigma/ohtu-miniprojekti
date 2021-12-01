@@ -48,6 +48,6 @@ class TestBookmark(unittest.TestCase):
     def test_find_tag_by_type_returns_true_if_found(self):
         self.bookmark.add_tag("Kurssi", "tira")
         self.bookmark.add_tag("prioriteetti", "tärkeä")
-        self.assertTrue(self.bookmark.find_tag_by_type("kUrssI"))
-        self.assertTrue(self.bookmark.find_tag_by_type("priorITEetti"))
-        self.assertFalse(self.bookmark.find_tag_by_type("ei löydy"))
+        self.assertTrue(self.bookmark.has_tag("kUrssI"))
+        self.assertTrue(self.bookmark.has_tag("priorITEetti"))
+        self.assertFalse(self.bookmark.has_tag("ei löydy"))

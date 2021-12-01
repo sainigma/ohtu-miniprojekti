@@ -74,7 +74,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         self.assertTrue(dbLength0 == dbLength1)
 
     def test_finding_by_title(self):
-        bookmarks = self.db.find_by_title("Jim Benson*")
+        bookmarks = self.db.find_by_title("*im Benson*")
         self.assertTrue(bookmarks[0]['title'] == "Jim Benson on Personal Kanban, Lean Coffee and collaboration")
     
     def test_finding_by_title_broad_results(self):

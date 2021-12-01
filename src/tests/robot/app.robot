@@ -35,7 +35,7 @@ Test Find Command
     Add Bookmark  https://google.com
     Input Find Command
     Prompt Should Contain  Term:${SPACE}
-    Input  goog
+    Input  *goog*
     Execute Command
     Output Should Be  https://google.com
 

@@ -115,6 +115,10 @@ class BookmarksService:
         return True
 
     def clear(self):
-        pass
+        self.db.execute("delete from Bookmarks;")
+        self.db.execute("delete from Urls;")
+        self.db.execute("delete from Tags;")
+        self.db.execute("delete from TagTypes;")
+
 
 bookmarks_service = BookmarksService()

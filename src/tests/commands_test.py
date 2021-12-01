@@ -42,6 +42,7 @@ class TestCommands(unittest.TestCase):
         self.io.write.assert_called_with("""
             Acceptable commands:
             'q' - quit,
+            'h' - help,
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'edit' - edit a bookmark

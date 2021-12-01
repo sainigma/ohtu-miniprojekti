@@ -11,6 +11,11 @@ Input Quit Command
     Read Command
     Execute Command
 
+Input Help Command
+    Input  h
+    Read Command
+    Execute Command
+
 Input Add Command
     Input  add
     Read Command

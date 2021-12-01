@@ -2,6 +2,18 @@
 from entities.bookmark import Bookmark
 from services.url_validator import get_url
 
+class Help:
+    def __init__(self, io, repository):
+        self.io = io
+        self.repository = repository
+    
+    def execute(self):
+        Unknown.execute(self)
+        self.io.write("""
+            To delete a bookmark, first select 'edit' and then 'delete'
+            (Not implemented yet)
+        """)
+
 class Add:
     def __init__(self, io, repository):
         self.io = io
@@ -72,6 +84,7 @@ class Unknown:
         self.io.write("""
             Acceptable commands:
             'q' - quit,
+            'h' - help,
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'edit' - edit a bookmark

@@ -1,4 +1,4 @@
-from commands.commands import Add, Show, Edit, Search, Unknown
+from commands.commands import Help, Add, Show, Edit, Search, Unknown
 
 
 class CommandFactory:
@@ -7,6 +7,7 @@ class CommandFactory:
         self.repository = repository
 
         self.commands = {
+            "h": Help(self.io, self.repository),
             "add": Add(self.io, repository),
             "show": Show(self.io, repository),
             "edit": Edit(self.io, repository),

@@ -21,6 +21,6 @@ class AppUi:
         self.command.execute()
 
     def welcome(self):
-        self.ui.write("Welcome to Bookmarker!")
+        self.ui.write("\nWelcome to Bookmarker!\nType 'h' for help\n")
 
 app_ui = AppUi()

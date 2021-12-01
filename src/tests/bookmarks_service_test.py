@@ -1,8 +1,10 @@
+import os
 import unittest
 import json
-from repositories.app_repository import AppRepository
-from services.bookmarks_service_sql import BookmarksServiceSQL
-from repositories.bookmarks_repository import BookmarksRepository
+from services.bookmarks_service import BookmarksService
+from db_connection import DBConnection
+# poista kun bookmarks_service on integroitu
+from services.bookmarks_service_json import BookmarksServiceJSON
 
 class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):
@@ -20,14 +22,13 @@ class BookmarksServiceSQLTest(unittest.TestCase):
                 },
             ]
         }
-        appRepository = AppRepository('./src/tests/dummy.db', True)
-        self.db = BookmarksServiceSQL(appRepository)
+        db_connection = DBConnection('./src/tests/dummy.db', True)
+        self.db = BookmarksService(db_connection)
 
         with open('./src/tests/dummy.json') as jsonFile:
             dummies = json.load(jsonFile)['db']
         for dummy in dummies:
             self.db.insert(dummy)
-
 
     def test_database_initializes(self):
         dbLength = len(self.db.get_all())
@@ -80,10 +81,10 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         bookmarks = self.db.find_by_title('*entry')
         self.assertTrue(len(bookmarks) == 2)
 
-    # poista kun bookmarksrepository tarpeeton
+    # poista kun bookmarksservicejson tarpeeton
     def test_class_complies_with_previous_version(self):
-        old_methods = dir(BookmarksRepository)
-        current_methods = dir(BookmarksServiceSQL)
+        old_methods = dir(BookmarksServiceJSON)
+        current_methods = dir(BookmarksService)
         for method in old_methods:
             if method not in current_methods:
                 print(method)

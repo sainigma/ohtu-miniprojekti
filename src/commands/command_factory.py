@@ -2,16 +2,16 @@ from commands.commands import Help, Add, Show, Edit, Search, Unknown
 
 
 class CommandFactory:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
 
         self.commands = {
-            "h": Help(self.io, self.repository),
-            "add": Add(self.io, repository),
-            "show": Show(self.io, repository),
-            "edit": Edit(self.io, repository),
-            "search": Search(self.io, repository),
+            "h": Help(self.io, self.service),
+            "add": Add(self.io, service),
+            "show": Show(self.io, service),
+            "edit": Edit(self.io, service),
+            "search": Search(self.io, service),
         }
     
     def set_command(self, command):

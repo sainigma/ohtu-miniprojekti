@@ -1,13 +1,13 @@
 from ui.console_io import console_io as default_console_io
-from repositories.bookmarks_repository import bookmark_repository as default_bookmark_repository
+from services.bookmarks_service import bookmarks_service as default_bookmarks_service
 from commands.command_factory import CommandFactory
 
 
 class AppUi:
-    def __init__(self, ui=default_console_io, repository=default_bookmark_repository):
+    def __init__(self, ui=default_console_io, service=default_bookmarks_service):
         self.ui = ui
-        self.repository = repository
-        self.command_factory = CommandFactory(self.ui, self.repository)
+        self.service = service
+        self.command_factory = CommandFactory(self.ui, self.service)
         self.command = None
 
     def read_input(self):

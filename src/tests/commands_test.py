@@ -6,20 +6,20 @@ from unittest.mock import Mock
 class TestCommands(unittest.TestCase):
     def setUp(self):
         self.io = Mock()
-        self.repository = Mock()
-        self.add = Add(self.io, self.repository)
+        self.service = Mock()
+        self.add = Add(self.io, self.service)
 
     def test_print_correct_message_when_there_are_not_any_bookmarks_to_show(self):
-        self.repository.get_all.return_value = None
-        show = Show(self.io, self.repository)
+        self.service.get_all.return_value = None
+        show = Show(self.io, self.service)
 
         show.execute()
 
         self.io.write.assert_called_with("No bookmarks")
     
     def test_print_titles_of_all_bookmarks(self):
-        self.repository.get_all.return_value = [{"title": "Test"}]
-        self.show = Show(self.io, self.repository)
+        self.service.get_all.return_value = [{"title": "Test"}]
+        self.show = Show(self.io, self.service)
 
         self.show.execute()
 
@@ -27,8 +27,8 @@ class TestCommands(unittest.TestCase):
     
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"
-        self.repository.find_by_title.return_value = [{"title":"Test"}]
-        search = Search(self.io, self.repository)
+        self.service.find_by_title.return_value = [{"title":"Test"}]
+        search = Search(self.io, self.service)
 
         search.execute()
 

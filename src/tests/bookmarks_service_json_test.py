@@ -1,8 +1,8 @@
 import unittest
-from repositories.bookmarks_repository import BookmarksRepository
+from services.bookmarks_service_json import BookmarksServiceJSON
 
 
-class BookmarksRepositoryTest(unittest.TestCase):
+class BookmarksServiceJSONTest(unittest.TestCase):
     def setUp(self):
         self.mockEntry = {
             "title": "Mockentry",
@@ -17,7 +17,7 @@ class BookmarksRepositoryTest(unittest.TestCase):
                 },
             ]
         }
-        self.db = BookmarksRepository("./src/tests/dummy.json")
+        self.db = BookmarksServiceJSON("./src/tests/dummy.json")
 
     def test_database_initializes(self):
         dbLength = len(self.db.get_all())

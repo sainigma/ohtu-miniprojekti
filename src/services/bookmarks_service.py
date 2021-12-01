@@ -1,5 +1,7 @@
-class BookmarksServiceSQL:
-    def __init__(self, databaseConnection):
+from db_connection import database_connection
+
+class BookmarksService:
+    def __init__(self, databaseConnection=database_connection):
         self.db = databaseConnection
 
     def validate(self, bookmark):
@@ -114,3 +116,5 @@ class BookmarksServiceSQL:
 
     def clear(self):
         pass
+
+bookmarks_service = BookmarksService()

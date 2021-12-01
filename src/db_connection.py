@@ -1,7 +1,7 @@
+import os
 import sqlite3
-import os.path
 
-class AppRepository:
+class DBConnection:
     def __init__(self, databasePath='./src/app.db', reinitialize=False):
         self.dbPath = databasePath
         if not os.path.exists(databasePath):
@@ -9,7 +9,7 @@ class AppRepository:
         elif reinitialize:
             os.remove(databasePath)
             self.initialize('./src/create.sql')
-
+    
     def initialize(self, path):
         with open(path) as createFile:
             creationScript = createFile.read()
@@ -28,3 +28,8 @@ class AppRepository:
             rows = cursor.fetchall()
             conn.commit()
             return rows
+
+if os.getenv("USE_DUMMY_DB") == "True":
+    database_connection = DBConnection('./src/tests/dummy.db', True)
+else:
+    database_connection = DBConnection()

@@ -1,9 +1,8 @@
-from repositories.app_repository import AppRepository
-from services.bookmarks_service_sql import BookmarksServiceSQL
+from services.bookmarks_service import BookmarksService
 from entities.bookmark import Bookmark
 
-repo = AppRepository(reinitialize=True)
-bookmarks = BookmarksServiceSQL(repo)
+#repo = AppRepository(reinitialize=True)
+bookmarks = BookmarksService()
 
 mockEntry = {
     "title":"Mockentry",

@@ -3,9 +3,9 @@ from entities.bookmark import Bookmark
 from services.url_validator import get_url
 
 class Help:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
     
     def execute(self):
         Unknown.execute(self)
@@ -15,9 +15,9 @@ class Help:
         """)
 
 class Add:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
     
     def execute(self):
         url = self.io.read("Url: ")
@@ -28,16 +28,16 @@ class Add:
             self.io.write("Error: URL not found")
             return
         bookmark = Bookmark(url)
-        self.repository.insert(bookmark.as_dict())
+        self.service.insert(bookmark.as_dict())
         self.io.write(f'Bookmark "{url}" created!')
 
 class Show:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
     
     def execute(self):
-        bookmarks = self.repository.get_all()
+        bookmarks = self.service.get_all()
         if not bookmarks:
             self.io.write("No bookmarks")
         else:
@@ -45,25 +45,25 @@ class Show:
                 self.io.write(bookmark["title"])
 
 class Edit:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
     
     def execute(self):
         self.io.write("Edit-command is not yet implemented")
 
 class Delete:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
     
     def execute(self):
         self.io.write("Delete-command incomplete")
 
 class Search:
-    def __init__(self, io, repository):
+    def __init__(self, io, service):
         self.io = io
-        self.repository = repository
+        self.service = service
     
     def execute(self):
         term = self.io.read("Term: ")
@@ -72,7 +72,7 @@ class Search:
     def search_by_title(self, title):
         self.io.write(
             "\n".join(
-                [bookmark["title"] for bookmark in self.repository.find_by_title(title)]
+                [bookmark["title"] for bookmark in self.service.find_by_title(title)]
                 )
             )
 

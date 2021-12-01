@@ -47,7 +47,7 @@ class AppLibrary:
         self._app.welcome()
 
     def reset(self):
-        self._app.repository.clear()
+        self._app.service.clear()
     
     def add_bookmark(self, title):
         self.input("add")

@@ -11,10 +11,10 @@ Test Welcome
 
 Test Add Command
     Input Add Command
-    Prompt Should Contain  Title:${SPACE}
-    Input  Tuntematon sotilas
-    Read Title
-    Output Should Be  Bookmark "Tuntematon sotilas" created!
+    Prompt Should Contain  Url:${SPACE}
+    Input  https://google.com
+    Execute Command
+    Output Should Be  Bookmark "https://google.com" created!
 
 
 Test Show Empty Command
@@ -22,17 +22,17 @@ Test Show Empty Command
     Output Should Be  No bookmarks
 
 Test Show Command
-    Add Bookmark  Tuntematon Sotilas
+    Add Bookmark  https://google.com
     Input Show Command
-    Output Should Be  Tuntematon Sotilas
+    Output Should Be  https://google.com
 
 Test Find Command
-    Add Bookmark  Tuntematon Sotilas
+    Add Bookmark  https://google.com
     Input Find Command
     Prompt Should Contain  Term:${SPACE}
-    Input  Tuntema
-    Read Search Term
-    Output Should Be  Tuntematon Sotilas
+    Input  goog
+    Execute Command
+    Output Should Be  https://google.com
 
 Test Empty Command
     Input Empty Command

@@ -4,14 +4,15 @@ import requests
 
 class TitleMetaGrabber(HTMLParser):
 
-    def __init__(self, *, convert_charrefs: bool = ...):
-        super().__init__(convert_charrefs=convert_charrefs)
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
         self.title = 'No title found'
         self.meta = []
         self.grabbing = None
         self.failure = False
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str or None]]):
+    # tag: str, attrs: list[tuple[str, str or None]]
+    def handle_starttag(self, tag, attrs):
         if tag == 'title':
             self.grabbing = tag
         elif 'meta' in tag:
@@ -23,7 +24,7 @@ class TitleMetaGrabber(HTMLParser):
         if self.grabbing == 'title':
             self.title = data
     
-    def error(self, message: str) -> None:
+    def error(self, message: str):
         self.failure = True
 
     def success(self):

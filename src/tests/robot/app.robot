@@ -30,7 +30,7 @@ Test Show Empty Command
 Test Show Command
     Add Bookmark  http://www.princess-mononoke.com
     Input Show Command
-    Output Should Be  Welcome to Princess Mononoke
+    Output Should Be  1 Welcome to Princess Mononoke
 
 Test Find Command
     Add Bookmark  http://www.princess-mononoke.com
@@ -39,7 +39,7 @@ Test Find Command
     Input  *elcome*
     Execute Command
     Prompt Should Be  Term:${SPACE}
-    Output Should Be  Welcome to Princess Mononoke
+    Output Should Be  1 Welcome to Princess Mononoke
 
 Test Empty Command
     Input Empty Command

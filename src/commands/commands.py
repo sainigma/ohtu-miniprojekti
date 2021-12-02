@@ -34,7 +34,7 @@ class Show:
             self.io.write("No bookmarks")
         else:
             for bookmark in bookmarks:
-                self.io.write(bookmark["title"])
+                self.io.write(bookmark.short_str())
 
 class Edit:
     def __init__(self, io, service):
@@ -64,7 +64,7 @@ class Search:
     def search_by_title(self, title):
         self.io.write(
             "\n".join(
-                [bookmark["title"] for bookmark in self.service.get_by_title(title)]
+                [bookmark.short_str() for bookmark in self.service.get_by_title(title)]
                 )
             )
 

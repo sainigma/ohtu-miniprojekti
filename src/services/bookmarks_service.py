@@ -1,3 +1,4 @@
+from typing import List
 from db_connection import database_connection
 from entities.bookmark import Bookmark
 from services.url_validator import get_url
@@ -44,25 +45,17 @@ class BookmarksService:
 
         return Bookmark(id=bookmarkID, title=title, url=url)
 
-    def _parse_bookmark_list(self, bookmarks):
-        return list(map(lambda bookmark: {"id":bookmark[0], "title":bookmark[1]}, bookmarks))
+    def _tuple_to_bookmark(self, b) -> Bookmark:
+        return Bookmark(id=b[0], title=b[1], url=b[2])
 
-    def get_by_title(self, title) -> Bookmark:
+    def _parse_bookmark_list(self, bookmarks) -> List[Bookmark]:
+        return list(map(self._tuple_to_bookmark, bookmarks))
+
+    def get_by_title(self, title) -> List[Bookmark]:
         searchString = title.replace('*','%')
         query = f'select * from Bookmarks where title like "{searchString}"'
         result = self.db.execute(query)
         return self._parse_bookmark_list(result)
-
-    def find_by_tag(self, tag):
-        '''
-        tag_template1 = "kurssi:CS 120931"
-        tag_template2 = "kirja:Asd"
-        tag_template3 = "*:fdsjlkj"
-        '''
-        return None
-
-    def find(self, params):
-        return None
 
     def _parse_tags(self,tags):
         result = []
@@ -72,20 +65,13 @@ class BookmarksService:
                 "content":tag[1]
             })
         return result
-
-    def _result_to_bookmark(self, bookmark, tags):
-        return {
-            "id":bookmark[0],
-            "title":bookmark[1],
-            "tags":self._parse_tags(tags)
-        }
     
-    def get_all(self, start=0, bookmarks=None):
+    def get_all(self, start=0, bookmarks=None) -> List[Bookmark]:
         query = "select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid;"
         result = self.db.execute(query)
         return self._parse_bookmark_list(result)
 
-    def get_one(self, id):
+    def get_one(self, id) -> Bookmark:
         bookmarkQuery = f"select b.id, b.title, u.url from Bookmarks b \
             left join Urls u on u.id = b.urlid where b.id = {id}"
         bookmark = self.db.execute(bookmarkQuery)
@@ -97,7 +83,7 @@ class BookmarksService:
         #tagsQuery = f"select tagtype.title, tag.content from Tags tag \
         #    left join Tagtypes tagtype on tag.tagtypeid = tagtype.id where tag.bookmarkid = {bookmark[0]}"
         #tags = self.db.execute(tagsQuery)
-        return Bookmark(bookmark[0], bookmark[1], bookmark[2])
+        return self._tuple_to_bookmark(bookmark)
 
     def bookmarks_amount(self):
         query = "select count(id) from Bookmarks;"

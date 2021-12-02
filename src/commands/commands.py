@@ -19,7 +19,6 @@ class Add:
     
     def execute(self):
         url = self.io.read("Url: ")
-        print("creating " + url)
         bookmark = self.service.create(url)
         self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
 
@@ -32,9 +31,9 @@ class Show:
         bookmarks = self.service.get_all()
         if not bookmarks:
             self.io.write("No bookmarks")
-        else:
-            for bookmark in bookmarks:
-                self.io.write(bookmark.short_str())
+            return
+        for bookmark in bookmarks:
+            self.io.write(bookmark.short_str())
 
 class Edit:
     def __init__(self, io, service):
@@ -62,6 +61,10 @@ class Search:
         self.search_by_title(term)
     
     def search_by_title(self, title):
+        bookmarks = self.service.get_by_title(title)
+        if not bookmarks:
+            self.io.write("Could not find any bookmarks with that title")
+            return
         self.io.write(
             "\n".join(
                 [bookmark.short_str() for bookmark in self.service.get_by_title(title)]

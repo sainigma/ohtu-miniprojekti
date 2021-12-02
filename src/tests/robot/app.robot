@@ -41,6 +41,14 @@ Test Find Command
     Prompt Should Be  Term:${SPACE}
     Output Should Be  1 Welcome to Princess Mononoke
 
+Test Not Found With Title
+    Add Bookmark  http://www.princess-mononoke.com
+    Input  search
+    Read Command
+    Input  spirited-away
+    Execute Command
+    Output Should Be  Could not find any bookmarks with that title
+
 Test Empty Command
     Input Empty Command
     Output Should Contain  Acceptable commands:

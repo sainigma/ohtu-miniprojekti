@@ -14,7 +14,7 @@ class CommandFactory:
             "search": Search(self.io, service),
         }
     
-    def set_command(self, command):
+    def get_command(self, command):
         if command in self.commands:
             return self.commands[command]
         return Unknown(self.io)

@@ -59,7 +59,7 @@ class Delete:
         self.service = service
     
     def execute(self):
-        self.io.write("Delete-command incomplete")
+        self.io.write("Delete-command is not yet implemented")
 
 class Search:
     def __init__(self, io, service):

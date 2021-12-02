@@ -24,12 +24,13 @@ class Add:
         self.add_bookmark(url)
     
     def add_bookmark(self, url):
-        if not get_url(url):
+        url_response = get_url(url)
+        if not url_response:
             self.io.write("Error: URL not found")
             return
-        bookmark = Bookmark(url)
+        bookmark = Bookmark(url_response['title'], url)
         self.service.insert(bookmark.as_dict())
-        self.io.write(f'Bookmark "{url}" created!')
+        self.io.write(f'Bookmark "{url_response["title"]}" created!')
 
 class Show:
     def __init__(self, io, service):

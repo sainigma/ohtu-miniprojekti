@@ -20,7 +20,7 @@ class TestCommands(unittest.TestCase):
     def test_print_titles_of_all_bookmarks(self):
         self.service.get_all.return_value = [{"title": "Test"}]
         self.show = Show(self.io, self.service)
-
+        
         self.show.execute()
 
         self.io.write.assert_called_with("Test")

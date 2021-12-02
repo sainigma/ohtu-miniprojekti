@@ -1,6 +1,4 @@
 
-from entities.bookmark import Bookmark
-from services.url_validator import get_url
 
 class Help:
     def __init__(self, io, service):

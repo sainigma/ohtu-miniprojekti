@@ -17,10 +17,10 @@ Test Help
 Test Add Command
     Input  add
     Read Command
-    Input  https://google.com
+    Input  http://www.princess-mononoke.com
     Execute Command
     Prompt Should Be  Url:${SPACE}
-    Output Should Be  Bookmark "1 https://google.com" created!
+    Output Should Be  Bookmark "1 Welcome to Princess Mononoke" created!
 
 
 Test Show Empty Command
@@ -28,18 +28,18 @@ Test Show Empty Command
     Output Should Be  No bookmarks
 
 Test Show Command
-    Add Bookmark  https://google.com
+    Add Bookmark  http://www.princess-mononoke.com
     Input Show Command
-    Output Should Be  https://google.com
+    Output Should Be  Welcome to Princess Mononoke
 
 Test Find Command
-    Add Bookmark  https://google.com
+    Add Bookmark  http://www.princess-mononoke.com
     Input  search
     Read Command
-    Input  *goog*
+    Input  *elcome*
     Execute Command
     Prompt Should Be  Term:${SPACE}
-    Output Should Be  https://google.com
+    Output Should Be  Welcome to Princess Mononoke
 
 Test Empty Command
     Input Empty Command

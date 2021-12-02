@@ -6,14 +6,6 @@ class BookmarksService:
     def __init__(self, databaseConnection=database_connection):
         self.db = databaseConnection
 
-    def validate(self, bookmark):
-        res = get_url(bookmark["url"])
-        if not res or not res["status"] == 200: # If res was None, the url was invalid.
-            return False
-        if "title" in bookmark and "tags" in bookmark and "url" in bookmark:
-            return True
-        return False
-
     def insert_tag(self, tag, bookmarkID):
         idArr = self.db.execute(f'select id from TagTypes where title = "{tag["type"]}"')
         
@@ -36,25 +28,21 @@ class BookmarksService:
         return self.db.execute('select max(id) from Urls')[0][0]
 
     def create(self, url) -> Bookmark:
-        """Palauttaa onnistuneessa luonnissa bookmarkin id:n tietokannassa, muutoin -1
-        """
+        res = get_url(url)
+        if not res:
+            raise Exception("Invalid url " + url)
+        title = res["title"]
         bookmarkDict = {
-            "url": url, "title": url, "tags": []
+            "url": url, "title": title, "tags": []
         }
-        if not self.validate(bookmarkDict):
-            raise Exception("Invalid bookmark " + str(bookmarkDict))
         
         urlId = self.insert_url(bookmarkDict["url"])
 
-        addBookmarkQuery = f'insert into Bookmarks (title, urlid) values ("{bookmarkDict["title"]}", {urlId});'
+        addBookmarkQuery = f'insert into Bookmarks (title, urlid) values ("{title}", {urlId});'
         self.db.execute(addBookmarkQuery)
         bookmarkID = self.db.execute('select max(id) from Bookmarks')[0][0]
-        
-        #1-n ongelma, tän voi todnäk toteuttaa yhdelläkin komennolla
-        #for tag in bookmark["tags"]:
-        #    self.insert_tag(tag, bookmarkID)
 
-        return Bookmark(id=bookmarkID, title=url, url=url)
+        return Bookmark(id=bookmarkID, title=title, url=url)
 
     def _parse_bookmark_list(self, bookmarks):
         return list(map(lambda bookmark: {"id":bookmark[0], "title":bookmark[1]}, bookmarks))

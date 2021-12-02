@@ -3,8 +3,6 @@ import json
 from services.bookmarks_service import BookmarksService
 from db_connection import DBConnection
 from entities.bookmark import Bookmark
-# poista kun bookmarks_service on integroitu
-from services.bookmarks_service_json import BookmarksServiceJSON
 
 class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):

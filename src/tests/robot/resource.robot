@@ -19,7 +19,6 @@ Input Help Command
 Input Add Command
     Input  add
     Read Command
-    Execute Command
 
 Input Show Command
     Input  show

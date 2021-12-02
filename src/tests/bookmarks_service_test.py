@@ -1,8 +1,8 @@
-import os
 import unittest
 import json
 from services.bookmarks_service import BookmarksService
 from db_connection import DBConnection
+from entities.bookmark import Bookmark
 # poista kun bookmarks_service on integroitu
 from services.bookmarks_service_json import BookmarksServiceJSON
 
@@ -10,7 +10,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):
         self.mockEntry = {
             "title":"Mockentry",
-            "url":"Mockentry",
+            "url":"https://google.com",
             "tags":[
                 {
                     "type":"Kirjoittaja",
@@ -28,7 +28,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         with open('./src/tests/dummy.json') as jsonFile:
             dummies = json.load(jsonFile)['db']
         for dummy in dummies:
-            self.db.insert(dummy)
+            self.db.create(dummy["url"])
 
     def test_database_initializes(self):
         dbLength = len(self.db.get_all())
@@ -36,23 +36,24 @@ class BookmarksServiceSQLTest(unittest.TestCase):
 
     def test_entries_can_be_added(self):
         dbLength0 = len(self.db.get_all())
-        id0 = self.db.insert(self.mockEntry)
+        id0 = self.db.create(self.mockEntry["url"]).id
         dbLength1 = len(self.db.get_all())
-        self.assertTrue(dbLength1 > dbLength0)
+        self.assertGreater(dbLength1, dbLength0)
         
-        obj = self.db.get_one(id=id0)
-        if obj != None:
-            title = self.mockEntry["title"]
-            self.assertTrue((dbLength1 > dbLength0) and obj["id"] == id0 and obj["title"] == title)
-        else:
-            self.assertTrue(False)
+        bookmark = self.db.get_one(id=id0)
+        url = self.mockEntry["url"]
+        self.assertIsNotNone(bookmark)
+        self.assertEqual(bookmark.id, id0)
+        self.assertEqual(bookmark.url, url)
 
     def test_entry_validation_works(self):
         dbLength0 = len(self.db.get_all())
-        obj = {"tilte":"asd","tasg":[]}
-        id = self.db.insert(obj)
-        dbLength1 = len(self.db.get_all())
-        self.assertTrue(id == -1 and dbLength0 == dbLength1)
+        try:
+            self.db.create("tämä urli ei toimi")
+        except:
+            return
+        self.fail("Create-method did not raise an exception")
+
 
     def test_fetch_nonexisting_bookmark(self):
         bookmark = self.db.get_one(id=3247987324)
@@ -60,7 +61,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
 
     def test_entries_can_be_removed(self):
         dbLength0 = len(self.db.get_all())
-        self.db.remove(1)
+        self.db.delete(1)
         dbLength1 = len(self.db.get_all())
 
         obj = self.db.get_one(id=1)
@@ -68,25 +69,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
 
     def test_remove_nonexisting_entry(self):
         dbLength0 = len(self.db.get_all())
-        self.db.remove(324893247)
+        self.db.delete(324893247)
         dbLength1 = len(self.db.get_all())
 
         self.assertTrue(dbLength0 == dbLength1)
-
-    def test_finding_by_title(self):
-        bookmarks = self.db.find_by_title("*im Benson*")
-        self.assertTrue(bookmarks[0]['title'] == "Jim Benson on Personal Kanban, Lean Coffee and collaboration")
-    
-    def test_finding_by_title_broad_results(self):
-        bookmarks = self.db.find_by_title('*entry')
-        self.assertTrue(len(bookmarks) == 2)
-
-    # poista kun bookmarksservicejson tarpeeton
-    def test_class_complies_with_previous_version(self):
-        old_methods = dir(BookmarksServiceJSON)
-        current_methods = dir(BookmarksService)
-        for method in old_methods:
-            if method not in current_methods:
-                print(method)
-                self.assertTrue(False)
-        self.assertTrue(True)

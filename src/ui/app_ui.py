@@ -4,14 +4,14 @@ from commands.command_factory import CommandFactory
 
 
 class AppUi:
-    def __init__(self, ui=default_console_io, service=default_bookmarks_service):
-        self.ui = ui
+    def __init__(self, io=default_console_io, service=default_bookmarks_service):
+        self.io = io
         self.service = service
-        self.command_factory = CommandFactory(self.ui, self.service)
+        self.command_factory = CommandFactory(self.io, self.service)
         self.command = None
 
     def read_input(self):
-        return self.ui.read("Give command: ")
+        return self.io.read("Give command: ")
 
     def parse_command(self, input):
         input = input.strip()
@@ -21,6 +21,6 @@ class AppUi:
         self.command.execute()
 
     def welcome(self):
-        self.ui.write("\nWelcome to Bookmarker!\nType 'h' for help\n")
+        self.io.write("\nWelcome to Bookmarker!\nType 'h' for help\n")
 
 app_ui = AppUi()

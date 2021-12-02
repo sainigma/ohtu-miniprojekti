@@ -1,6 +1,6 @@
 class Bookmark:
-    def __init__(self, title, url=None):
-        self.id = None
+    def __init__(self, id, title, url):
+        self.id = id
         self.tags = []
         self.tagHashes = {}
         self.title = title
@@ -44,3 +44,6 @@ class Bookmark:
         return (f"title: {self.title}\n"
                 f"url: {self.url}\n"
                 f"tags:  {tagStr}")
+    
+    def short_str(self):
+        return f"{self.id} {self.title}"

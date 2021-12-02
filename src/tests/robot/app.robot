@@ -15,11 +15,12 @@ Test Help
     Output Should Contain  (Not implemented yet)
 
 Test Add Command
-    Input Add Command
-    Prompt Should Contain  Url:${SPACE}
+    Input  add
+    Read Command
     Input  https://google.com
     Execute Command
-    Output Should Be  Bookmark "https://google.com" created!
+    Prompt Should Be  Url:${SPACE}
+    Output Should Be  Bookmark "1 https://google.com" created!
 
 
 Test Show Empty Command
@@ -33,10 +34,11 @@ Test Show Command
 
 Test Find Command
     Add Bookmark  https://google.com
-    Input Find Command
-    Prompt Should Contain  Term:${SPACE}
+    Input  search
+    Read Command
     Input  *goog*
     Execute Command
+    Prompt Should Be  Term:${SPACE}
     Output Should Be  https://google.com
 
 Test Empty Command

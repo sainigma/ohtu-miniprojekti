@@ -34,10 +34,10 @@ class AppLibrary:
                 f"Output \"{value}\" is not equal to {str(self._io.output)}"
             )
     
-    def prompt_should_contain(self, value):
+    def prompt_should_be(self, value):
         prompt = self._io.prompt
 
-        if not value in prompt:
+        if not value == prompt:
             raise AssertionError(
                 f"Output \"{value}\" is not in {str(prompt)}"
             )

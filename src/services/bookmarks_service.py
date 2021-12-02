@@ -1,10 +1,15 @@
 from db_connection import database_connection
+from entities.bookmark import Bookmark
+from services.url_validator import get_url
 
 class BookmarksService:
     def __init__(self, databaseConnection=database_connection):
         self.db = databaseConnection
 
     def validate(self, bookmark):
+        res = get_url(bookmark["url"])
+        if not res or not res["status"] == 200: # If res was None, the url was invalid.
+            return False
         if "title" in bookmark and "tags" in bookmark and "url" in bookmark:
             return True
         return False
@@ -21,37 +26,40 @@ class BookmarksService:
             values ({bookmarkID}, {tagTypeID}, "{tag["content"]}")')
 
     def insert_url(self, url):
-        query = 'select id from Urls where url = "{url}";'
+        query = f'select id from Urls where url = "{url}";'
         result = self.db.execute(query)
         if len(result) > 0:
             return result[0][0]
         
-        query = 'insert into Urls (url) values ("{url}");'
+        query = f'insert into Urls (url) values ("{url}");'
         self.db.execute(query)
         return self.db.execute('select max(id) from Urls')[0][0]
 
-    def insert(self, bookmark):
+    def create(self, url) -> Bookmark:
         """Palauttaa onnistuneessa luonnissa bookmarkin id:n tietokannassa, muutoin -1
         """
-        if not self.validate(bookmark):
-            return -1
+        bookmarkDict = {
+            "url": url, "title": url, "tags": []
+        }
+        if not self.validate(bookmarkDict):
+            raise Exception("Invalid bookmark " + str(bookmarkDict))
         
-        urlId = self.insert_url(bookmark["url"])
+        urlId = self.insert_url(bookmarkDict["url"])
 
-        addBookmarkQuery = f'insert into Bookmarks (title, urlid) values ("{bookmark["title"]}", {urlId});'
+        addBookmarkQuery = f'insert into Bookmarks (title, urlid) values ("{bookmarkDict["title"]}", {urlId});'
         self.db.execute(addBookmarkQuery)
         bookmarkID = self.db.execute('select max(id) from Bookmarks')[0][0]
         
         #1-n ongelma, tän voi todnäk toteuttaa yhdelläkin komennolla
-        for tag in bookmark["tags"]:
-            self.insert_tag(tag, bookmarkID)
+        #for tag in bookmark["tags"]:
+        #    self.insert_tag(tag, bookmarkID)
 
-        return bookmarkID
+        return Bookmark(id=bookmarkID, title=url, url=url)
 
     def _parse_bookmark_list(self, bookmarks):
         return list(map(lambda bookmark: {"id":bookmark[0], "title":bookmark[1]}, bookmarks))
 
-    def find_by_title(self, title):
+    def get_by_title(self, title) -> Bookmark:
         searchString = title.replace('*','%')
         query = f'select * from Bookmarks where title like "{searchString}"'
         result = self.db.execute(query)
@@ -98,21 +106,21 @@ class BookmarksService:
         else:
             return None
 
-        tagsQuery = f"select tagtype.title, tag.content from Tags tag \
-            left join Tagtypes tagtype on tag.tagtypeid = tagtype.id where tag.bookmarkid = {bookmark[0]}"
-        tags = self.db.execute(tagsQuery)
-        return self._result_to_bookmark(bookmark, tags)
+        #tagsQuery = f"select tagtype.title, tag.content from Tags tag \
+        #    left join Tagtypes tagtype on tag.tagtypeid = tagtype.id where tag.bookmarkid = {bookmark[0]}"
+        #tags = self.db.execute(tagsQuery)
+        return Bookmark(bookmark[0], bookmark[1], bookmark[2])
 
     def bookmarks_amount(self):
         query = "select count(id) from Bookmarks;"
         result = self.db.execute(query)
         return result[0][0]
 
-    def remove(self, bookmark_id):
+    def delete(self, bookmark_id) -> int:
         query = f"delete from Bookmarks where id = {bookmark_id}"
         self.db.execute(query)
         # Tarkasta orpoutuuko bookmarkin resurssit
-        return True
+        return bookmark_id
 
     def clear(self):
         self.db.execute("delete from Bookmarks;")

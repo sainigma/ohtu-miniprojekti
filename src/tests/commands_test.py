@@ -27,7 +27,7 @@ class TestCommands(unittest.TestCase):
     
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"
-        self.service.find_by_title.return_value = [{"title":"Test"}]
+        self.service.get_by_title.return_value = [{"id":1, "title":"Test"}]
         search = Search(self.io, self.service)
 
         search.execute()

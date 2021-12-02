@@ -21,15 +21,9 @@ class Add:
     
     def execute(self):
         url = self.io.read("Url: ")
-        self.add_bookmark(url)
-    
-    def add_bookmark(self, url):
-        if not get_url(url):
-            self.io.write("Error: URL not found")
-            return
-        bookmark = Bookmark(url)
-        self.service.insert(bookmark.as_dict())
-        self.io.write(f'Bookmark "{url}" created!')
+        print("creating " + url)
+        bookmark = self.service.create(url)
+        self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
 
 class Show:
     def __init__(self, io, service):
@@ -72,7 +66,7 @@ class Search:
     def search_by_title(self, title):
         self.io.write(
             "\n".join(
-                [bookmark["title"] for bookmark in self.service.find_by_title(title)]
+                [bookmark["title"] for bookmark in self.service.get_by_title(title)]
                 )
             )
 

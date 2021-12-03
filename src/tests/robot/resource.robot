@@ -35,4 +35,10 @@ Input Empty Command
     Read Command
     Execute Command
 
-
+Add Bookmark
+    [Arguments]  @{url}
+    Input  add
+    Read Command
+    Input  @{url}
+    Input  n
+    Execute Command

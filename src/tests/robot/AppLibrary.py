@@ -51,10 +51,3 @@ class AppLibrary:
 
     def reset(self):
         self._app.service.clear()
-    
-    def add_bookmark(self, title):
-        self.input("add")
-        self.read_command()
-        self.input(title)
-        self.input("n")
-        self.execute_command()

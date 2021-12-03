@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      TESTING: True
 
     steps:
       - uses: actions/checkout@v2
@@ -26,10 +24,10 @@ jobs:
         run: poetry install
 
       - name: Run tests
-        run: poetry run coverage run --branch -m pytest
+        run: export TESTING=True; poetry run coverage run --branch -m pytest
 
       - name: Run Robot tests
-        run: poetry run robot src/tests
+        run: export TESTING=True; poetry run robot src/tests
 
       - name: Coverage report
         run: poetry run coverage xml

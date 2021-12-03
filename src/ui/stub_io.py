@@ -5,19 +5,19 @@ class StubIO:
     """
 
     def __init__(self, input=None):
-        self.input = ""
+        self.input = []
         self.output = ""
-        self.prompt = ""
+        self.prompt = []
 
     def write(self, value) -> None:
         self.output = value
 
     def read(self, prompt) -> str:
-        self.prompt = prompt
-        if len(self.input) > 0:
-            return self.input
+        self.prompt.append(prompt)
+        if self.input:
+            return self.input.pop(0)
 
         return ""
 
     def set_input(self, value) -> None:
-        self.input = value
+        self.input.append(value)

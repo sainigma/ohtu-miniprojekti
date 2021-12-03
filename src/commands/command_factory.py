@@ -1,4 +1,4 @@
-from commands.commands import Help, Add, Show, Edit, Search, Unknown
+from commands.commands import Delete, Help, Add, Show, Edit, Search, Unknown
 
 
 class CommandFactory:
@@ -12,6 +12,7 @@ class CommandFactory:
             "show": Show(self.io, service),
             "edit": Edit(self.io, service),
             "search": Search(self.io, service),
+            "delete": Delete(self.io, service)
         }
     
     def get_command(self, command):

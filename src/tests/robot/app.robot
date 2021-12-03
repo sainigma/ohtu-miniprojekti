@@ -58,6 +58,9 @@ Test Empty Command
     Output Should Contain  'show' - show given amount of bookmarks,
     Output Should Contain  'edit' - edit a bookmark
 
+Test Delete Command
+    Input Delete Command
+    
 
 *** Keywords ***
 Start

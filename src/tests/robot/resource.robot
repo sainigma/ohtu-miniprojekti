@@ -35,4 +35,7 @@ Input Empty Command
     Read Command
     Execute Command
 
-
+Input Delete Command
+    Input  delete
+    Read Command
+    Execute Command

@@ -1,4 +1,4 @@
-
+from ui.app_state import app_state
 
 class Help:
     def __init__(self, io, service):
@@ -19,8 +19,22 @@ class Add:
     
     def execute(self):
         url = self.io.read("Url: ")
-        bookmark = self.service.create(url)
+        url_title = self.service.get_title_by_url(url)
+        title = self._set_title(url_title)
+        bookmark = self.service.create(url, title)
         self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
+    
+    def _set_title(self, url_title):
+        self.io.write(f'Title will be "{url_title}". Do you want to keep the title?')
+        new = self.io.read("y/n: ")
+        if new.strip() == "n":
+            return self._create_new_title()
+        if new.strip() == "y":
+            return url_title
+        raise Exception("Invalid command")
+    
+    def _create_new_title(self):
+        return self.io.read("Title: ")
 
 class Show:
     def __init__(self, io, service):
@@ -47,9 +61,31 @@ class Delete:
     def __init__(self, io, service):
         self.io = io
         self.service = service
+        self.app_state = app_state
     
     def execute(self):
-        self.io.write("Delete-command is not yet implemented")
+        if self.app_state.selected is None:
+            self.io.write("Please select a bookmark to delete it")
+        else:    
+            id = self.app_state.selected.id
+            self.service.delete(id)
+            self.io.write(f"Bookmark {id} deleted successfully")
+            self.app_state.selected = None
+
+class Select:
+    def __init__(self, io, service) -> None:
+        self.io = io
+        self.service = service
+        self.app_state = app_state
+    
+    def execute(self):
+        id = self.io.read("Id: ")
+        bookmark = self.service.get_one(id)
+        if bookmark is None:
+            self.io.write("Invalid id")
+            return
+        self.app_state.selected = bookmark
+        self.io.write(bookmark.short_str() + " selected")
 
 class Search:
     def __init__(self, io, service):
@@ -83,5 +119,7 @@ class Unknown:
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'search' - search bookmarks by a term,
-            'edit' - edit a bookmark
+            'select' - select a bookmark
+            'edit' - edit a selected bookmark
+            'delete' - delete a selected bookmark
         """)

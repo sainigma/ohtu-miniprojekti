@@ -35,4 +35,22 @@ Input Empty Command
     Read Command
     Execute Command
 
+Input Delete Command
+    Input  delete
+    Read Command
+    Execute Command
+    
+Add Bookmark
+    [Arguments]  @{url}
+    Input  add
+    Read Command
+    Input  @{url}
+    Input  y
+    Execute Command
 
+Select By Id
+    [Arguments]  @{id}
+    Input  select
+    Read Command
+    Input  @{id}
+    Execute Command

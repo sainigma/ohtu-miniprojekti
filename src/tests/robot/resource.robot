@@ -38,6 +38,8 @@ Input Empty Command
 Input Delete Command
     Input  delete
     Read Command
+    Execute Command
+    
 Add Bookmark
     [Arguments]  @{url}
     Input  add

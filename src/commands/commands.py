@@ -20,16 +20,18 @@ class Add:
     def execute(self):
         url = self.io.read("Url: ")
         url_title = self.service.get_title_by_url(url)
+        title = self._set_title(url_title)
+        bookmark = self.service.create(url, title)
+        self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
+    
+    def _set_title(self, url_title):
         self.io.write(f'Title will be "{url_title}". Do you want to keep the title?')
         new = self.io.read("y/n: ")
         if new.strip() == "n":
-            title = self._create_new_title()
-        elif new.strip() == "y":
-            title = url_title
-        else:
-            raise Exception("Invalid command")
-        bookmark = self.service.create(url, title)
-        self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
+            return self._create_new_title()
+        if new.strip() == "y":
+            return url_title
+        raise Exception("Invalid command")
     
     def _create_new_title(self):
         return self.io.read("Title: ")

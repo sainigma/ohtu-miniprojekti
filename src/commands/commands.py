@@ -62,7 +62,7 @@ class Delete:
         self.app_state = app_state
     
     def execute(self):
-        id = app_state.selected.id
+        id = self.app_state.selected.id
         self.service.delete(id)
         self.io.write(f"Bookmark {id} deleted successfully")
 

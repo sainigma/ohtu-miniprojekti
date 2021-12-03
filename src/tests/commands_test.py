@@ -7,8 +7,17 @@ class TestCommands(unittest.TestCase):
     def setUp(self):
         self.io = Mock()
         self.service = Mock()
-        self.add = Add(self.io, self.service)
         self.bookmark = Bookmark(1, "Test", "test.com")
+    
+    def test_print_correct_message_when_bookmark_is_added_successfully(self):
+        self.service.get_title_by_url.return_value = "test.com"
+        self.io.read.return_value = "y"
+        self.service.create.return_value = self.bookmark
+        add = Add(self.io, self.service)
+
+        add.execute()
+
+        self.io.write.assert_called_with('Bookmark "1 Test" created!')
 
     def test_print_correct_message_when_there_are_not_any_bookmarks_to_show(self):
         self.service.get_all.return_value = None
@@ -20,9 +29,9 @@ class TestCommands(unittest.TestCase):
     
     def test_print_titles_of_all_bookmarks(self):
         self.service.get_all.return_value = [self.bookmark]
-        self.show = Show(self.io, self.service)
+        show = Show(self.io, self.service)
         
-        self.show.execute()
+        show.execute()
 
         self.io.write.assert_called_with("1 Test")
     

@@ -72,6 +72,21 @@ class Delete:
             self.io.write(f"Bookmark {id} deleted successfully")
             self.app_state.selected = None
 
+class Select:
+    def __init__(self, io, service) -> None:
+        self.io = io
+        self.service = service
+        self.app_state = app_state
+    
+    def execute(self):
+        id = self.io.read("Id: ")
+        bookmark = self.service.get_one(id)
+        if bookmark is None:
+            self.io.write("Invalid id")
+            return
+        self.app_state.selected = bookmark
+        self.io.write(bookmark.short_str() + " selected")
+
 class Search:
     def __init__(self, io, service):
         self.io = io

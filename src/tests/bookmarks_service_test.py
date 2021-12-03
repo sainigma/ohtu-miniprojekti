@@ -24,14 +24,10 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         with open('./src/tests/dummy.json') as jsonFile:
             dummies = json.load(jsonFile)['db']
         for dummy in dummies:
-<<<<<<< HEAD
             self.bookmarks.create(dummy["url"])
 
     def test_initializes(self):
         self.assertEqual('./src/tests/dummy.db', self.bookmarks.repository.db.dbPath)
-=======
-            self.db.create(dummy["url"], dummy["title"])
->>>>>>> 1cad9c27c68ba873a3599338a32a0ef3bb3bc6f4
 
     def test_database_initializes(self):
         dbLength = self.bookmarks.bookmarks_amount()

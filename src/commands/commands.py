@@ -21,7 +21,7 @@ class Add:
         url = self.io.read("Url: ")
         url_title = self.service.get_title_by_url(url)
         if url_title is None:
-            self.io.write(f'Bookmark was not created')
+            self.io.write('Bookmark was not created')
             return
         
         title = self._set_title(url_title)

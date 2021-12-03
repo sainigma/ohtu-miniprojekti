@@ -6,11 +6,11 @@ class StubIO:
 
     def __init__(self, input=None):
         self.input = []
-        self.output = ""
+        self.output = []
         self.prompt = []
 
     def write(self, value) -> None:
-        self.output = value
+        self.output.append(value)
 
     def read(self, prompt) -> str:
         self.prompt.append(prompt)

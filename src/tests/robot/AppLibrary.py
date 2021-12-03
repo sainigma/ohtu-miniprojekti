@@ -22,24 +22,27 @@ class AppLibrary:
 
     def output_should_contain(self, value):
         output = self._io.output
+        is_in = False
+        for o in output:
+            print(value, o)
+            if value in o:
+                is_in = True
+        if not is_in:
+            raise AssertionError(
+                f"Output \"{value}\" is not in \"{str(output)}\""
+            )
 
-        if not value in output:
-            raise AssertionError(
-                f"Output \"{value}\" is not in {str(output)}"
-            )
-        
-    def output_should_be(self, value):
-        if not value == self._io.output:
-            raise AssertionError(
-                f"Output \"{value}\" is not equal to {str(self._io.output)}"
-            )
     
-    def prompt_should_be(self, value):
+    def prompt_should_contain(self, value):
         prompt = self._io.prompt
-
-        if not value == prompt:
+        is_in = False
+        for p in prompt:
+            print(value, p)
+            if value in p:
+                is_in = True
+        if not is_in:
             raise AssertionError(
-                f"Output \"{value}\" is not in {str(prompt)}"
+                f"Output \"{value}\" is not in \"{str(prompt)}\""
             )
 
     
@@ -53,4 +56,5 @@ class AppLibrary:
         self.input("add")
         self.read_command()
         self.input(title)
+        self.input("n")
         self.execute_command()

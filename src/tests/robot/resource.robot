@@ -47,3 +47,10 @@ Add Bookmark
     Input  @{url}
     Input  y
     Execute Command
+
+Select By Id
+    [Arguments]  @{id}
+    Input  select
+    Read Command
+    Input  @{id}
+    Execute Command

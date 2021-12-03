@@ -63,7 +63,12 @@ class Delete:
         self.service = service
     
     def execute(self):
-        self.io.write("Delete-command is not yet implemented")
+        id = self.io.read("Give id to delete")
+        if self.service.get_one(id) is None:
+            self.io.write("Invalid id")
+            return
+        self.service.delete(id)
+        self.io.write(f"Bookmark {id} deleted successfully")
 
 class Search:
     def __init__(self, io, service):
@@ -97,5 +102,7 @@ class Unknown:
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'search' - search bookmarks by a term,
-            'edit' - edit a bookmark
+            'select' - select a bookmark
+            'edit' - edit a selected bookmark
+            'delete' - delete a selected bookmark
         """)

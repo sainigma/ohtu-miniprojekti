@@ -48,7 +48,7 @@ Test Empty Command
     Output Should Contain  'add' - add a new bookmark,
     Output Should Contain  'show' - show given amount of bookmarks,
     Output Should Contain  'edit' - edit a bookmark
-
+    
 
 *** Keywords ***
 Start

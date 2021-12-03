@@ -19,8 +19,20 @@ class Add:
     
     def execute(self):
         url = self.io.read("Url: ")
-        bookmark = self.service.create(url)
+        url_title = self.service.get_title_by_url(url)
+        self.io.write(f'Title will be "{url_title}". Do you want to change the title?')
+        new = self.io.read("y/n: ")
+        if new.strip() == "y":
+            title = self._create_new_title()
+        elif new.strip() == "n":
+            title = url_title
+        else:
+            raise Exception("Invalid command")
+        bookmark = self.service.create(url, title)
         self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
+    
+    def _create_new_title(self):
+        return self.io.read("Title: ")
 
 class Show:
     def __init__(self, io, service):

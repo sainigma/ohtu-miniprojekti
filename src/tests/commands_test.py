@@ -50,18 +50,19 @@ class TestCommands(unittest.TestCase):
             'edit' - edit a bookmark
         """)
     
-    def test_print_correct_message_when_deleting_invalid_id(self):
-        self.io.read.return_value = 2
-        delete = Delete(self.io, self.service)
+    # def test_print_correct_message_when_deleting_invalid_id(self):
+    #     self.io.read.return_value = 2
+    #     delete = Delete(self.io, self.service)
 
-        delete.execute()
+    #     delete.execute()
 
-        self.io.write_assert_called_with("Invalid id")
+    #     self.io.write_assert_called_with("Invalid id")
     
-    def test_deleting_valid_id_removes_entry_from_db(self):
-        self.io.read.return_value = 1
-        delete = Delete(self.io, self.service)
+    # def test_deleting_valid_id_removes_entry_from_db(self):
+    #     self.io.read.return_value = 1
+    #     delete = Delete(self.io, self.service)
 
-        delete.execute()
+    #     delete.execute()
 
-        self.io.write_assert_called_with(f"Bookmark {self.bookmark.id} deleted successfully")
+    #     self.io.write_assert_called_with(f"Bookmark {self.bookmark.id} deleted successfully")
+    

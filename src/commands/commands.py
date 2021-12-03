@@ -100,5 +100,7 @@ class Unknown:
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'search' - search bookmarks by a term,
-            'edit' - edit a bookmark
+            'select' - select a bookmark
+            'edit' - edit a selected bookmark
+            'delete' - delete a selected bookmark
         """)

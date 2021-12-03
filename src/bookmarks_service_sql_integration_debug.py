@@ -17,7 +17,7 @@ mockEntry = {
         },
     ]
 }
-
+'''
 print(bookmarks.create(mockEntry["url"]))
 print(bookmarks.create(mockEntry["url"]))
 print(bookmarks.get_all())
@@ -27,3 +27,4 @@ print(b['title'])
 
 f = bookmarks.get_by_title("Mock*")
 print(f)
+'''

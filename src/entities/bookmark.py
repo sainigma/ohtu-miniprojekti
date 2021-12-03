@@ -43,7 +43,8 @@ class Bookmark:
             tagStr += f"{tag['content']}  "
         return (f"title: {self.title}\n"
                 f"url: {self.url}\n"
-                f"tags:  {tagStr}")
+                f"tags:  {tagStr}\n"
+                f"id: {self.id}")
     
     def short_str(self):
         return f"{self.id} {self.title}"

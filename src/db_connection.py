@@ -21,15 +21,18 @@ class DBConnection:
             cursor.executescript(query)
             conn.commit()
 
-    def execute(self, query):
+    def execute(self, query, params=None):
         with sqlite3.connect(self.dbPath) as conn:
             cursor = conn.cursor()
-            cursor.execute(query)
+            if params is None:
+                cursor.execute(query)
+            else:
+                cursor.execute(query, params)
             rows = cursor.fetchall()
             conn.commit()
             return rows
 
-if os.getenv("USE_DUMMY_DB") == "True":
+if os.getenv("TESTING") == "True":
     database_connection = DBConnection('./src/tests/dummy.db', True)
 else:
     database_connection = DBConnection()

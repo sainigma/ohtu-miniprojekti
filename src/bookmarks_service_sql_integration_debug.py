@@ -17,5 +17,14 @@ mockEntry = {
         },
     ]
 }
+'''
+print(bookmarks.create(mockEntry["url"]))
+print(bookmarks.create(mockEntry["url"]))
+print(bookmarks.get_all())
+print("pituus:", len(bookmarks.get_all()))
+b = bookmarks.get_one(id=1)
+print(b['title'])
 
-bookmarks.delete(93020491)
+f = bookmarks.get_by_title("Mock*")
+print(f)
+'''

@@ -72,6 +72,7 @@ class Select:
     def __init__(self, io, service) -> None:
         self.io = io
         self.service = service
+        self.app_state = app_state
     
     def execute(self):
         id = self.io.read("Id: ")
@@ -79,7 +80,7 @@ class Select:
         if bookmark is None:
             self.io.write("Invalid id")
             return
-        self.app_state = bookmark
+        self.app_state.selected = bookmark
         self.io.write(bookmark.short_str() + " selected")
 
 class Search:

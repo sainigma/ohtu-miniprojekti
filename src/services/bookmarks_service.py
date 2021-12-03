@@ -28,11 +28,7 @@ class BookmarksService:
         self.db.execute(query)
         return self.db.execute('select max(id) from Urls')[0][0]
 
-    def create(self, url) -> Bookmark:
-        res = get_url(url)
-        if not res:
-            raise Exception("Invalid url " + url)
-        title = res["title"]
+    def create(self, url, title) -> Bookmark:
         bookmarkDict = {
             "url": url, "title": title, "tags": []
         }
@@ -44,6 +40,12 @@ class BookmarksService:
         bookmarkID = self.db.execute('select max(id) from Bookmarks')[0][0]
 
         return Bookmark(id=bookmarkID, title=title, url=url)
+    
+    def get_title_by_url(self, url):
+        res = get_url(url)
+        if not res:
+            raise Exception("Invalid url " + url)
+        return res["title"]
 
     def _tuple_to_bookmark(self, b) -> Bookmark:
         return Bookmark(id=b[0], title=b[1], url=b[2])

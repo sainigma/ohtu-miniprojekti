@@ -14,23 +14,14 @@ Test Help
     Output Should Contain  To delete a bookmark, first select 'edit' and then 'delete'
     Output Should Contain  (Not implemented yet)
 
-Test Add Command
-    Input  add
-    Read Command
-    Input  http://www.princess-mononoke.com
-    Execute Command
-    Prompt Should Be  Url:${SPACE}
-    Output Should Be  Bookmark "1 Welcome to Princess Mononoke" created!
-
-
 Test Show Empty Command
     Input Show Command
-    Output Should Be  No bookmarks
+    Output Should Contain  No bookmarks
 
 Test Show Command
     Add Bookmark  http://www.princess-mononoke.com
     Input Show Command
-    Output Should Be  1 Welcome to Princess Mononoke
+    Output Should Contain  1 Welcome to Princess Mononoke
 
 Test Find Command
     Add Bookmark  http://www.princess-mononoke.com
@@ -38,8 +29,8 @@ Test Find Command
     Read Command
     Input  *elcome*
     Execute Command
-    Prompt Should Be  Term:${SPACE}
-    Output Should Be  1 Welcome to Princess Mononoke
+    Prompt Should Contain  Term:${SPACE}
+    Output Should Contain  1 Welcome to Princess Mononoke
 
 Test Not Found With Title
     Add Bookmark  http://www.princess-mononoke.com
@@ -47,7 +38,7 @@ Test Not Found With Title
     Read Command
     Input  spirited-away
     Execute Command
-    Output Should Be  Could not find any bookmarks with that title
+    Output Should Contain  Could not find any bookmarks with that title
 
 Test Empty Command
     Input Empty Command

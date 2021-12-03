@@ -38,4 +38,10 @@ Input Empty Command
 Input Delete Command
     Input  delete
     Read Command
+Add Bookmark
+    [Arguments]  @{url}
+    Input  add
+    Read Command
+    Input  @{url}
+    Input  y
     Execute Command

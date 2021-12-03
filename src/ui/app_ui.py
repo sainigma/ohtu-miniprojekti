@@ -9,6 +9,8 @@ class AppUi:
         self.service = service
         self.command_factory = CommandFactory(self.io, self.service)
         self.command = None
+        self.results = []
+        self.selected = None
 
     def read_input(self):
         return self.io.read("Give command: ")

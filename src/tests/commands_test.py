@@ -46,6 +46,7 @@ class TestCommands(unittest.TestCase):
             'h' - help,
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
+            'search' - search bookmarks by a term,
             'edit' - edit a bookmark
         """)
     

@@ -26,7 +26,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         with open('./src/tests/dummy.json') as jsonFile:
             dummies = json.load(jsonFile)['db']
         for dummy in dummies:
-            self.db.create(dummy["url"])
+            self.db.create(dummy["url"], dummy["title"])
 
     def test_database_initializes(self):
         dbLength = len(self.db.get_all())
@@ -34,7 +34,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
 
     def test_entries_can_be_added(self):
         dbLength0 = len(self.db.get_all())
-        id0 = self.db.create(self.mockEntry["url"]).id
+        id0 = self.db.create(self.mockEntry["url"], self.mockEntry["title"]).id
         dbLength1 = len(self.db.get_all())
         self.assertGreater(dbLength1, dbLength0)
         

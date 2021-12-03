@@ -16,7 +16,7 @@ class AppUi:
         return self.io.read("Give command: ")
 
     def parse_command(self, input):
-        input = input.strip()
+        input = input.strip().lower()
         self.command = self.command_factory.get_command(input)
     
     def execute_command(self):

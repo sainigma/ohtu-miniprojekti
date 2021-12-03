@@ -40,5 +40,5 @@ Add Bookmark
     Input  add
     Read Command
     Input  @{url}
-    Input  n
+    Input  y
     Execute Command

@@ -59,12 +59,10 @@ class Delete:
     def __init__(self, io, service):
         self.io = io
         self.service = service
+        self.app_state = app_state
     
     def execute(self):
-        id = self.io.read("Give id to delete")
-        if self.service.get_one(id) is None:
-            self.io.write("Invalid id")
-            return
+        id = app_state.selected.id
         self.service.delete(id)
         self.io.write(f"Bookmark {id} deleted successfully")
 

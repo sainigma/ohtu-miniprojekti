@@ -20,11 +20,11 @@ class Add:
     def execute(self):
         url = self.io.read("Url: ")
         url_title = self.service.get_title_by_url(url)
-        self.io.write(f'Title will be "{url_title}". Do you want to change the title?')
+        self.io.write(f'Title will be "{url_title}". Do you want to keep the title?')
         new = self.io.read("y/n: ")
-        if new.strip() == "y":
+        if new.strip() == "n":
             title = self._create_new_title()
-        elif new.strip() == "n":
+        elif new.strip() == "y":
             title = url_title
         else:
             raise Exception("Invalid command")

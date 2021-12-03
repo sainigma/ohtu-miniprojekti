@@ -56,5 +56,5 @@ class AppLibrary:
         self.input("add")
         self.read_command()
         self.input(title)
-        self.input("n")
+        self.input("y")
         self.execute_command()

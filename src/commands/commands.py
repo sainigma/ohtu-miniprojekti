@@ -1,4 +1,4 @@
-
+from ui.app_state import app_state
 
 class Help:
     def __init__(self, io, service):

@@ -24,7 +24,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         with open('./src/tests/dummy.json') as jsonFile:
             dummies = json.load(jsonFile)['db']
         for dummy in dummies:
-            self.bookmarks.create(dummy["url"])
+            self.bookmarks.create(dummy["url"], dummy["title"])
 
     def test_initializes(self):
         self.assertEqual('./src/tests/dummy.db', self.bookmarks.repository.db.dbPath)
@@ -36,7 +36,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
 
     def test_entries_can_be_added(self):
         dbLength0 = len(self.bookmarks.get_all())
-        id0 = self.bookmarks.create(self.mockEntry["url"]).id
+        id0 = self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"]).id
         dbLength1 = len(self.bookmarks.get_all())
         self.assertGreater(dbLength1, dbLength0)
         
@@ -47,7 +47,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         self.assertEqual(bookmark.url, url)
     
     def test_entry_validation_works(self):
-        self.assertIsNone(self.bookmarks.create("tämä urli ei toimi"))
+        self.assertIsNone(self.bookmarks.create("tämä urli ei toimi", "turha title"))
 
     def test_fetch_nonexisting_bookmark(self):
         bookmark = self.bookmarks.get_one(id=3247987324)

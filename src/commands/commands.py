@@ -20,6 +20,10 @@ class Add:
     def execute(self):
         url = self.io.read("Url: ")
         url_title = self.service.get_title_by_url(url)
+        if url_title is None:
+            self.io.write(f'Bookmark was not created')
+            return
+        
         title = self._set_title(url_title)
         bookmark = self.service.create(url, title)
         self.io.write(f'Bookmark "{bookmark.short_str()}" created!')

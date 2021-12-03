@@ -14,14 +14,13 @@ class BookmarksRepository:
     def _get_last_insertation(self):
         return self.db.execute('select max(id) from Bookmarks;')[0][0]
 
-    def create_bookmark(self, url) -> Bookmark:
+    def create_bookmark(self, url, title) -> Bookmark:
         url_info = self.url_repository.create_url(url)
         if not url_info:
             return None
 
         url_id = url_info['id']
-        site_info = url_info['info']
-        title = site_info['title']
+        #site_info = url_info['info']
         #meta_tags = site_info['meta']
 
         bookmark_create_query = f'insert into Bookmarks (title, urlid) values ("{title}", {url_id});'

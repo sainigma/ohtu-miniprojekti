@@ -53,6 +53,7 @@ class TestCommands(unittest.TestCase):
             Acceptable commands:
             'q' - quit,
             'h' - help,
+            'b' - back,
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'search' - search bookmarks by a term,

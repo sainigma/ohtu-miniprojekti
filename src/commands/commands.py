@@ -18,6 +18,10 @@ class Add:
     
     def execute(self):
         url = self.io.read("Url: ")
+
+        if url == 'b':
+            return
+
         url_title = self.service.get_title_by_url(url)
         if url_title is None:
             self.io.write('Bookmark was not created')
@@ -82,7 +86,18 @@ class Select:
         self.app_state = app_state
     
     def execute(self):
+
+        self.io.write("""
+            To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
+            To edit a bookmark: type in ID of the bookmark, press enter and then type 'edit'
+            To go back: type in 'b'
+        """)
+
+        Show.execute(self)
+
         id = self.io.read("Id: ")
+        if id == 'b':
+            return
         bookmark = self.service.get_one(id)
         if bookmark is None:
             self.io.write("Invalid id")
@@ -97,6 +112,8 @@ class Search:
     
     def execute(self):
         term = self.io.read("Term: ")
+        if term == 'b':
+            return
         self.search_by_title(term)
     
     def search_by_title(self, title):
@@ -119,6 +136,7 @@ class Unknown:
             Acceptable commands:
             'q' - quit,
             'h' - help,
+            'b' - back,
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'search' - search bookmarks by a term,

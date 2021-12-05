@@ -11,8 +11,7 @@ Test Welcome
 
 Test Help
     Input Help Command
-    Output Should Contain  To delete a bookmark, first select 'edit' and then 'delete'
-    Output Should Contain  (Not implemented yet)
+    Output Should Contain  To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
 
 Test Show Empty Command
     Input Show Command

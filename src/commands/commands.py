@@ -8,8 +8,7 @@ class Help:
     def execute(self):
         Unknown.execute(self)
         self.io.write("""
-            To delete a bookmark, first select 'edit' and then 'delete'
-            (Not implemented yet)
+            To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
         """)
 
 class Add:

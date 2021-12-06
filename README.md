@@ -39,4 +39,4 @@ Acceptance criteria met.
 
 ### Robot tests
 
-- [app.robot](https://github.com/sainigma/ohtu-miniprojekti/blob/main/src/tests/robot/app.robot)
+- [All robot tests](https://github.com/sainigma/ohtu-miniprojekti/tree/main/src/tests/robot)

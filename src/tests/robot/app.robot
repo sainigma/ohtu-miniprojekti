@@ -13,15 +13,6 @@ Test Help
     Input Help Command
     Output Should Contain  To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
 
-Test Show Empty Command
-    Input Show Command
-    Output Should Contain  No bookmarks
-
-Test Show Command
-    Add Bookmark  http://www.princess-mononoke.com
-    Input Show Command
-    Output Should Contain  1 Welcome to Princess Mononoke
-
 Test Find Command
     Add Bookmark  http://www.princess-mononoke.com
     Input  search

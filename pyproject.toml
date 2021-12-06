@@ -3,6 +3,7 @@ name = "ohtu-miniprojekti"
 version = "0.1.0"
 description = ""
 authors = ["Ryhmä2"]
+packages = [{ include = "src" },]
 
 [tool.poetry.dependencies]
 python = "^3.8"

@@ -11,3 +11,4 @@ report.html
 log.html
 *.code-workspace
 src/debug.py
+dist/

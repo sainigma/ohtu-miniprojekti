@@ -4,7 +4,7 @@ class StubIO:
     https://github.com/ohjelmistotuotanto-hy/syksy2021-python/blob/master/koodi/viikko3/login-robot/src/stub_io.py
     """
 
-    def __init__(self, input=None):
+    def __init__(self):
         self.input = []
         self.output = []
         self.prompt = []

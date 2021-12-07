@@ -35,6 +35,8 @@ Our CI-pipeline passes.
 
 \>70% Code coverage for unit-tests.
 
+Pylint as a static analysis.
+
 Acceptance criteria met.
 
 ### Robot tests

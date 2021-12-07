@@ -49,12 +49,20 @@ class Show:
         self.service = service
     
     def execute(self, argv=[]):
-        bookmarks = self.service.get_all()
+        if len(argv) < 1:
+            bookmarks = self.service.get_all()
+        elif len(argv) == 1:
+            bookmarks = self.service.get_all(0,int(argv[0]))
+        else:
+            bookmarks = self.service.get_all(int(argv[0]), int(argv[1]))
+        
         if not bookmarks:
             self.io.write("No bookmarks")
             return
         for bookmark in bookmarks:
             self.io.write(bookmark.short_str())
+        if len(bookmarks) < self.service.bookmarks_amount():
+            print("showing results 0 to x, n for more")
 
 class Edit:
     def __init__(self, io, service):
@@ -76,9 +84,11 @@ class Delete:
         else:
             deletations = argv if self.app_state.selected is None else [self.app_state.selected]
             for id in deletations:
-                self.service.delete(id)
-                self.io.write(f"Bookmark {id} deleted successfully")
-                self.app_state.selected = None
+                if self.service.delete(id):
+                    self.io.write(f"Bookmark {id} deleted successfully")
+                else:
+                    self.io.write(f"Bookmark {id} didn't exist!")
+        self.app_state.selected = None
             
 
 class Select:

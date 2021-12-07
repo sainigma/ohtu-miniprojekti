@@ -1,6 +1,8 @@
+from services.url_validator import parse_results
 from ui.app_state import app_state
 import json
 from datetime import datetime
+import os
 
 class InvalidInputException(Exception):
     pass
@@ -109,16 +111,35 @@ class Select(Command):
 
 class Search(Command):
     def _run_command(self, argv):
-        term = self._read_new_arg("Term: ")
-        self.search_by_title(term)
-    
+        if argv and argv[0] == 'url':
+            if len(argv) == 1:
+                term = self._read_new_arg("Url:")
+            else:
+                term = argv[1]
+            search_method = self.search_by_url
+        else:
+            if argv:
+                term = argv[0]
+            else:
+                term = self._read_new_arg("Term: ")
+            search_method = self.search_by_title
+
+        search_method(term)
+
+    def search_by_url(self, url):
+        bookmarks = self.service.get_by_url(url)
+        self.parse_results(bookmarks, "Could not find any bookmarks with that url")
+
     def search_by_title(self, title):
         bookmarks = self.service.get_by_title(title)
+        self.parse_results(bookmarks, "Could not find any bookmarks with that title")
+
+    def parse_results(self, bookmarks, msg):
         if not bookmarks:
             raise InvalidInputException("Could not find any bookmarks with that title")
         self.io.write(
             "\n".join(
-                [bookmark.short_str() for bookmark in self.service.get_by_title(title)]
+                [bookmark.short_str() for bookmark in bookmarks]
                 )
             )
 
@@ -127,7 +148,7 @@ class Export(Command):
         bookmarks = self.service.get_all()
         if bookmarks:
             data = self.convert_to_json(bookmarks)
-            self.write_to_file(data)
+            self.write_to_file(data, argv)
 
     def convert_to_json(self, bookmarks):
         data = {}
@@ -139,10 +160,23 @@ class Export(Command):
             })
         return data
     
-    def write_to_file(self, data):
-        with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
-            json.dump(data, outfile, sort_keys=True, indent=4)
-            self.io.write("Exported successfully!")
+    def write_to_file(self, data, argv):
+        if len(argv) == 1:
+            path = self.check_path(str(argv[0]))
+            with open(path, "w") as outfile:
+                json.dump(data, outfile, sort_keys=True, indent=4)
+                self.io.write("Exported successfully!")
+        else:
+            with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
+                json.dump(data, outfile, sort_keys=True, indent=4)
+                self.io.write("Exported successfully!")
+    
+    def check_path(self, path):
+        if path.find("export/") != 0:
+            path = "export/" + path
+        if os.path.splitext(path)[1] != ".json":
+            path += ".json"
+        return path
     
 class Unknown(Command):
     def _run_command(self, argv):

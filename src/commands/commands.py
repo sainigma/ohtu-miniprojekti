@@ -1,4 +1,6 @@
 from ui.app_state import app_state
+import json
+from datetime import datetime
 
 class Command:
     def __init__(self, io, service=None):
@@ -113,6 +115,28 @@ class Search(Command):
                 )
             )
 
+class Export(Command):
+    def execute(self, argv=[]):
+        bookmarks = self.service.get_all()
+        if bookmarks:
+            data = self.convert_to_json(bookmarks)
+            self.write_to_file(data)
+
+    def convert_to_json(self, bookmarks):
+        data = {}
+        data["bookmarks"] = []
+        for bookmark in bookmarks:
+            data["bookmarks"].append({
+                "title": bookmark.title,
+                "url": bookmark.url
+            })
+        return data
+    
+    def write_to_file(self, data):
+        with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
+            json.dump(data, outfile, sort_keys=True, indent=4)
+            self.io.write("Exported successfully!")
+    
 class Unknown(Command):
     def execute(self, argv):
         self.io.write("""

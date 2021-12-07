@@ -2,6 +2,21 @@ import re
 from html.parser import HTMLParser
 import requests
 
+class UrlCache():
+    def __init__(self):
+        self.cache = {}
+
+    def append(self, url, response):
+        self.cache[url] = response
+
+    def has(self, url):
+        if url in self.cache:
+            return True
+        return False
+
+    def get(self, url):
+        return self.cache[url]
+
 class TitleMetaGrabber(HTMLParser):
 
     def __init__(self):
@@ -65,12 +80,21 @@ def parse_results(response : requests.Response):
     return None
 
 def get_url(url):
+    if url_cache.has(url):
+        return url_cache.get(url)
     if not validate_url(url):
+        url_cache.append(url, None)
         return None
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            return parse_results(response)
+            result = parse_results(response)
+            url_cache.append(url, result)
+            return result
+        url_cache.append(url, None)
         return None
     except requests.ConnectionError:
+        url_cache.append(url, None)
         return None
+
+url_cache = UrlCache()

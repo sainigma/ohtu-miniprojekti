@@ -20,7 +20,7 @@ class TestCommands(unittest.TestCase):
         self.io.write.assert_called_with('Bookmark "1 Test" created!')
 
     def test_print_correct_message_when_there_are_not_any_bookmarks_to_show(self):
-        self.service.get_all.return_value = None
+        self.service.get_all.return_value = []
         show = Show(self.io, self.service)
 
         show.execute()

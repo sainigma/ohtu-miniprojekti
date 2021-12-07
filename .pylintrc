@@ -99,7 +99,8 @@ disable=print-statement,
         unspecified-encoding,
 	unused-argument,
         invalid-name,
-        missing-final-newline
+        missing-final-newline,
+        protected-access
 
 [FORMAT]
 

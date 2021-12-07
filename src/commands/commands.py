@@ -83,7 +83,6 @@ class Delete(Command):
     def _run_command(self, argv):
         if app_state.selected is None and not argv:
             raise InvalidInputException("Please select a bookmark to delete it")
-        
         deletations = argv if app_state.selected is None else [app_state.selected.id]
         for id in deletations:
             if self.service.delete(id):

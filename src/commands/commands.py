@@ -135,6 +135,7 @@ class Export(Command):
     def write_to_file(self, data):
         with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
             json.dump(data, outfile, sort_keys=True, indent=4)
+            self.io.write("Exported successfully!")
     
 class Unknown(Command):
     def execute(self, argv=[]):

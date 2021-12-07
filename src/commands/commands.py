@@ -1,8 +1,8 @@
-from services.url_validator import parse_results
-from ui.app_state import app_state
 import json
 from datetime import datetime
 import os
+from services.url_validator import parse_results
+from ui.app_state import app_state
 
 class InvalidInputException(Exception):
     pass
@@ -71,13 +71,13 @@ class Delete(Command):
     def execute(self, argv):
         if app_state.selected is None and not argv:
             raise InvalidInputException("Please select a bookmark to delete it")
-        else:
-            deletations = argv if app_state.selected is None else [app_state.selected.id]
-            for id in deletations:
-                if self.service.delete(id):
-                    self.io.write(f"Bookmark {id} deleted successfully")
-                else:
-                    raise InvalidInputException(f"Bookmark {id} didn't exist!")
+
+        deletations = argv if app_state.selected is None else [app_state.selected.id]
+        for id in deletations:
+            if self.service.delete(id):
+                self.io.write(f"Bookmark {id} deleted successfully")
+            else:
+                raise InvalidInputException(f"Bookmark {id} didn't exist!")
         app_state.selected = None
             
 
@@ -136,7 +136,7 @@ class Search(Command):
             )
 
 class Export(Command):
-    def execute(self, argv=[]):
+    def execute(self, argv):
         if len(argv) > 1:
             return
         bookmarks = self.service.get_all()

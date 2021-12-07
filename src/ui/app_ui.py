@@ -1,4 +1,4 @@
-from commands.commands import InvalidInputException
+from commands.commands import CommandStoppedException, InvalidInputException
 from ui.console_io import console_io as default_console_io
 from services.bookmarks_service import bookmarks_service as default_bookmarks_service
 from commands.command_factory import CommandFactory
@@ -28,6 +28,8 @@ class AppUi:
             self.command.execute(self.argv)
         except InvalidInputException as error:
             self.io.write(str(error))
+        except CommandStoppedException:
+            return
 
     def welcome(self):
         self.io.write("\nWelcome to Bookmarker!\nType 'h' for help\n")

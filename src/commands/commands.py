@@ -1,21 +1,18 @@
 from ui.app_state import app_state
 
-class Help:
-    def __init__(self, io, service):
+class Command:
+    def __init__(self, io, service=None):
         self.io = io
         self.service = service
     
+class Help(Command):
     def execute(self, argv=[]):
         Unknown.execute(self)
         self.io.write("""
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
         """)
 
-class Add:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Add(Command):    
     def execute(self, argv=[]):
         url = self.io.read("Url: ")
 
@@ -43,11 +40,7 @@ class Add:
     def _create_new_title(self):
         return self.io.read("Title: ")
 
-class Show:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Show(Command):
     def execute(self, argv=[]):
         if len(argv) < 1:
             bookmarks = self.service.get_all()
@@ -64,41 +57,26 @@ class Show:
         if len(bookmarks) < self.service.bookmarks_amount():
             print("showing results 0 to x, n for more")
 
-class Edit:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Edit(Command):
     def execute(self, argv=[]):
         self.io.write("Edit-command is not yet implemented")
 
-class Delete:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-        self.app_state = app_state
-    
+class Delete(Command):
     def execute(self, argv=[]):
-        if self.app_state.selected is None and len(argv) < 1:
+        if app_state.selected is None and len(argv) < 1:
             self.io.write("Please select a bookmark to delete it")
         else:
-            deletations = argv if self.app_state.selected is None else [self.app_state.selected]
+            deletations = argv if app_state.selected is None else [app_state.selected]
             for id in deletations:
                 if self.service.delete(id):
                     self.io.write(f"Bookmark {id} deleted successfully")
                 else:
                     self.io.write(f"Bookmark {id} didn't exist!")
-        self.app_state.selected = None
+        app_state.selected = None
             
 
-class Select:
-    def __init__(self, io, service) -> None:
-        self.io = io
-        self.service = service
-        self.app_state = app_state
-    
+class Select(Command):
     def execute(self, argv=[]):
-
         self.io.write("""
             To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
             To edit a bookmark: type in ID of the bookmark, press enter and then type 'edit'
@@ -114,14 +92,10 @@ class Select:
         if bookmark is None:
             self.io.write("Invalid id")
             return
-        self.app_state.selected = bookmark
+        app_state.selected = bookmark
         self.io.write(bookmark.short_str() + " selected")
 
-class Search:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Search(Command):
     def execute(self, argv=[]):
         term = self.io.read("Term: ")
         if term == 'b':
@@ -139,10 +113,7 @@ class Search:
                 )
             )
 
-class Unknown:
-    def __init__(self, io):
-        self.io = io
-    
+class Unknown(Command):
     def execute(self, argv=[]):
         self.io.write("""
             Acceptable commands:

@@ -9,6 +9,7 @@ class AppUi:
         self.service = service
         self.command_factory = CommandFactory(self.io, self.service)
         self.command = None
+        self.argv = []
         self.results = []
         self.selected = None
 
@@ -17,10 +18,12 @@ class AppUi:
 
     def parse_command(self, input):
         input = input.strip().lower()
-        self.command = self.command_factory.get_command(input)
+        arguments = input.split(' ')
+        self.argv = arguments[1:]
+        self.command = self.command_factory.get_command(arguments[0])
     
     def execute_command(self):
-        self.command.execute()
+        self.command.execute(self.argv)
 
     def welcome(self):
         self.io.write("\nWelcome to Bookmarker!\nType 'h' for help\n")

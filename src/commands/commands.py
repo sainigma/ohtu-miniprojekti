@@ -5,7 +5,7 @@ class Help:
         self.io = io
         self.service = service
     
-    def execute(self):
+    def execute(self, argv=[]):
         Unknown.execute(self)
         self.io.write("""
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
@@ -16,7 +16,7 @@ class Add:
         self.io = io
         self.service = service
     
-    def execute(self):
+    def execute(self, argv=[]):
         url = self.io.read("Url: ")
 
         if url == 'b':
@@ -48,7 +48,7 @@ class Show:
         self.io = io
         self.service = service
     
-    def execute(self):
+    def execute(self, argv=[]):
         bookmarks = self.service.get_all()
         if not bookmarks:
             self.io.write("No bookmarks")
@@ -61,7 +61,7 @@ class Edit:
         self.io = io
         self.service = service
     
-    def execute(self):
+    def execute(self, argv=[]):
         self.io.write("Edit-command is not yet implemented")
 
 class Delete:
@@ -70,14 +70,16 @@ class Delete:
         self.service = service
         self.app_state = app_state
     
-    def execute(self):
-        if self.app_state.selected is None:
+    def execute(self, argv=[]):
+        if self.app_state.selected is None and len(argv) < 1:
             self.io.write("Please select a bookmark to delete it")
-        else:    
-            id = self.app_state.selected.id
-            self.service.delete(id)
-            self.io.write(f"Bookmark {id} deleted successfully")
-            self.app_state.selected = None
+        else:
+            deletations = argv if self.app_state.selected is None else [self.app_state.selected]
+            for id in deletations:
+                self.service.delete(id)
+                self.io.write(f"Bookmark {id} deleted successfully")
+                self.app_state.selected = None
+            
 
 class Select:
     def __init__(self, io, service) -> None:
@@ -85,7 +87,7 @@ class Select:
         self.service = service
         self.app_state = app_state
     
-    def execute(self):
+    def execute(self, argv=[]):
 
         self.io.write("""
             To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
@@ -110,7 +112,7 @@ class Search:
         self.io = io
         self.service = service
     
-    def execute(self):
+    def execute(self, argv=[]):
         term = self.io.read("Term: ")
         if term == 'b':
             return
@@ -131,7 +133,7 @@ class Unknown:
     def __init__(self, io):
         self.io = io
     
-    def execute(self):
+    def execute(self, argv=[]):
         self.io.write("""
             Acceptable commands:
             'q' - quit,

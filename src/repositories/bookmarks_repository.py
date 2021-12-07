@@ -36,13 +36,14 @@ class BookmarksRepository:
         return result[0][0]
         
     def get_bookmark_range(self, offset=0, row_count=50) -> List[Bookmark]:
-        query = f"select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid limit {offset}, {row_count};"
+        query = f"""select b.id, b.title, u.url from Bookmarks b 
+                    left join Urls u on u.id = b.urlid limit {offset}, {row_count};"""
         bookmarks = self.db.execute(query)
         return parse_bookmark_list(bookmarks)
 
     def get_bookmark_complete(self, id):
-        bookmark_query = f"select b.id, b.title, u.url from Bookmarks b \
-            left join Urls u on u.id = b.urlid where b.id = {id};"
+        bookmark_query = f"""select b.id, b.title, u.url from Bookmarks b
+                            left join Urls u on u.id = b.urlid where b.id = {id};"""
         result = self.db.execute(bookmark_query)
         if len(result) == 0:
             return None
@@ -59,7 +60,8 @@ class BookmarksRepository:
 
     def find_bookmarks_by_url(self, search_string : str) -> List[Bookmark]:
         search_string = search_string.replace('*','%')
-        query = f'select b.id, b.title, u.url from Urls u left join Bookmarks b on u.id = b.urlid where u.url like "{search_string}";'
+        query = f"""select b.id, b.title, u.url from Urls u 
+                    left join Bookmarks b on u.id = b.urlid where u.url like "{search_string}";"""
         result = self.db.execute(query)
         return parse_bookmark_list(result)
 

@@ -1,19 +1,19 @@
 import os
-import sys
-import curses
+#import sys
+#import curses
 import npyscreen
 
 class ScreenIO(npyscreen.NPSApp):
     def main(self):
-      pass
+        pass
 
     def write(self, value) -> None:
-      print(value)
+        print(value)
 
     def read(self, prompt) -> str:
-      return input(prompt)
+        return input(prompt)
 
 if os.getenv("EXPERIMENTAL") == "True":
-  screen_io = ScreenIO()
+    screen_io = ScreenIO()
 else:
-  screen_io = None
+    screen_io = None

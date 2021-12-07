@@ -100,7 +100,8 @@ disable=print-statement,
 	unused-argument,
         invalid-name,
         missing-final-newline,
-        protected-access
+        protected-access,
+        duplicate-code
 
 [FORMAT]
 

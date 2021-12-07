@@ -13,7 +13,7 @@ Test Select
     Input  1
     Execute Command
     Prompt Should Contain  Id:${SPACE}
-    Output Should Contain  Welcome to Princess Mononoke selected
+    Output Should Contain  1: Welcome to Princess Mononoke
 
 Test Select Incorrect Id
     Add Bookmark  http://www.princess-mononoke.com

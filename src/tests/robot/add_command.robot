@@ -13,7 +13,7 @@ Test Add Command
     Input  y
     Execute Command
     Prompt Should Contain  Url:${SPACE}
-    Output Should Contain  Bookmark "1 Welcome to Princess Mononoke" created!
+    Output Should Contain  Bookmark "1: Welcome to Princess Mononoke
 
 Test Add With Usergiven Title
     Input  add
@@ -22,10 +22,10 @@ Test Add With Usergiven Title
     Input  n
     Input  Not Spirited Away
     Execute Command
-    Output Should Contain  Title will be "Welcome to Princess Mononoke"
+    Output Should Contain  Title will be "Welcome to Princess Mononoke
     Prompt Should Contain  y/n:
     Prompt Should Contain  Title:
-    Output Should Contain  Bookmark "1 Not Spirited Away" created
+    Output Should Contain  Bookmark "1: Not Spirited Away
 
 Test Add With Url Not Found
     Input  add

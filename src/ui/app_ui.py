@@ -1,6 +1,6 @@
-from commands.commands import CommandStoppedException, InvalidInputException
 from ui.console_io import console_io as default_console_io
 from services.bookmarks_service import bookmarks_service as default_bookmarks_service
+from commands.commands import CommandStoppedException, InvalidInputException
 from commands.command_factory import CommandFactory
 
 

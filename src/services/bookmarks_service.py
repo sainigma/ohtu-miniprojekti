@@ -7,6 +7,7 @@ class BookmarksService:
     def __init__(self, repository=bookmarks_repository):
         self.repository = repository
         self.cursor = 0
+        self.bookmarks_returned_on_get_all = None
 
     def create(self, url:str, title:str) -> Bookmark:
         return bookmarks_repository.create_bookmark(url,title)

@@ -12,7 +12,7 @@ Test Find Command
     Input  *elcome*
     Execute Command
     Prompt Should Contain  Term:${SPACE}
-    Output Should Contain  1 Welcome to Princess Mononoke
+    Output Should Contain  1: Welcome to Princess Mononoke
 
 Test Not Found With Title
     Add Bookmark  http://www.princess-mononoke.com

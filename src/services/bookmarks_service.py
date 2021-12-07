@@ -29,6 +29,9 @@ class BookmarksService:
     def get_by_title(self, title:str) -> List[Bookmark]:
         return self.repository.find_bookmarks_by_title(title)
 
+    def get_by_url(self, url:str) -> List[Bookmark]:
+        return self.repository.find_bookmarks_by_url(url)        
+
     def get_title_by_url(self, url:str) -> List[Bookmark]:
         site_info = get_url(url)
         if not site_info:

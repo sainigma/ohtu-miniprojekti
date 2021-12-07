@@ -1,3 +1,4 @@
+from services.url_validator import parse_results
 from ui.app_state import app_state
 import json
 from datetime import datetime
@@ -99,19 +100,37 @@ class Select(Command):
 
 class Search(Command):
     def execute(self, argv):
-        term = self.io.read("Term: ")
+        if argv and argv[0] == 'url':
+            if len(argv) == 1:
+                term = self.io.read("Url:")
+            else:
+                term = argv[1]
+            search_method = self.search_by_url
+        else:
+            if argv:
+                term = argv[0]
+            else:
+                term = self.io.read("Term: ")
+            search_method = self.search_by_title
         if term == 'b':
             return
-        self.search_by_title(term)
-    
+        search_method(term)
+
+    def search_by_url(self, url):
+        bookmarks = self.service.get_by_url(url)
+        self.parse_results(bookmarks, "Could not find any bookmarks with that url")
+
     def search_by_title(self, title):
         bookmarks = self.service.get_by_title(title)
+        self.parse_results(bookmarks, "Could not find any bookmarks with that title")
+
+    def parse_results(self, bookmarks, msg):
         if not bookmarks:
-            self.io.write("Could not find any bookmarks with that title")
+            self.io.write(msg)
             return
         self.io.write(
             "\n".join(
-                [bookmark.short_str() for bookmark in self.service.get_by_title(title)]
+                [bookmark.short_str() for bookmark in bookmarks]
                 )
             )
 

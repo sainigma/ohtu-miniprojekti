@@ -15,7 +15,7 @@ class TestCommands(unittest.TestCase):
         self.service.create.return_value = self.bookmark
         add = Add(self.io, self.service)
 
-        add.execute([])
+        add._run_command([])
 
         self.io.write.assert_called_with('Bookmark "1 Test" created!')
 
@@ -23,7 +23,7 @@ class TestCommands(unittest.TestCase):
         self.service.get_all.return_value = []
         show = Show(self.io, self.service)
 
-        show.execute([])
+        show._run_command([])
 
         self.io.write.assert_called_with("No bookmarks")
     
@@ -32,7 +32,7 @@ class TestCommands(unittest.TestCase):
         self.service.bookmarks_amount.return_value = 50
         show = Show(self.io, self.service)
         
-        show.execute([])
+        show._run_command([])
 
         self.io.write.assert_called_with("1 Test")
     
@@ -41,14 +41,14 @@ class TestCommands(unittest.TestCase):
         self.service.get_by_title.return_value = [self.bookmark]
         search = Search(self.io, self.service)
 
-        search.execute([])
+        search._run_command([])
 
         self.io.write.assert_called_with("1 Test")
     
     def test_print_accepted_commands_when_unknown_command_was_given(self):
         unknown = Unknown(self.io)
 
-        unknown.execute([])
+        unknown._run_command([])
 
         self.io.write.assert_called_with("""
             Acceptable commands:

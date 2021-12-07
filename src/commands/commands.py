@@ -6,14 +6,14 @@ class Command:
         self.service = service
     
 class Help(Command):
-    def execute(self, argv=[]):
-        Unknown.execute(self)
+    def execute(self, argv):
+        Unknown.execute(self, argv)
         self.io.write("""
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
         """)
 
 class Add(Command):    
-    def execute(self, argv=[]):
+    def execute(self, argv):
         url = self.io.read("Url: ")
 
         if url == 'b':
@@ -41,7 +41,7 @@ class Add(Command):
         return self.io.read("Title: ")
 
 class Show(Command):
-    def execute(self, argv=[]):
+    def execute(self, argv):
         if len(argv) < 1:
             bookmarks = self.service.get_all()
         elif len(argv) == 1:
@@ -58,12 +58,12 @@ class Show(Command):
             print("showing results 0 to x, n for more")
 
 class Edit(Command):
-    def execute(self, argv=[]):
+    def execute(self, argv):
         self.io.write("Edit-command is not yet implemented")
 
 class Delete(Command):
-    def execute(self, argv=[]):
-        if app_state.selected is None and len(argv) < 1:
+    def execute(self, argv):
+        if app_state.selected is None and not argv:
             self.io.write("Please select a bookmark to delete it")
         else:
             deletations = argv if app_state.selected is None else [app_state.selected]
@@ -76,14 +76,14 @@ class Delete(Command):
             
 
 class Select(Command):
-    def execute(self, argv=[]):
+    def execute(self, argv):
         self.io.write("""
             To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
             To edit a bookmark: type in ID of the bookmark, press enter and then type 'edit'
             To go back: type in 'b'
         """)
 
-        Show.execute(self)
+        Show.execute(self, argv=[])
 
         id = self.io.read("Id: ")
         if id == 'b':
@@ -96,7 +96,7 @@ class Select(Command):
         self.io.write(bookmark.short_str() + " selected")
 
 class Search(Command):
-    def execute(self, argv=[]):
+    def execute(self, argv):
         term = self.io.read("Term: ")
         if term == 'b':
             return
@@ -114,7 +114,7 @@ class Search(Command):
             )
 
 class Unknown(Command):
-    def execute(self, argv=[]):
+    def execute(self, argv):
         self.io.write("""
             Acceptable commands:
             'q' - quit,

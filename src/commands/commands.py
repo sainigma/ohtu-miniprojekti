@@ -1,6 +1,7 @@
 from ui.app_state import app_state
 import json
 from datetime import datetime
+import os
 
 class Command:
     def __init__(self, io, service=None):
@@ -117,10 +118,12 @@ class Search(Command):
 
 class Export(Command):
     def execute(self, argv=[]):
+        if len(argv) > 1:
+            return
         bookmarks = self.service.get_all()
         if bookmarks:
             data = self.convert_to_json(bookmarks)
-            self.write_to_file(data)
+            self.write_to_file(data, argv)
 
     def convert_to_json(self, bookmarks):
         data = {}
@@ -132,10 +135,23 @@ class Export(Command):
             })
         return data
     
-    def write_to_file(self, data):
-        with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
-            json.dump(data, outfile, sort_keys=True, indent=4)
-            self.io.write("Exported successfully!")
+    def write_to_file(self, data, argv):
+        if len(argv) == 1:
+            path = self.check_path(str(argv[0]))
+            with open(path, "w") as outfile:
+                json.dump(data, outfile, sort_keys=True, indent=4)
+                self.io.write("Exported successfully!")
+        else:
+            with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
+                json.dump(data, outfile, sort_keys=True, indent=4)
+                self.io.write("Exported successfully!")
+    
+    def check_path(self, path):
+        if path.find("export/") != 0:
+            path = "export/" + path
+        if os.path.splitext(path)[1] != ".json":
+            path += ".json"
+        return path
     
 class Unknown(Command):
     def execute(self, argv=[]):

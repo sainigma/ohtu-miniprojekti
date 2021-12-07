@@ -1,5 +1,5 @@
 import unittest
-from commands.commands import Add, Show, Edit, Search, Unknown, Delete
+from commands.commands import Add, Show, Edit, Search, Unknown, Delete, Export
 from unittest.mock import Mock
 from entities.bookmark import Bookmark
 
@@ -62,6 +62,14 @@ class TestCommands(unittest.TestCase):
             'edit' - edit a selected bookmark
             'delete' - delete a selected bookmark
         """)
+
+    def test_convert_to_json_style(self):
+        export = Export(self.io)
+
+        bookmark = Mock(title="Test", url="test.com")
+        bookmarks = [bookmark]
+
+        self.assertEqual(export.convert_to_json(bookmarks), {"bookmarks":[{"title":"Test","url":"test.com"}]})
     
     # def test_print_correct_message_when_deleting_invalid_id(self):
     #     self.io.read.return_value = 2

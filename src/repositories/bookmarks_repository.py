@@ -52,14 +52,20 @@ class BookmarksRepository:
         bookmark = self.tags_repository.get_tags_for_bookmark(bookmark)
         return bookmark
 
-    def find_bookmarks_by_title(self, search_string : str) -> List[Bookmark]:
+    def _format_search_str(self, search_string: str) -> str:
         search_string = search_string.replace('*','%')
+        if search_string[0] == '"' and search_string[-1] == '"':
+            return search_string[1:-1]
+        return "%" + search_string + "%"
+
+    def find_bookmarks_by_title(self, search_string : str) -> List[Bookmark]:
+        search_string = self._format_search_str(search_string)
         query = f'select * from Bookmarks where title like "{search_string}";'
         result = self.db.execute(query)
         return parse_bookmark_list(result)
 
     def find_bookmarks_by_url(self, search_string : str) -> List[Bookmark]:
-        search_string = search_string.replace('*','%')
+        search_string = self._format_search_str(search_string)
         query = f"""select b.id, b.title, u.url from Urls u 
                     left join Bookmarks b on u.id = b.urlid where u.url like "{search_string}";"""
         result = self.db.execute(query)

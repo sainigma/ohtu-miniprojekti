@@ -3,6 +3,9 @@ from ui.app_state import app_state
 import json
 from datetime import datetime
 
+class InvalidInputException(Exception):
+    pass
+
 class Command:
     def __init__(self, io, service=None):
         self.io = io
@@ -24,8 +27,7 @@ class Add(Command):
 
         url_title = self.service.get_title_by_url(url)
         if url_title is None:
-            self.io.write('Bookmark was not created')
-            return
+            raise InvalidInputException("Invalid url")
         
         title = self._set_title(url_title)
         bookmark = self.service.create(url, title)
@@ -38,7 +40,7 @@ class Add(Command):
             return self._create_new_title()
         if new.strip() == "y":
             return url_title
-        raise Exception("Invalid command")
+        raise InvalidInputException("Invalid command")
     
     def _create_new_title(self):
         return self.io.read("Title: ")
@@ -62,19 +64,19 @@ class Show(Command):
 
 class Edit(Command):
     def execute(self, argv):
-        self.io.write("Edit-command is not yet implemented")
+        raise InvalidInputException("Edit-command is not yet implemented")
 
 class Delete(Command):
     def execute(self, argv):
         if app_state.selected is None and not argv:
-            self.io.write("Please select a bookmark to delete it")
+            raise InvalidInputException("Please select a bookmark to delete it")
         else:
-            deletations = argv if app_state.selected is None else [app_state.selected]
+            deletations = argv if app_state.selected is None else [app_state.selected.id]
             for id in deletations:
                 if self.service.delete(id):
                     self.io.write(f"Bookmark {id} deleted successfully")
                 else:
-                    self.io.write(f"Bookmark {id} didn't exist!")
+                    raise InvalidInputException(f"Bookmark {id} didn't exist!")
         app_state.selected = None
             
 
@@ -93,8 +95,7 @@ class Select(Command):
             return
         bookmark = self.service.get_one(id)
         if bookmark is None:
-            self.io.write("Invalid id")
-            return
+            raise InvalidInputException("Invalid id")
         app_state.selected = bookmark
         self.io.write(bookmark.short_str() + " selected")
 
@@ -126,8 +127,7 @@ class Search(Command):
 
     def parse_results(self, bookmarks, msg):
         if not bookmarks:
-            self.io.write(msg)
-            return
+            raise InvalidInputException("Could not find any bookmarks with that title")
         self.io.write(
             "\n".join(
                 [bookmark.short_str() for bookmark in bookmarks]

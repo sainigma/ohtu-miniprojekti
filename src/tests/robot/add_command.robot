@@ -32,4 +32,4 @@ Test Add With Url Not Found
     Read Command
     Input  https://princess-mononoke-this-definitely-does-not-exist.fi
     Execute Command
-    Output Should Contain  Bookmark was not created
+    Output Should Contain  Invalid url

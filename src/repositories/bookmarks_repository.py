@@ -35,8 +35,9 @@ class BookmarksRepository:
         result = self.db.execute(query)
         return result[0][0]
         
-    def get_bookmark_range(self, start=0, end=10) -> List[Bookmark]:
-        query = "select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid;"
+    def get_bookmark_range(self, offset=0, row_count=50) -> List[Bookmark]:
+        query = f"select b.id, b.title, u.url from Bookmarks b left join Urls u on u.id = b.urlid limit {offset}, {row_count};"
+        print(query)
         bookmarks = self.db.execute(query)
         return parse_bookmark_list(bookmarks)
 

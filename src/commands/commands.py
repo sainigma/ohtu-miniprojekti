@@ -2,22 +2,19 @@ from ui.app_state import app_state
 import json
 from datetime import datetime
 
-class Help:
-    def __init__(self, io, service):
+class Command:
+    def __init__(self, io, service=None):
         self.io = io
         self.service = service
     
+class Help(Command):
     def execute(self, argv=[]):
         Unknown.execute(self)
         self.io.write("""
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
         """)
 
-class Add:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Add(Command):    
     def execute(self, argv=[]):
         url = self.io.read("Url: ")
 
@@ -45,52 +42,43 @@ class Add:
     def _create_new_title(self):
         return self.io.read("Title: ")
 
-class Show:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Show(Command):
     def execute(self, argv=[]):
-        bookmarks = self.service.get_all()
+        if len(argv) < 1:
+            bookmarks = self.service.get_all()
+        elif len(argv) == 1:
+            bookmarks = self.service.get_all(0,int(argv[0]))
+        else:
+            bookmarks = self.service.get_all(int(argv[0]), int(argv[1]))
+        
         if not bookmarks:
             self.io.write("No bookmarks")
             return
         for bookmark in bookmarks:
             self.io.write(bookmark.short_str())
+        if len(bookmarks) < self.service.bookmarks_amount():
+            print("showing results 0 to x, n for more")
 
-class Edit:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Edit(Command):
     def execute(self, argv=[]):
         self.io.write("Edit-command is not yet implemented")
 
-class Delete:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-        self.app_state = app_state
-    
+class Delete(Command):
     def execute(self, argv=[]):
-        if self.app_state.selected is None and len(argv) < 1:
+        if app_state.selected is None and len(argv) < 1:
             self.io.write("Please select a bookmark to delete it")
         else:
-            deletations = argv if self.app_state.selected is None else [self.app_state.selected]
+            deletations = argv if app_state.selected is None else [app_state.selected]
             for id in deletations:
-                self.service.delete(id)
-                self.io.write(f"Bookmark {id} deleted successfully")
-                self.app_state.selected = None
+                if self.service.delete(id):
+                    self.io.write(f"Bookmark {id} deleted successfully")
+                else:
+                    self.io.write(f"Bookmark {id} didn't exist!")
+        app_state.selected = None
             
 
-class Select:
-    def __init__(self, io, service) -> None:
-        self.io = io
-        self.service = service
-        self.app_state = app_state
-    
+class Select(Command):
     def execute(self, argv=[]):
-
         self.io.write("""
             To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
             To edit a bookmark: type in ID of the bookmark, press enter and then type 'edit'
@@ -106,14 +94,10 @@ class Select:
         if bookmark is None:
             self.io.write("Invalid id")
             return
-        self.app_state.selected = bookmark
+        app_state.selected = bookmark
         self.io.write(bookmark.short_str() + " selected")
 
-class Search:
-    def __init__(self, io, service):
-        self.io = io
-        self.service = service
-    
+class Search(Command):
     def execute(self, argv=[]):
         term = self.io.read("Term: ")
         if term == 'b':
@@ -131,11 +115,7 @@ class Search:
                 )
             )
 
-class Export:
-    def __init__(self, io, service) -> None:
-        self.io = io
-        self.service = service
-    
+class Export(Command):
     def execute(self, argv=[]):
         bookmarks = self.service.get_all()
         if bookmarks:
@@ -155,11 +135,8 @@ class Export:
     def write_to_file(self, data):
         with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
             json.dump(data, outfile, sort_keys=True, indent=4)
-
-class Unknown:
-    def __init__(self, io):
-        self.io = io
     
+class Unknown(Command):
     def execute(self, argv=[]):
         self.io.write("""
             Acceptable commands:

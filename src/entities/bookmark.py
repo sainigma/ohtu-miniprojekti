@@ -47,4 +47,4 @@ class Bookmark:
                 f"id: {self.id}")
     
     def short_str(self):
-        return f"{self.id} {self.title}"
+        return f"{self.id}: {self.title}, {self.url}"

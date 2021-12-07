@@ -1,3 +1,6 @@
+import os
+from ui.screen_io import screen_io
+
 class ConsoleIO:
     """
     Implementation based on 
@@ -10,5 +13,7 @@ class ConsoleIO:
     def read(self, prompt) -> str:
         return input(prompt)
 
-
-console_io = ConsoleIO()
+if os.getenv("EXPERIMENTAL") == "True":
+    console_io = screen_io
+else:
+    console_io = ConsoleIO()

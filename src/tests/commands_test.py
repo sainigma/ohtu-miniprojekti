@@ -71,6 +71,18 @@ class TestCommands(unittest.TestCase):
 
         self.assertEqual(export.convert_to_json(bookmarks), {"bookmarks":[{"title":"Test","url":"test.com"}]})
     
+    def test_check_path(self):
+        export = Export(self.io)
+
+        path = export.check_path("export/test.json")
+        self.assertEqual(path, "export/test.json")
+
+        path = export.check_path("test.json")
+        self.assertEqual(path, "export/test.json")
+
+        path = export.check_path("test")
+        self.assertEqual(path, "export/test.json")
+
     # def test_print_correct_message_when_deleting_invalid_id(self):
     #     self.io.read.return_value = 2
     #     delete = Delete(self.io, self.service)

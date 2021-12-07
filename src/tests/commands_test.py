@@ -17,7 +17,7 @@ class TestCommands(unittest.TestCase):
 
         add._run_command([])
 
-        self.io.write.assert_called_with('Bookmark "1 Test" created!')
+        self.io.write.assert_called_with('Bookmark "1: Test, test.com" created!')
 
     def test_print_correct_message_when_there_are_not_any_bookmarks_to_show(self):
         self.service.get_all.return_value = []
@@ -34,7 +34,7 @@ class TestCommands(unittest.TestCase):
         
         show._run_command([])
 
-        self.io.write.assert_called_with("1 Test")
+        self.io.write.assert_called_with("1: Test, test.com")
     
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"
@@ -43,7 +43,7 @@ class TestCommands(unittest.TestCase):
 
         search._run_command([])
 
-        self.io.write.assert_called_with("1 Test")
+        self.io.write.assert_called_with("1: Test, test.com")
     
     def test_print_accepted_commands_when_unknown_command_was_given(self):
         unknown = Unknown(self.io)

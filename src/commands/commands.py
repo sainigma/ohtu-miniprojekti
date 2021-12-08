@@ -1,5 +1,6 @@
 import os
 import json
+# from jsonschema import validate, ValidationError
 from datetime import datetime
 from ui.app_state import app_state
 
@@ -178,6 +179,41 @@ class Export(Command):
         if os.path.splitext(path)[1] != ".json":
             path += ".json"
         return path
+
+class ImportJson(Command):
+    pass
+    # def _run_command(self, argv):
+        # try:
+            # file = open("data.json", "r")
+            # data = json.load(file.read())
+        # except:
+            # raise InvalidInputException("File not found")
+# 
+        # if not self.validate_json(data):
+            # raise InvalidInputException("Invalid file format")
+# 
+        # self.add_bookmarks_to_repository(data)
+        # self.io.write("Bookmarks imported successfully!")
+# 
+    # def add_bookmarks_to_repository(self, data):
+        # added = []
+# 
+        # for entry in data:
+            # bookmark = self.service.create(entry["url"], entry["title"])
+            # added.append(bookmark)
+        # return added
+    # 
+    # def validate_json(self, data):
+        # valid_schema = {
+            # "title": "string",
+            # "url": "string"
+        # }
+        # try:
+            # validate(data, valid_schema)
+        # except ValidationError as error:
+            # return False
+        # return True
+    
     
 class Unknown(Command):
     def _run_command(self, argv):

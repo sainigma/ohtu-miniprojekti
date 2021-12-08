@@ -1,4 +1,4 @@
-from commands.commands import Delete, Help, Add, Show, Edit, Search, Unknown, Select, Export
+from commands.commands import Delete, Help, Add, ImportJson, Show, Edit, Search, Unknown, Select, Export
 
 
 class CommandFactory:
@@ -14,7 +14,8 @@ class CommandFactory:
             "search": Search(self.io, service),
             "select": Select(self.io, service),
             "delete": Delete(self.io, service),
-            "export": Export(self.io, service)
+            "export": Export(self.io, service),
+            "import": ImportJson(self.io, service)
         }
     
     def get_command(self, command):

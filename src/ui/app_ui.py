@@ -1,11 +1,11 @@
-from ui.console_io import console_io as default_console_io
+from ui.console_formatter import ConsoleFormatter
 from services.bookmarks_service import bookmarks_service as default_bookmarks_service
 from commands.commands import CommandStoppedException, InvalidInputException
 from commands.command_factory import CommandFactory
 
 
 class AppUi:
-    def __init__(self, io=default_console_io, service=default_bookmarks_service):
+    def __init__(self, io, service=default_bookmarks_service):
         self.io = io
         self.service = service
         self.command_factory = CommandFactory(self.io, self.service)
@@ -35,4 +35,4 @@ class AppUi:
         self.io.clear()
         self.io.write("Welcome to Bookmarker!\nType 'h' for help\n")
 
-app_ui = AppUi()
+app_ui = AppUi(io=ConsoleFormatter())

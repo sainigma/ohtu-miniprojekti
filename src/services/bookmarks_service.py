@@ -48,4 +48,7 @@ class BookmarksService:
     def bookmarks_amount(self):
         return self.repository.get_count()
 
+    def get_cursor(self):
+        return self.cursor
+
 bookmarks_service = BookmarksService()

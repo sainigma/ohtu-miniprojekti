@@ -33,6 +33,6 @@ class AppUi:
 
     def welcome(self):
         self.io.clear()
-        self.io.write("\nWelcome to Bookmarker!\nType 'h' for help\n")
+        self.io.write("Welcome to Bookmarker!\nType 'h' for help\n")
 
 app_ui = AppUi()

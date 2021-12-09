@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 # from jsonschema import validate, ValidationError
 from datetime import datetime
@@ -45,16 +46,15 @@ class Add(Command):
         
         title = self._set_title(url_title)
         bookmark = self.service.create(url, title)
-        self.io.write(f'Bookmark "{bookmark.short_str()}" created!')
+        self.io.write(f'\nBookmark "{bookmark.short_str()}" created!')
     
     def _set_title(self, url_title):
-        self.io.write(f'Title will be "{url_title}". Do you want to keep the title?')
-        new = self._read_new_arg("y/n: ")
-        if new.strip() == "n":
+        user_input = ''
+        while user_input not in ['y', 'n']:
+            user_input = self.io.read_chr(f'Do you want to keep the title "{url_title}"? [y/n]')
+        if user_input == 'n':
             return self._create_new_title()
-        if new.strip() == "y":
-            return url_title
-        raise InvalidInputException("Invalid command")
+        return url_title
     
     def _create_new_title(self):
         return self._read_new_arg("Title: ")
@@ -68,13 +68,29 @@ class Show(Command):
         else:
             bookmarks = self.service.get_all(int(argv[0]), int(argv[1]))
         
+        self.io.clear()
+        self.io.write("Bookmarks:")
+        self.io.write("id", 1, 0)
+        self.io.write("title", -1, 5)
+        self.io.write("url", -1, 45)
         if not bookmarks:
             self.io.write("No bookmarks")
             return
         for bookmark in bookmarks:
-            self.io.write(bookmark.short_str())
+            self.io.write(f'{bookmark.id}', 0, 0)
+            self.io.write(bookmark.title, -1, 5)
+            self.io.write(bookmark.url, -1, 45)
         if len(bookmarks) < self.service.bookmarks_amount():
-            print("showing results 0 to x, n for more")
+            cursor = self.service.get_cursor()
+            prompt = f"\nShowing results {cursor + 1} to {cursor + len(bookmarks)}."
+            if cursor + len(bookmarks) < self.service.bookmarks_amount():
+                user_input = ''
+                while user_input not in ['n', 'r']:
+                    user_input = self.io.read_chr(f"{prompt} Press [n] for more, [r] to resume")
+                if user_input == 'n':
+                    self._run_command([cursor + len(bookmarks), cursor + 2 * len(bookmarks)])
+            else:
+                self.io.write(f'{prompt} Reached end')
 
 class Edit(Command):
     def _run_command(self, argv):
@@ -144,6 +160,11 @@ class Search(Command):
                 [bookmark.short_str() for bookmark in bookmarks]
                 )
             )
+
+class Quit(Command):
+    def _run_command(self, argv):
+        self.io.exit()
+        sys.exit(0)
 
 class Export(Command):
     def _run_command(self, argv):
@@ -217,6 +238,8 @@ class ImportJson(Command):
     
 class Unknown(Command):
     def _run_command(self, argv):
+        self.io.clear()
+        self.io.write(f'command "{self.io.string_buffer}" unrecognized.')
         self.io.write("""
             Acceptable commands:
             'q' - quit,

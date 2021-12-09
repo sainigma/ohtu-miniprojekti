@@ -10,8 +10,6 @@ class App:
         while True:
 
             command = self.ui.read_input()
-            if command == "q":
-                sys.exit(0)
             self.ui.parse_command(command)
             self.ui.execute_command()
 

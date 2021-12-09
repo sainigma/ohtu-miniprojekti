@@ -19,6 +19,12 @@ class StubIO:
 
         return ""
 
+    def read_chr(self, prompt) -> str:
+        self.prompt.append(prompt)
+        if self.input:
+            return self.input.pop(0)[0]
+        return ""
+
     def clear(self) -> None:
         pass
 

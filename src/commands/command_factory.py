@@ -1,4 +1,4 @@
-from commands.commands import Delete, Help, Add, ImportJson, Show, Edit, Search, Unknown, Select, Export
+from commands.commands import Delete, Help, Add, ImportJson, Show, Edit, Search, Unknown, Select, Export, Quit
 
 
 class CommandFactory:
@@ -7,6 +7,7 @@ class CommandFactory:
         self.service = service
 
         self.commands = {
+            "q": Quit(self.io, self.service),
             "h": Help(self.io, self.service),
             "add": Add(self.io, service),
             "show": Show(self.io, service),

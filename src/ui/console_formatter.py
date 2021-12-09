@@ -31,7 +31,7 @@ class ConsoleFormatter(ConsoleIO):
             for title_chunk in bookmark_title_chunks[1:]:
                 self.write(title_chunk, 0, title_offset)
     
-    def _print_bookmarks_range(self, bookmarks):
+    def print_bookmarks_range(self, bookmarks):
         bookmarks_amount = self.service.bookmarks_amount()
         self._print_bookmarks(bookmarks, "Bookmarks")
 

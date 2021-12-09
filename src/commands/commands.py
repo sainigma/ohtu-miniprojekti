@@ -68,7 +68,7 @@ class Show(Command):
             bookmarks = self.service.get_all(0,int(argv[0]))
         else:
             bookmarks = self.service.get_all(int(argv[0]), int(argv[1]))
-        show_more = self.io._print_bookmarks_range(bookmarks)
+        show_more = self.io.print_bookmarks_range(bookmarks)
         if show_more:
             if len(argv) == 2:
                 self._run_command([int(argv[0]) + int(argv[1]), int(argv[1])])
@@ -139,7 +139,7 @@ class Search(Command):
     def parse_results(self, bookmarks, msg):
         if not bookmarks:
             raise InvalidInputException(msg)
-        self.io._print_bookmarks(bookmarks, "Search results")
+        self.io.print_bookmarks(bookmarks, "Search results")
         self.io.write(f"Found {len(bookmarks)} results", 1)
 
 class Quit(Command):

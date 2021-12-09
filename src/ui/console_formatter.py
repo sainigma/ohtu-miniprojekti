@@ -1,4 +1,5 @@
 from ui.console_io import ConsoleIO
+from services.bookmarks_service import bookmarks_service
 
 class ConsoleFormatter(ConsoleIO):
     """
@@ -6,6 +7,7 @@ class ConsoleFormatter(ConsoleIO):
     """
     def __init__(self) -> None:
         super().__init__()
+        self.service = bookmarks_service
     
     def print_bookmarks(self, bookmarks, title):
         id_offset = 0

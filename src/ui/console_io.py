@@ -1,5 +1,4 @@
 import os
-from ui.screen_io import screen_io
 
 class ConsoleIO:
     """
@@ -13,7 +12,11 @@ class ConsoleIO:
     def read(self, prompt) -> str:
         return input(prompt)
 
-if os.getenv("EXPERIMENTAL") == "True":
-    console_io = screen_io
-else:
-    console_io = ConsoleIO()
+    def clear(self) -> None:
+        name = os.name
+        if name == 'posix':
+            os.system('clear')
+        elif name == 'nt':
+            os.system('cls')
+
+console_io = ConsoleIO()

@@ -109,8 +109,3 @@ class MockConsoleIO:
         pass
     def exit(self):
         pass
-
-if os.getenv("TESTING") == "True":
-    console_io = MockConsoleIO()
-else:
-    console_io = ConsoleIO()

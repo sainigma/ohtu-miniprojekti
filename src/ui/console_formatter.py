@@ -31,21 +31,18 @@ class ConsoleFormatter(ConsoleIO):
             for title_chunk in bookmark_title_chunks[1:]:
                 self.write(title_chunk, 0, title_offset)
     
-    def print_bookmarks_range(self, bookmarks):
-        bookmarks_amount = self.service.bookmarks_amount()
-        self._print_bookmarks(bookmarks, "Bookmarks")
+    def print_bookmarks_range(self, bookmarks, cursor=0, count=0):
+        count = len(bookmarks)
+        self.print_bookmarks(bookmarks, "Bookmarks")
 
-        if len(bookmarks) <= bookmarks_amount:
-            cursor = self.service.get_cursor()
-            prompt = f"\nShowing results {cursor + 1} to {cursor + len(bookmarks)}/{bookmarks_amount}."
-            if cursor + len(bookmarks) < bookmarks_amount:
+        if len(bookmarks) <= count:
+            prompt = f"\nShowing results {cursor + 1} to {cursor + len(bookmarks)}/{count}."
+            if cursor + len(bookmarks) < count:
                 user_input = ''
                 while user_input not in ['n', 'r']:
-                    user_input = self.io.read_chr(f"{prompt} Press [n] for more, [r] to resume")
+                    user_input = self.read_chr(f"{prompt} Press [n] for more, [r] to resume")
                 if user_input == 'n':
                     return True
             else:
-                self.io.write(f'{prompt} Reached end')
+                self.write(f'{prompt} Reached end')
         return False
-
-console_formatter = ConsoleFormatter()

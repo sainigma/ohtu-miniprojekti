@@ -1,14 +1,13 @@
 from typing import List
-from db_connection import database_connection
 from repositories.url_repository import UrlRepository
 from repositories.tags_repository import TagsRepository
 from entities.bookmark import Bookmark
 
 class BookmarksRepository:
-    def __init__(self, databaseConnection=database_connection):
-        self.db = databaseConnection
-        self.url_repository = UrlRepository(databaseConnection)
-        self.tags_repository = TagsRepository(databaseConnection)
+    def __init__(self, database_connection):
+        self.db = database_connection
+        self.url_repository = UrlRepository(database_connection)
+        self.tags_repository = TagsRepository(database_connection)
         self.count = 0
 
     def _get_last_insertation(self):
@@ -95,5 +94,3 @@ def tuple_to_bookmark(b) -> Bookmark:
 
 def parse_bookmark_list(bookmarks) -> List[Bookmark]:
     return list(map(tuple_to_bookmark, bookmarks))
-
-bookmarks_repository = BookmarksRepository()

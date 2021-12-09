@@ -1,19 +1,18 @@
 from typing import List
 from entities.bookmark import Bookmark
-from repositories.bookmarks_repository import bookmarks_repository
 from services.url_validator import get_url
 
 class BookmarksService:
-    def __init__(self, repository=bookmarks_repository):
+    def __init__(self, repository):
         self.repository = repository
         self.cursor = 0
         self.bookmarks_returned_on_get_all = None
 
     def create(self, url:str, title:str) -> Bookmark:
-        return bookmarks_repository.create_bookmark(url,title)
+        return self.repository.create_bookmark(url,title)
 
     def get_one(self, id:int) -> Bookmark:
-        return bookmarks_repository.get_bookmark_complete(id)
+        return self.repository.get_bookmark_complete(id)
 
     def get_all(self, start=0, count=10) -> List[Bookmark]:
         self.cursor = start
@@ -50,5 +49,3 @@ class BookmarksService:
 
     def get_cursor(self):
         return self.cursor
-
-bookmarks_service = BookmarksService()

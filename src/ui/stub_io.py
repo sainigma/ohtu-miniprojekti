@@ -19,5 +19,8 @@ class StubIO:
 
         return ""
 
+    def clear(self) -> None:
+        pass
+
     def set_input(self, value) -> None:
         self.input.append(value)

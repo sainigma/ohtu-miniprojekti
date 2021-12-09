@@ -35,9 +35,9 @@ class BookmarksServiceSQLTest(unittest.TestCase):
 
 
     def test_entries_can_be_added(self):
-        dbLength0 = len(self.bookmarks.get_all())
+        dbLength0 = self.bookmarks.bookmarks_amount()
         id0 = self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"]).id
-        dbLength1 = len(self.bookmarks.get_all())
+        dbLength1 = self.bookmarks.bookmarks_amount()
         self.assertGreater(dbLength1, dbLength0)
         
         bookmark = self.bookmarks.get_one(id=id0)
@@ -54,9 +54,9 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         self.assertTrue(bookmark is None)
 
     def test_entries_can_be_removed(self):
-        dbLength0 = len(self.bookmarks.get_all())
+        dbLength0 = self.bookmarks.bookmarks_amount()
         self.bookmarks.delete(1)
-        dbLength1 = len(self.bookmarks.get_all())
+        dbLength1 = self.bookmarks.bookmarks_amount()
 
         obj = self.bookmarks.get_one(id=1)
         self.assertTrue(dbLength0 > dbLength1 and obj == None)

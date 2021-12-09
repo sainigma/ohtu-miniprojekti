@@ -88,7 +88,7 @@ class Show(Command):
                 while user_input not in ['n', 'r']:
                     user_input = self.io.read_chr(f"{prompt} Press [n] for more, [r] to resume")
                 if user_input == 'n':
-                    self._run_command([cursor + len(bookmarks), cursor + 2 * len(bookmarks)])
+                    self._run_command([cursor + len(bookmarks), cursor + len(bookmarks)])
             else:
                 self.io.write(f'{prompt} Reached end')
 

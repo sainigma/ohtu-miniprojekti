@@ -77,4 +77,24 @@ class ConsoleIO:
         curses.endwin()
         print(prompt)
 
-console_io = ConsoleIO()
+class MockConsoleIO:
+    def clear_line(self):
+        pass
+    def write(self, value):
+        print(value)
+
+    def read(self, prompt):
+        return input(prompt)
+
+    def read_chr(self, prompt):
+        return input(prompt)
+    
+    def clear(self):
+        pass
+    def exit(self):
+        pass
+
+if os.getenv("TESTING") == "True":
+    console_io = MockConsoleIO()
+else:
+    console_io = ConsoleIO()

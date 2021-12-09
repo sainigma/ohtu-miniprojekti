@@ -1,7 +1,6 @@
 import unittest
 import json
-from services.bookmarks_service import BookmarksService
-from entities.bookmark import Bookmark
+from tests.test_utils import TestUtils
 
 class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):
@@ -19,7 +18,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
                 },
             ]
         }
-        self.bookmarks = BookmarksService()
+        self.bookmarks = TestUtils.get_test_service()
 
         with open('./src/tests/dummy.json') as jsonFile:
             dummies = json.load(jsonFile)['db']

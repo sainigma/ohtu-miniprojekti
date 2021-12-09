@@ -62,19 +62,34 @@ class Add(Command):
 class Show(Command):
 
     def _run_command(self, argv):
-        if len(argv) < 1:
-            bookmarks = self.service.get_all()
+        if len(argv) == 0:
+            self._show_all()
         elif len(argv) == 1:
-            bookmarks = self.service.get_all(0,int(argv[0]))
+            count = argv[0]
+            self._show_range(0, count)
+        elif len(argv) >= 2:
+            start = argv[0]
+            count = argv[1]
+            self._show_range(start, count)
         else:
-            bookmarks = self.service.get_all(int(argv[0]), int(argv[1]))
-        show_more = self.io.print_bookmarks_range(bookmarks)
-        if show_more:
-            if len(argv) == 2:
-                self._run_command([int(argv[0]) + int(argv[1]), int(argv[1])])
-            else:
-                cursor = self.service.get_cursor()
-                self._run_command([cursor + len(bookmarks), cursor + len(bookmarks)])
+            raise InvalidInputException("Wrong number of arguments.")
+    
+    def _show_all(self):
+        bookmarks = self.service.get_all()
+        if not bookmarks:
+            self.io.write("No bookmarks")
+        else:
+            self.io.print_bookmarks_range(bookmarks)
+
+    def _show_range(self, start, count):
+        bookmarks = self.service.get_all(start, count)
+        if not bookmarks:
+            self.io.write("No bookmarks")
+            return
+        should_show_next_page = self.io.print_bookmarks_range(bookmarks)
+        if should_show_next_page:
+            self._show_range(start + count, count)
+
 
 class Edit(Command):
     def _run_command(self, argv):

@@ -35,7 +35,7 @@ class TestCommands(unittest.TestCase):
         
         show._run_command([])
 
-        self.io.write.assert_called_with('test.com',-1,45)
+        self.io.print_bookmarks_range.assert_called_with([self.bookmark])
 
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"
@@ -44,7 +44,7 @@ class TestCommands(unittest.TestCase):
 
         search._run_command([])
 
-        self.io.write.assert_called_with("1: Test, test.com")
+        self.io.write.assert_called_with("Found 1 results", 1)
 
     def test_print_accepted_commands_when_unknown_command_was_given(self):
         unknown = Unknown(self.io)

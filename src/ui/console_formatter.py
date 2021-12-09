@@ -1,4 +1,5 @@
 from ui.console_io import ConsoleIO
+from services.bookmarks_service import bookmarks_service
 
 class ConsoleFormatter(ConsoleIO):
     """
@@ -6,6 +7,7 @@ class ConsoleFormatter(ConsoleIO):
     """
     def __init__(self) -> None:
         super().__init__()
+        self.service = bookmarks_service
     
     def print_bookmarks(self, bookmarks, title):
         id_offset = 0
@@ -33,7 +35,7 @@ class ConsoleFormatter(ConsoleIO):
     
     def print_bookmarks_range(self, bookmarks):
         bookmarks_amount = self.service.bookmarks_amount()
-        self._print_bookmarks(bookmarks, "Bookmarks")
+        self.print_bookmarks(bookmarks, "Bookmarks")
 
         if len(bookmarks) <= bookmarks_amount:
             cursor = self.service.get_cursor()
@@ -41,11 +43,11 @@ class ConsoleFormatter(ConsoleIO):
             if cursor + len(bookmarks) < bookmarks_amount:
                 user_input = ''
                 while user_input not in ['n', 'r']:
-                    user_input = self.io.read_chr(f"{prompt} Press [n] for more, [r] to resume")
+                    user_input = self.read_chr(f"{prompt} Press [n] for more, [r] to resume")
                 if user_input == 'n':
                     return True
             else:
-                self.io.write(f'{prompt} Reached end')
+                self.write(f'{prompt} Reached end')
         return False
 
 console_formatter = ConsoleFormatter()

@@ -235,7 +235,7 @@ class ImportJson(Command):
 class Unknown(Command):
     def _run_command(self, argv):
         self.io.clear()
-        self.io.write(f'command "{self.io.string_buffer}" unrecognized.')
+        self.io.write(f'command unrecognized.')
         self.io.write("""
             Acceptable commands:
             'q' - quit,

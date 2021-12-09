@@ -1,6 +1,6 @@
 import unittest
 import json
-from tests.test_utils import TestUtils
+from utilities.test_utils import TestUtils
 
 class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):

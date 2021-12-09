@@ -8,7 +8,7 @@ class ConsoleIO:
     https://github.com/ohjelmistotuotanto-hy/syksy2021-python/blob/master/koodi/viikko3/login-robot/src/console_io.py
     """
     def __init__(self):
-        self.string_buffer = ""
+        self._string_buffer = ""
         self.window = curses.initscr()
         curses.cbreak()
         curses.noecho()

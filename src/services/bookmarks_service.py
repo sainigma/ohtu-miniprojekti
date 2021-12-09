@@ -20,7 +20,7 @@ class BookmarksService:
         self.bookmarks_returned_on_get_all = count
         return self.repository.get_bookmark_range(
             self.cursor, 
-            self.cursor + count
+            count
             )
 
     def get_more(self) -> List[Bookmark]:

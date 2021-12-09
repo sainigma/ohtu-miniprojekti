@@ -60,7 +60,8 @@ class BookmarksRepository:
 
     def find_bookmarks_by_title(self, search_string : str) -> List[Bookmark]:
         search_string = self._format_search_str(search_string)
-        query = f'select * from Bookmarks where title like "{search_string}";'
+        query = f"""select b.id, b.title, u.url from Bookmarks b 
+                    left join Urls u on u.id = b.urlid where title like "{search_string}";"""
         result = self.db.execute(query)
         return parse_bookmark_list(result)
 

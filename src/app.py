@@ -1,4 +1,3 @@
-import sys
 from ui.app_ui import app_ui
 
 class App:

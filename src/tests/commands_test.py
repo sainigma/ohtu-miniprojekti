@@ -1,6 +1,6 @@
 import unittest
 from commands.commands import Add, Show, Edit, Search, Unknown, Delete, Export
-from unittest.mock import Mock
+from unittest.mock import ANY, Mock
 from entities.bookmark import Bookmark
 
 class TestCommands(unittest.TestCase):
@@ -8,16 +8,16 @@ class TestCommands(unittest.TestCase):
         self.io = Mock()
         self.service = Mock()
         self.bookmark = Bookmark(1, "Test", "test.com")
-    
+        
     def test_print_correct_message_when_bookmark_is_added_successfully(self):
         self.service.get_title_by_url.return_value = "test.com"
-        self.io.read.return_value = "y"
+        self.io.read_chr.return_value = "y"
         self.service.create.return_value = self.bookmark
         add = Add(self.io, self.service)
 
         add._run_command([])
 
-        self.io.write.assert_called_with('Bookmark "1: Test, test.com" created!')
+        self.io.write.assert_called_with('\nBookmark "1: Test, test.com" created!')
 
     def test_print_correct_message_when_there_are_not_any_bookmarks_to_show(self):
         self.service.get_all.return_value = []
@@ -29,13 +29,14 @@ class TestCommands(unittest.TestCase):
     
     def test_print_titles_of_all_bookmarks(self):
         self.service.get_all.return_value = [self.bookmark]
-        self.service.bookmarks_amount.return_value = 50
+        self.service.get_cursor.return_value = 0
+        self.service.bookmarks_amount.return_value = 1
         show = Show(self.io, self.service)
         
         show._run_command([])
 
-        self.io.write.assert_called_with("1: Test, test.com")
-    
+        self.io.write.assert_called_with('test.com',-1,45)
+
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"
         self.service.get_by_title.return_value = [self.bookmark]
@@ -44,7 +45,7 @@ class TestCommands(unittest.TestCase):
         search._run_command([])
 
         self.io.write.assert_called_with("1: Test, test.com")
-    
+
     def test_print_accepted_commands_when_unknown_command_was_given(self):
         unknown = Unknown(self.io)
 
@@ -70,7 +71,9 @@ class TestCommands(unittest.TestCase):
         bookmarks = [bookmark]
 
         self.assertEqual(export.convert_to_json(bookmarks), {"bookmarks":[{"title":"Test","url":"test.com"}]})
-    
+
+
+
     def test_check_path(self):
         export = Export(self.io)
 

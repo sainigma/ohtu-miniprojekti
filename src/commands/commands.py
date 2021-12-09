@@ -28,6 +28,30 @@ class Command:
     def _run_command(self, argv):
         pass
 
+    def _print_bookmarks(self, bookmarks, title):
+        id_offset = 0
+        title_offset = 5
+        url_offset = 80
+        self.io.clear()
+        self.io.write(f"{title}:")
+        self.io.write("id", 1, id_offset)
+        self.io.write("title", -1, title_offset)
+        self.io.write("url", -1, url_offset)
+        if not bookmarks:
+            self.io.write("No bookmarks")
+            return
+        for bookmark in bookmarks:
+            self.io.write(f'{bookmark.id}', 0, id_offset)
+            self.io.write(bookmark.url, -1, url_offset)
+            title_length = len(bookmark.title)
+            title_max_length = url_offset - id_offset - title_offset
+            bookmark_title_chunks = [
+                bookmark.title[i:i+title_max_length] for i in range(0, title_length, title_max_length)
+            ]
+            self.io.write(bookmark_title_chunks[0], -1, title_offset)            
+            for title_chunk in bookmark_title_chunks[1:]:
+                self.io.write(title_chunk, 0, title_offset)
+
     
 class Help(Command):
     def _run_command(self, argv):
@@ -60,6 +84,24 @@ class Add(Command):
         return self._read_new_arg("Title: ")
 
 class Show(Command):
+
+    def _print_bookmarks_range(self, bookmarks):
+        bookmarks_amount = self.service.bookmarks_amount()
+        self._print_bookmarks(bookmarks, "Bookmarks")
+
+        if len(bookmarks) <= bookmarks_amount:
+            cursor = self.service.get_cursor()
+            prompt = f"\nShowing results {cursor + 1} to {cursor + len(bookmarks)}/{bookmarks_amount}."
+            if cursor + len(bookmarks) < bookmarks_amount:
+                user_input = ''
+                while user_input not in ['n', 'r']:
+                    user_input = self.io.read_chr(f"{prompt} Press [n] for more, [r] to resume")
+                if user_input == 'n':
+                    return True
+            else:
+                self.io.write(f'{prompt} Reached end')
+        return False
+        
     def _run_command(self, argv):
         if len(argv) < 1:
             bookmarks = self.service.get_all()
@@ -67,30 +109,13 @@ class Show(Command):
             bookmarks = self.service.get_all(0,int(argv[0]))
         else:
             bookmarks = self.service.get_all(int(argv[0]), int(argv[1]))
-        
-        self.io.clear()
-        self.io.write("Bookmarks:")
-        self.io.write("id", 1, 0)
-        self.io.write("title", -1, 5)
-        self.io.write("url", -1, 45)
-        if not bookmarks:
-            self.io.write("No bookmarks")
-            return
-        for bookmark in bookmarks:
-            self.io.write(f'{bookmark.id}', 0, 0)
-            self.io.write(bookmark.title, -1, 5)
-            self.io.write(bookmark.url, -1, 45)
-        if len(bookmarks) < self.service.bookmarks_amount():
-            cursor = self.service.get_cursor()
-            prompt = f"\nShowing results {cursor + 1} to {cursor + len(bookmarks)}."
-            if cursor + len(bookmarks) < self.service.bookmarks_amount():
-                user_input = ''
-                while user_input not in ['n', 'r']:
-                    user_input = self.io.read_chr(f"{prompt} Press [n] for more, [r] to resume")
-                if user_input == 'n':
-                    self._run_command([cursor + len(bookmarks), cursor + len(bookmarks)])
+        show_more = self._print_bookmarks_range(bookmarks)
+        if show_more:
+            if len(argv) == 2:
+                self._run_command([int(argv[0]) + int(argv[1]), int(argv[1])])
             else:
-                self.io.write(f'{prompt} Reached end')
+                cursor = self.service.get_cursor()
+                self._run_command([cursor + len(bookmarks), cursor + len(bookmarks)])
 
 class Edit(Command):
     def _run_command(self, argv):
@@ -154,12 +179,9 @@ class Search(Command):
 
     def parse_results(self, bookmarks, msg):
         if not bookmarks:
-            raise InvalidInputException("Could not find any bookmarks with that title")
-        self.io.write(
-            "\n".join(
-                [bookmark.short_str() for bookmark in bookmarks]
-                )
-            )
+            raise InvalidInputException(msg)
+        self._print_bookmarks(bookmarks, "Search results")
+        self.io.write(f"Found {len(bookmarks)} results", 1)
 
 class Quit(Command):
     def _run_command(self, argv):

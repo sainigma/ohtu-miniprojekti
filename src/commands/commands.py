@@ -20,7 +20,7 @@ class Command:
         self._run_command(argv)
     
     def _read_new_arg(self, prompt) -> str:
-        arg = self.io.read(prompt)
+        arg = self.io.read(prompt, self.io.get_cursor())
         if arg.strip() == 'b':
             raise CommandStoppedException()
         return arg

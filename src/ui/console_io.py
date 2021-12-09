@@ -28,26 +28,35 @@ class ConsoleIO:
             lines = [string]
         self.cursor = self.cursor + y_offset
         for line in lines:
+            if self.cursor > self.height - 3:
+                self.window.addstr(self.cursor + 1, self.offset + x_offset, 'End of screen reached. Press any key to continue')    
+                self.read_chr('')
+                self.clear()
+
             line.replace('\n', '')
             self.window.addstr(self.cursor, self.offset + x_offset, line)
             self.cursor = self.cursor + 1
             self.window.refresh()
 
-    def read(self, prompt) -> str:
+
+    def read(self, prompt, y_position = -1) -> str:
+        if y_position < 0:
+            y_position = self.height -1
+        
         self.string_buffer = ""
         result = None
         self.clear_line()
-        self.window.addstr(self.height - 1, self.offset, prompt)
+        self.window.addstr(y_position, self.offset, prompt)
         while not result:
             character = self.window.getch()
             if character in range(32, 122):
                 self.string_buffer = self.string_buffer + chr(character)
-                self.window.addstr(self.height - 1, len(prompt) + self.offset, self.string_buffer)
+                self.window.addstr(y_position, len(prompt) + self.offset, self.string_buffer)
             elif character == 263 and len(self.string_buffer) > 0: #backspace
                 self.string_buffer = self.string_buffer[:-1]
                 self.clear_line()
-                self.window.addstr(self.height - 1, self.offset, prompt)
-                self.window.addstr(self.height - 1, len(prompt) + self.offset, self.string_buffer)
+                self.window.addstr(y_position, self.offset, prompt)
+                self.window.addstr(y_position, len(prompt) + self.offset, self.string_buffer)
             elif character == 10:
                 result = self.string_buffer
             else:
@@ -55,7 +64,8 @@ class ConsoleIO:
         return result
 
     def read_chr(self, prompt) -> chr:
-        self.write(prompt)
+        if len(prompt) > 0:
+            self.write(prompt)
         result = None
         while not result:
             character = self.window.getch()
@@ -64,6 +74,9 @@ class ConsoleIO:
             else:
                 time.sleep(0.017)
         return result
+
+    def get_cursor(self):
+        return self.cursor
 
     def clear(self) -> None:
         self.cursor = 1
@@ -82,6 +95,9 @@ class MockConsoleIO:
         pass
     def write(self, value):
         print(value)
+
+    def get_cursor(self):
+        return 1
 
     def read(self, prompt):
         return input(prompt)

@@ -10,7 +10,6 @@ class UrlRepository:
         if len(result) > 0:
             return result[0][0]
         
-        print('uusi url')
         query = f'insert into Urls (url) values ("{url}");'
         self.db.execute(query)
         return self.db.execute('select max(id) from Urls')[0][0]

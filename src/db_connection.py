@@ -31,8 +31,3 @@ class DBConnection:
             rows = cursor.fetchall()
             conn.commit()
             return rows
-
-if os.getenv("TESTING") == "True":
-    database_connection = DBConnection('./src/tests/dummy.db', True)
-else:
-    database_connection = DBConnection()

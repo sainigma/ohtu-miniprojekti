@@ -1,15 +1,19 @@
 from ui.stub_io import StubIO
 from ui.app_ui import AppUi
+from services.bookmarks_service import BookmarksService
+from repositories.bookmarks_repository import BookmarksRepository
+from db_connection import DBConnection
 
 
+io = StubIO()
 class AppLibrary:
     '''
         References from course material
     '''
 
     def __init__(self):
-        self._io = StubIO()
-        self._app = AppUi(self._io)
+        self._app = AppUi(StubIO(), BookmarksService(BookmarksRepository(DBConnection('./src/tests/dummy.db', True))))
+        self._io = self._app.io
 
     def input(self, value):
         self._io.set_input(value)

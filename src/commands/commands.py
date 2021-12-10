@@ -78,17 +78,14 @@ class Show(Command):
         if not bookmarks:
             self.io.write("No bookmarks")
         else:
-            self.io.print_bookmarks_range(bookmarks)
+            self.io.print_bookmarks(bookmarks)
 
     def _show_range(self, start, count):
         bookmarks = self.service.get_all(start, count)
         if not bookmarks:
             self.io.write("No bookmarks")
             return
-        should_show_next_page = self.io.print_bookmarks_range(bookmarks)
-        if should_show_next_page:
-            self._show_range(start + count, count)
-
+        self.io.print_bookmarks(bookmarks)
 
 class Edit(Command):
     def _run_command(self, argv):
@@ -160,7 +157,7 @@ class Search(Command):
 
 class Quit(Command):
     def _run_command(self, argv):
-        self.io.exit()
+        self.io.exit("  Have a nice day!")
         sys.exit(0)
 
 class Export(Command):
@@ -201,6 +198,8 @@ class Export(Command):
 class ImportJson(Command):
 
     def _run_command(self, argv):
+        if len(argv) == 0:
+            raise InvalidInputException("Import argument missing")
         try:
             with open(argv[0], "r") as file:
                 data = json.load(file)

@@ -1,6 +1,7 @@
 # !/bin/bash
-# 
-#cd ohtu-miniprojekti-0.1.0 #<--- Tähän viimeisin release
+#
+unzip ohtu-miniprojekti.zip -d ohtu_miniprojekti_1.0.0
+cd ohtu_miniprojekti_1.0.0 #<--- Tähän viimeisin release
 
 if ! command -v poetry &> /dev/null
 then

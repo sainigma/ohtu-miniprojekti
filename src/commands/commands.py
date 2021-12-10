@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from jsonschema import validate, ValidationError
+#from jsonschema import validate, ValidationError
 from datetime import datetime
 from ui.app_state import app_state
 
@@ -206,8 +206,8 @@ class ImportJson(Command):
         except:
             raise InvalidInputException("File not found")
 
-        if not self.validate_json(data):
-            raise InvalidInputException("Invalid file format")
+        #if not self.validate_json(data):
+        #    raise InvalidInputException("Invalid file format")
 
         self.add_bookmarks_to_repository(data)
         self.io.write("Bookmarks imported successfully!")
@@ -215,8 +215,8 @@ class ImportJson(Command):
     def add_bookmarks_to_repository(self, data):
         added = []
         
-        for entry in data["db"]:
-            bookmark = self.service.create(entry["url"], entry["title"])
+        for entry_bookmark in data["db"]:
+            bookmark = self.service.create(entry_bookmark["url"], entry_bookmark["title"])
             if bookmark is not None:
                 added.append(bookmark)
                 self.io.write(bookmark.short_str())
@@ -241,7 +241,7 @@ class ImportJson(Command):
 class Unknown(Command):
     def _run_command(self, argv):
         self.io.clear()
-        self.io.write(f'command unrecognized.')
+        self.io.write('command unrecognized.')
         self.io.write("""
             Acceptable commands:
             'q' - quit,

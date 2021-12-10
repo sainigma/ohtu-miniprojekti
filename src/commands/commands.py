@@ -201,8 +201,10 @@ class Export(Command):
 class ImportJson(Command):
 
     def _run_command(self, argv):
+        if len(argv) == 0:
+            raise InvalidInputException("Import argument missing")
         try:
-            with open(argv, "r") as file:
+            with open(argv[0], "r") as file:
                 data = json.load(file)
         except:
             raise InvalidInputException("File not found")

@@ -24,6 +24,8 @@ class ConsoleIO:
             261:'right',
             259:'up',
         }
+        self.commands_up = []
+        self.commands_down = []
 
     def clear_line(self, y_position, character=' '):
         self.window.addstr(y_position, 0, character * (self.width-1))
@@ -61,6 +63,7 @@ class ConsoleIO:
         self.window.addstr(y_position, self.offset, f"{prompt}{value}")
         while not result:
             character = self.window.getch()
+            ok = True
             if character in range(32, 123):
                 string_buffer += chr(character)
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
@@ -69,10 +72,26 @@ class ConsoleIO:
                 self.clear_line(y_position)
                 self.window.addstr(y_position, self.offset, prompt)
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
-            elif character == 10:
-                result = string_buffer
-            else:
+            elif character in self.ascii_codes:
+                if self.ascii_codes[character] == 'up' and len(self.commands_up) > 0:
+                    self.commands_down.append(string_buffer)
+                    string_buffer = self.commands_up.pop(-1)
+                elif self.ascii_codes[character] == 'down' and len(self.commands_down) > 0:
+                    self.commands_up.append(string_buffer)
+                    string_buffer = self.commands_down.pop(-1)
+                elif self.ascii_codes[character] == 'enter':
+                    result = string_buffer
+                    self.commands_up.append(result)
+                    self.commands_down = []
+                else:
+                    ok = False
+                if ok:
+                    self.clear_line(y_position)
+                    self.window.addstr(y_position, self.offset, prompt)
+                    self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
+            if not ok:
                 time.sleep(0.017)
+
         return result
 
     def read_chr(self, prompt, y_position = None) -> chr:

@@ -51,7 +51,7 @@ class ConsoleFormatter(ConsoleIO):
             prompt = f"\nShowing results {cursor} to {cursor + len(bookmarks_chunk) - 1}/{count}"
             self._print_bookmarks_chunk(bookmarks_chunk, f"{title}:")
             
-            if chunk_cursor < chunks:
+            if chunk_cursor < chunks and chunks > 1:
                 user_input = ''
                 while user_input not in ['n','r','q','b','enter','right','left']:
                     user_input = self.read_chr(f"{prompt} Navigate with arrow keys or [r]esume to return", 20000000)
@@ -64,4 +64,5 @@ class ConsoleFormatter(ConsoleIO):
                     chunk_cursor = chunk_cursor - 1
                     cursor = cursor - max_allowed_per_view
             else:
+                chunk_cursor = chunk_cursor + 1
                 self.write(f'{prompt} Reached end')

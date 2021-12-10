@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock
-from commands.commands import Add, Delete, Edit, Export, Help, ImportJson, ImportJson, Search, Select, Show, Unknown
+from commands.commands import Add, Delete, Edit, Help, Search, Select, Show, Unknown
+from commands.commands_import_export import ImportJson, Export
 from ui.stub_io import StubIO
 from commands.command_factory import CommandFactory
 

@@ -1,5 +1,5 @@
 import unittest
-from commands.commands import Add, Show, Edit, Search, Unknown, Delete, Export
+from commands.commands import Add, InvalidInputException, Show, Edit, Search, Unknown, Delete, Export
 from unittest.mock import ANY, Mock
 from entities.bookmark import Bookmark
 
@@ -109,6 +109,11 @@ class TestCommands(unittest.TestCase):
 
 
     def test_edit_command(self):
-        pass
-
+        edit = Edit(self.io, self.service)
+        raised = False
+        try:
+            edit._run_command([])
+        except InvalidInputException:
+            raised = True
+        self.assertTrue(raised)
     

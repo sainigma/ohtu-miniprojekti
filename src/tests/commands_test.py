@@ -35,21 +35,19 @@ class TestCommands(unittest.TestCase):
         self.service.get_all.return_value = [self.bookmark]
         self.service.get_cursor.return_value = 0
         self.service.bookmarks_amount.return_value = 1
-        self.io.print_bookmarks_range.return_value = None
         show = Show(self.io, self.service)
         
         show._run_command([])
 
-        self.io.print_bookmarks_range.assert_called_with([self.bookmark])
+        self.io.print_bookmarks.assert_called_with([self.bookmark])
     
     def test_print_given_amount_of_titles(self):
         self.service.get_all.return_value = [self.bookmark, Bookmark(2, "Test2", "test2.com")]
-        self.io.print_bookmarks_range.return_value = None
         show = Show(self.io, self.service)
 
         show._run_command([2])
 
-        self.io.print_bookmarks_range.assert_called_with(self.service.get_all.return_value)
+        self.io.print_bookmarks.assert_called_with(self.service.get_all.return_value)
 
     def test_print_given_range_of_titles(self):
         self.service.get_all.return_value = [Bookmark(2, "Test2", "test2.com"), Bookmark(3, "Test3", "test3.com")]
@@ -58,7 +56,7 @@ class TestCommands(unittest.TestCase):
 
         show._run_command([1,2])
 
-        self.io.print_bookmarks_range.assert_called_with(self.service.get_all.return_value)
+        self.io.print_bookmarks.assert_called_with(self.service.get_all.return_value)
 
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"
@@ -109,19 +107,8 @@ class TestCommands(unittest.TestCase):
         path = export.check_path("test")
         self.assertEqual(path, "export/test.json")
 
-    # def test_print_correct_message_when_deleting_invalid_id(self):
-    #     self.io.read.return_value = 2
-    #     delete = Delete(self.io, self.service)
 
-    #     delete.execute()
+    def test_edit_command(self):
+        pass
 
-    #     self.io.write_assert_called_with("Invalid id")
-    
-    # def test_deleting_valid_id_removes_entry_from_db(self):
-    #     self.io.read.return_value = 1
-    #     delete = Delete(self.io, self.service)
-
-    #     delete.execute()
-
-    #     self.io.write_assert_called_with(f"Bookmark {self.bookmark.id} deleted successfully")
     

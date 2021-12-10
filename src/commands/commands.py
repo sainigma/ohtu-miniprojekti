@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-#from jsonschema import validate, ValidationError
 from datetime import datetime
 from ui.app_state import app_state
 
@@ -203,7 +202,7 @@ class ImportJson(Command):
 
     def _run_command(self, argv):
         try:
-            with open("./src/commands/test.json", "r") as file:
+            with open(argv, "r") as file:
                 data = json.load(file)
         except:
             raise InvalidInputException("File not found")

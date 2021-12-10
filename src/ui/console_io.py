@@ -27,9 +27,25 @@ class ConsoleIO:
         self.commands_up = []
         self.commands_down = []
 
-    def clear_line(self, y_position, character=' '):
-        self.window.addstr(y_position, 0, character * (self.width-1))
+    def clear_line(self, y_position, character=' ', underline=False):
+        self.window.addstr(y_position, 0, character * (self.width-1), curses.A_UNDERLINE if underline else curses.A_NORMAL)
         self.window.border()
+
+    def _get_attributes(self, line):
+        attributes = curses.A_NORMAL
+        if '<bold>' in line:
+            attributes = attributes | curses.A_BOLD
+            line = line.replace('<bold>','')
+        if '<blink>' in line:
+            attributes = attributes | curses.A_BLINK
+            line = line.replace('<blink>','')
+        if '<dim>' in line:
+            attributes = attributes | curses.A_DIM
+            line = line.replace('<dim>','')
+        if '<u>' in line:
+            attributes = attributes | curses.A_UNDERLINE
+            line = line.replace('<u>','')
+        return (line, attributes)
 
     def write(self, string :str, y_offset = 0, x_offset = 0) -> None:
         if '\n' in string:
@@ -38,6 +54,7 @@ class ConsoleIO:
             lines = [string]
         self.cursor = self.cursor + y_offset
         for line in lines:
+            line, attributes = self._get_attributes(line)
             if self.cursor > self.height - 3:
                 self.window.addstr(
                     self.cursor + 1,
@@ -48,7 +65,7 @@ class ConsoleIO:
                 self.clear()
 
             line.replace('\n', '')
-            self.window.addstr(self.cursor, self.offset + x_offset, line)
+            self.window.addstr(self.cursor, self.offset + x_offset, line, attributes)
             self.cursor = self.cursor + 1
             self.window.refresh()
 
@@ -61,6 +78,7 @@ class ConsoleIO:
         result = None
         self.clear_line(y_position)
         self.window.addstr(y_position, self.offset, f"{prompt}{value}")
+        
         while not result:
             character = self.window.getch()
             ok = True

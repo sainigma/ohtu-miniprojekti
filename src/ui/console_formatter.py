@@ -12,15 +12,16 @@ class ConsoleFormatter(ConsoleIO):
         title_offset = 5
         url_offset = 80
         self.clear()
-        self.write(f"{title}:")
-        self.write("id", 1, id_offset)
-        self.write("title", -1, title_offset)
-        self.write("url", -1, url_offset)
+        self.write(f"{title}")
+        self.clear_line(self.cursor + 1, ' ', True)
+        self.write("<bold><u>id", 1, id_offset)
+        self.write("<bold><u>title", -1, title_offset)
+        self.write("<bold><u>url", -1, url_offset)
         if not bookmarks:
             self.write("No bookmarks")
             return
         for bookmark in bookmarks:
-            self.write(f'{bookmark.id}', 0, id_offset)
+            self.write(f'<dim>{bookmark.id}', 0, id_offset)
             self.write(bookmark.url, -1, url_offset)
             title_length = len(bookmark.title)
             title_max_length = url_offset - id_offset - title_offset

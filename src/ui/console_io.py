@@ -1,4 +1,3 @@
-import os
 import time
 import curses
 
@@ -29,7 +28,11 @@ class ConsoleIO:
         self.cursor = self.cursor + y_offset
         for line in lines:
             if self.cursor > self.height - 3:
-                self.window.addstr(self.cursor + 1, self.offset + x_offset, 'End of screen reached. Press any key to continue')    
+                self.window.addstr(
+                    self.cursor + 1,
+                    self.offset + x_offset,
+                    'End of screen reached. Press any key to continue'
+                    )    
                 self.read_chr('')
                 self.clear()
 
@@ -43,22 +46,22 @@ class ConsoleIO:
         if y_position < 0:
             y_position = self.height -1
         
-        self.string_buffer = ""
+        string_buffer = ""
         result = None
         self.clear_line()
         self.window.addstr(y_position, self.offset, prompt)
         while not result:
             character = self.window.getch()
             if character in range(32, 122):
-                self.string_buffer = self.string_buffer + chr(character)
-                self.window.addstr(y_position, len(prompt) + self.offset, self.string_buffer)
-            elif character == 263 and len(self.string_buffer) > 0: #backspace
-                self.string_buffer = self.string_buffer[:-1]
+                string_buffer += chr(character)
+                self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
+            elif character == 263 and len(string_buffer) > 0: #backspace
+                string_buffer = string_buffer[:-1]
                 self.clear_line()
                 self.window.addstr(y_position, self.offset, prompt)
-                self.window.addstr(y_position, len(prompt) + self.offset, self.string_buffer)
+                self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
             elif character == 10:
-                result = self.string_buffer
+                result = string_buffer
             else:
                 time.sleep(0.017)
         return result

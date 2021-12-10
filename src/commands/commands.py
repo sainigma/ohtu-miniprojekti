@@ -202,7 +202,6 @@ class Export(Command):
         return path
 
 class ImportJson(Command):
-    pass
     def _run_command(self, argv):
         try:
             with open(argv, "r") as file:
@@ -219,8 +218,8 @@ class ImportJson(Command):
     def add_bookmarks_to_repository(self, data):
         added = []
 
-        for entry in data:
-            bookmark = self.service.create(entry["url"], entry["title"])
+        for bookmark in data:
+            bookmark = self.service.create(bookmark["url"], bookmark["title"])
             added.append(bookmark)
         return added
     
@@ -240,7 +239,7 @@ class ImportJson(Command):
 class Unknown(Command):
     def _run_command(self, argv):
         self.io.clear()
-        self.io.write(f'command unrecognized.')
+        self.io.write('command unrecognized.')
         self.io.write("""
             Acceptable commands:
             'q' - quit,

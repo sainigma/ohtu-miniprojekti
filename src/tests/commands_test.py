@@ -1,5 +1,7 @@
 import unittest
-from commands.commands import Add, InvalidInputException, Show, Edit, Search, Unknown, Delete, Export
+from commands.commands import Add, Show, Edit, Search, Unknown, Delete
+from commands.commands_import_export import ImportJson, Export
+from commands.commands import InvalidInputException
 from unittest.mock import ANY, Mock
 from entities.bookmark import Bookmark
 

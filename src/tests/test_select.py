@@ -21,3 +21,14 @@ class TestCommands(unittest.TestCase):
         self.select._run_command([])
         self.io.read.assert_called_with("enter bookmark id: ", 0)
         self.io.read_chr.assert_called_with('\nAvailable commands: [e]dit, [d]elete, [b]ack')
+
+    def test_select_invalid(self):
+        self.io.read.return_value = "-1"
+        self.io.get_cursor.return_value = 0
+        self.io.read_chr.return_value = 'b'
+        self.service.get_one.return_value = None
+        try:
+            self.select._run_command([])
+            self.fail("Did not raise exception")
+        except InvalidInputException:
+            return

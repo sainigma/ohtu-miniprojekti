@@ -117,9 +117,33 @@ class Show(Command):
         self.io.print_bookmarks(bookmarks)
 
 class Edit(Command):
+
+    def _print(self, bookmark):
+        self.io.clear()
+        self.io.write("Bookmark editor")
+        self.io.write(f"Title: {bookmark.title}")
+        self.io.write(f"Url: {bookmark.url}")
+
     def _run_command(self, argv):
+        def edit_entry(title, content, index):
+            user_input = ''
+            while user_input not in ['y','n']:
+                self._print(bookmark)
+                self.io.write('',-4 + index) # moves cursor
+                user_input = self.io.read_chr(f"{title}: {content} [y/n]?")
+            return user_input == 'n'
         super()._run_command(argv)
-        raise InvalidInputException("Edit-command is not yet implemented")
+        if (len(argv) == 0):
+            self.invalid()
+            return
+        id = self._get_int(argv[0])
+        if id is None:
+            self.invalid()
+            return
+        
+        bookmark = self.service.get_one(id)
+        edit_entry("Title", bookmark.title, 1)
+        edit_entry("Url", bookmark.url, 2)
 
 class Delete(Command):
     def _run_command(self, argv):

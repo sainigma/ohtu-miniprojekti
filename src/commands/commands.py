@@ -118,7 +118,9 @@ class Select(Command):
             To go back: type in 'b'
         """)
 
-        Show._run_command(self, argv=[])
+        show_command = Show(self.io, self.service)
+
+        show_command._run_command([])
 
         id = self._read_new_arg("Id: ")
 
@@ -201,37 +203,38 @@ class Export(Command):
 
 class ImportJson(Command):
     pass
-    # def _run_command(self, argv):
-        # try:
-            # file = open("data.json", "r")
-            # data = json.load(file.read())
-        # except:
-            # raise InvalidInputException("File not found")
-# 
-        # if not self.validate_json(data):
-            # raise InvalidInputException("Invalid file format")
-# 
-        # self.add_bookmarks_to_repository(data)
-        # self.io.write("Bookmarks imported successfully!")
-# 
-    # def add_bookmarks_to_repository(self, data):
-        # added = []
-# 
-        # for entry in data:
-            # bookmark = self.service.create(entry["url"], entry["title"])
-            # added.append(bookmark)
-        # return added
-    # 
-    # def validate_json(self, data):
+    def _run_command(self, argv):
+        try:
+            with open(argv, "r") as file:
+                data = json.load(file.read())
+        except:
+            raise InvalidInputException("File not found")
+
+        if not self.validate_json(data):
+            raise InvalidInputException("Invalid file format")
+
+        self.add_bookmarks_to_repository(data)
+        self.io.write("Bookmarks imported successfully!")
+
+    def add_bookmarks_to_repository(self, data):
+        added = []
+
+        for entry in data:
+            bookmark = self.service.create(entry["url"], entry["title"])
+            added.append(bookmark)
+        return added
+    
+    def validate_json(self, data):
         # valid_schema = {
-            # "title": "string",
-            # "url": "string"
+        #     "title": "string",
+        #     "url": "string"
         # }
         # try:
-            # validate(data, valid_schema)
+        #     validate(data, valid_schema)
         # except ValidationError as error:
-            # return False
-        # return True
+        #     return False
+        return True
+
     
     
 class Unknown(Command):

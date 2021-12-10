@@ -26,6 +26,10 @@ class TestCommands(unittest.TestCase):
         show._run_command([])
 
         self.io.write.assert_called_with("No bookmarks")
+
+        show._show_range(0,1)
+
+        self.io.write.assert_called_with("No bookmarks")
     
     def test_print_titles_of_all_bookmarks(self):
         self.service.get_all.return_value = [self.bookmark]
@@ -36,6 +40,24 @@ class TestCommands(unittest.TestCase):
         show._run_command([])
 
         self.io.print_bookmarks_range.assert_called_with([self.bookmark])
+    
+    def test_print_given_amount_of_titles(self):
+        self.service.get_all.return_value = [self.bookmark, Bookmark(2, "Test2", "test2.com")]
+        self.io.print_bookmarks_range.return_value = None
+        show = Show(self.io, self.service)
+
+        show._run_command([2])
+
+        self.io.print_bookmarks_range.assert_called_with(self.service.get_all.return_value)
+
+    def test_print_given_range_of_titles(self):
+        self.service.get_all.return_value = [Bookmark(2, "Test2", "test2.com"), Bookmark(3, "Test3", "test3.com")]
+        self.io.print_bookmarks_range.return_value = None
+        show = Show(self.io, self.service)
+
+        show._run_command([1,2])
+
+        self.io.print_bookmarks_range.assert_called_with(self.service.get_all.return_value)
 
     def test_print_marched_titles(self):
         self.io.read.return_value = "Test"

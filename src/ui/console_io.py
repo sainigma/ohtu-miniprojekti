@@ -14,11 +14,11 @@ class ConsoleIO:
         self.window.keypad(1)
         self.height, self.width = self.window.getmaxyx()
         self.cursor = 1
-        #self.window.border(1)
+        self.window.border()
         self.offset = 3
 
-    def clear_line(self, character=' '):
-        self.window.addstr(self.height - 1, self.offset, character * (self.width - self.offset - 3))
+    def clear_line(self, y_position, character=' '):
+        self.window.addstr(y_position, self.offset, character * (self.width - self.offset - 3))
 
     def write(self, string :str, y_offset = 0, x_offset = 0) -> None:
         if '\n' in string:
@@ -48,7 +48,7 @@ class ConsoleIO:
         
         string_buffer = ""
         result = None
-        self.clear_line()
+        self.clear_line(y_position)
         self.window.addstr(y_position, self.offset, prompt)
         while not result:
             character = self.window.getch()
@@ -57,7 +57,7 @@ class ConsoleIO:
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
             elif character == 263 and len(string_buffer) > 0: #backspace
                 string_buffer = string_buffer[:-1]
-                self.clear_line()
+                self.clear_line(y_position)
                 self.window.addstr(y_position, self.offset, prompt)
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
             elif character == 10:
@@ -84,7 +84,8 @@ class ConsoleIO:
     def clear(self) -> None:
         self.cursor = 1
         self.window.erase()
-        #self.window.border(1)
+        self.window.border()
+        self.height, self.width = self.window.getmaxyx()
 
     def exit(self, prompt=""):
         curses.nocbreak()

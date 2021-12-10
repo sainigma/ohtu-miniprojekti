@@ -18,18 +18,35 @@ class Command:
     def execute(self, argv):
         self._run_command(argv)
     
-    def _read_new_arg(self, prompt) -> str:
+    def _read_new_arg(self, prompt, title='') -> str:
+        if title != '':
+            self.io.write(title)
         arg = self.io.read(prompt, self.io.get_cursor())
         if arg.strip() == 'b':
             raise CommandStoppedException()
         return arg
+
+    def _get_int(self, arg):
+        result = None
+        try:
+            result = int(arg)
+        except:
+            pass
+        return result
+    
+    def invalid(self, conditions=None):
+        if conditions != None:
+            conditions = conditions.help()
+        self.io.write(f"Invalid command!\n{conditions}")
     
     def _run_command(self, argv):
+        self.io.clear()
         pass
 
     
 class Help(Command):
     def _run_command(self, argv):
+        super()._run_command(argv)
         Unknown._run_command(self, argv)
         self.io.write("""
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
@@ -37,41 +54,56 @@ class Help(Command):
 
 class Add(Command):    
     def _run_command(self, argv):
-        url = self._read_new_arg("Url: ")
+        super()._run_command(argv)
+        self.url = self._read_new_arg("Url: ", "New bookmark")
 
-        url_title = self.service.get_title_by_url(url)
+        url_title = self.service.get_title_by_url(self.url)
         if url_title is None:
             raise InvalidInputException("Invalid url")
         
         title = self._set_title(url_title)
-        bookmark = self.service.create(url, title)
+        bookmark = self.service.create(self.url, title)
         self.io.write(f'\nBookmark "{bookmark.short_str()}" created!')
     
     def _set_title(self, url_title):
         user_input = ''
         while user_input not in ['y', 'n']:
+            self.io.write('')
             user_input = self.io.read_chr(f'Do you want to keep the title "{url_title}"? [y/n]')
         if user_input == 'n':
             return self._create_new_title()
         return url_title
     
     def _create_new_title(self):
-        return self._read_new_arg("Title: ")
+        self.io.clear()
+        return self._read_new_arg("Title: ", f'New bookmark\nUrl: {self.url}')
 
 class Show(Command):
 
+    def help(self):
+        return """Search usage:
+        \n  get all: search | get all, limit selection: search <int> | get range: search <int> <int>
+        """
+
     def _run_command(self, argv):
+        super()._run_command(argv)
         if len(argv) == 0:
             self._show_all()
         elif len(argv) == 1:
-            count = argv[0]
-            self._show_range(0, count)
+            count = self._get_int(argv[0])
+            if count != None:
+                self._show_range(0, count)
+            elif argv[0] == 'help':
+                self._help()
+            else:
+                self.invalid(self)
         elif len(argv) >= 2:
-            start = argv[0]
-            count = argv[1]
-            self._show_range(start, count)
-        else:
-            raise InvalidInputException("Wrong number of arguments.")
+            start = self._get_int(argv[0])
+            count = self._get_int(argv[1])
+            if start != None and count != None:
+                self._show_range(start, count)
+            else:
+                self.invalid(self)
     
     def _show_all(self):
         bookmarks = self.service.get_all()
@@ -89,10 +121,12 @@ class Show(Command):
 
 class Edit(Command):
     def _run_command(self, argv):
+        super()._run_command(argv)
         raise InvalidInputException("Edit-command is not yet implemented")
 
 class Delete(Command):
     def _run_command(self, argv):
+        super()._run_command(argv)
         if app_state.selected is None and not argv:
             raise InvalidInputException("Please select a bookmark to delete it")
         deletations = argv if app_state.selected is None else [app_state.selected.id]
@@ -105,30 +139,47 @@ class Delete(Command):
             
 
 class Select(Command):
-    def _run_command(self, argv):
-        self.io.write("""
+
+    def help(self):
+        return """
             To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
             To edit a bookmark: type in ID of the bookmark, press enter and then type 'edit'
             To go back: type in 'b'
-        """)
+        """
 
-        show = Show(self.io, self.service)
+    def _run_command(self, argv):
+        id = None
+        if len(argv) > 0:
+            id = self._get_int(argv[0])
 
-        show._run_command([])
+        if id is None:
+            id = self._get_int(self._read_new_arg("enter bookmark id: ", "Bookmark selector"))    
+            if id is None:
+                self.invalid(self)
+                return
 
-        id = self._read_new_arg("Id: ")
-
+        self.io.clear()
         bookmark = self.service.get_one(id)
         if bookmark is None:
-            raise InvalidInputException("Invalid id")
+            raise InvalidInputException("Bookmark selector\nInvalid id")
         app_state.selected = bookmark
-        self.io.write(bookmark.short_str() + " selected")
+        self.io.write("Selected " + bookmark.short_str() + "\n")
+        user_input = ''
+        while user_input not in ['e','d','b']:
+            self.io.write('',-2)
+            user_input = self.io.read_chr('\nAvailable commands: [e]dit, [d]elete, [b]ack')
+        if user_input == 'e':
+            Edit(self.io, self.service)._run_command([id])
+        elif user_input == 'd':
+            Delete(self.io, self.service)._run_command([id])
+        app_state.selected = None
 
 class Search(Command):
     def _run_command(self, argv):
+        super()._run_command(argv)
         if argv and argv[0] == 'url':
             if len(argv) == 1:
-                term = self._read_new_arg("Url:")
+                term = self._read_new_arg("Url:", "Search")
             else:
                 term = argv[1]
             search_method = self.search_by_url
@@ -136,7 +187,7 @@ class Search(Command):
             if argv:
                 term = argv[0]
             else:
-                term = self._read_new_arg("Term: ")
+                term = self._read_new_arg("Term: ", "Search")
             search_method = self.search_by_title
 
         search_method(term)
@@ -162,6 +213,7 @@ class Quit(Command):
 
 class Export(Command):
     def _run_command(self, argv):
+        super()._run_command(argv)
         bookmarks = self.service.get_all()
         if bookmarks:
             data = self.convert_to_json(bookmarks)
@@ -198,6 +250,7 @@ class Export(Command):
 class ImportJson(Command):
 
     def _run_command(self, argv):
+        super()._run_command(argv)
         if len(argv) == 0:
             raise InvalidInputException("Import argument missing")
         try:
@@ -240,7 +293,7 @@ class ImportJson(Command):
     
 class Unknown(Command):
     def _run_command(self, argv):
-        self.io.clear()
+        super()._run_command(argv)
         self.io.write('command unrecognized.')
         self.io.write("""
             Acceptable commands:

@@ -35,6 +35,7 @@ class TestCommands(unittest.TestCase):
         self.service.get_all.return_value = [self.bookmark]
         self.service.get_cursor.return_value = 0
         self.service.bookmarks_amount.return_value = 1
+        self.io.print_bookmarks_range.return_value = None
         show = Show(self.io, self.service)
         
         show._run_command([])

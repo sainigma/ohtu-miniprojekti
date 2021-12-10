@@ -1,7 +1,7 @@
-from services.bookmarks_service import BookmarksService
+#from services.bookmarks_service import BookmarksService
 
 #repo = AppRepository(reinitialize=True)
-bookmarks = BookmarksService()
+#bookmarks = BookmarksService()
 
 mockEntry = {
     "title":"Mockentry",

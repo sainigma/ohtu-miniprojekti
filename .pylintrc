@@ -101,7 +101,8 @@ disable=print-statement,
         invalid-name,
         missing-final-newline,
         protected-access,
-        duplicate-code
+        duplicate-code,
+	raise-missing-from
 
 [FORMAT]
 

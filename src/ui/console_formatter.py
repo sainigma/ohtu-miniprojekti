@@ -56,5 +56,5 @@ class ConsoleFormatter(ConsoleIO):
                     break
             else:
                 self.write(f'{prompt} Reached end')
-                
+
             cursor = cursor + max_allowed_per_view

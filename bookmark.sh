@@ -1,8 +1,8 @@
-#!/bin/bash
-
+# !/bin/bash
+# 
 cd ohtu-miniprojekti-0.1.0 #<--- Tähän viimeisin release
-
-if ! [$type "poetry" ]; then
+# seuraava if lause ongelma
+if !["$type poetry"]; then
 	echo "In order to run the program poetry is needed. Do you wish to install it? (y/n)"
 	
 	read response
@@ -15,7 +15,7 @@ if ! [$type "poetry" ]; then
 		echo "Program requires poetry to be executed"
 	fi
 else
-	echo "Launching the program"
-	poetry install
-	poetry run python3 src/
+echo "Launching the program"
+poetry install
+poetry run python3 src/
 fi

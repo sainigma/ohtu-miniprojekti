@@ -116,7 +116,9 @@ class Select(Command):
             To go back: type in 'b'
         """)
 
-        Show._run_command(self, argv=[])
+        show = Show(self.io, self.service)
+
+        show._run_command([])
 
         id = self._read_new_arg("Id: ")
 

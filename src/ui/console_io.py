@@ -16,9 +16,18 @@ class ConsoleIO:
         self.cursor = 1
         self.window.border()
         self.offset = 3
+        self.ascii_codes = {
+            10:'enter',
+            263:'backspace',127:'backspace',
+            258:'down',
+            260:'left',
+            261:'right',
+            259:'up',
+        }
 
     def clear_line(self, y_position, character=' '):
-        self.window.addstr(y_position, self.offset, character * (self.width - self.offset - 3))
+        self.window.addstr(y_position, 0, character * (self.width-1))
+        self.window.border()
 
     def write(self, string :str, y_offset = 0, x_offset = 0) -> None:
         if '\n' in string:
@@ -66,15 +75,23 @@ class ConsoleIO:
                 time.sleep(0.017)
         return result
 
-    def read_chr(self, prompt) -> chr:
-        if len(prompt) > 0:
+    def read_chr(self, prompt, y_position = None) -> chr:
+        if len(prompt) > 0 and y_position is None:
             self.write(prompt)
+        else:
+            if y_position >= self.height:
+                y_position = self.height - 2
+            self.window.addstr(y_position, self.offset, prompt)
+            self.window.refresh()
         result = None
         while not result:
             character = self.window.getch()
-            if character in range(32, 122):
+            if character in range(32, 123):
                 result = chr(character)
+            elif character in self.ascii_codes.keys():
+                result = self.ascii_codes[character]
             else:
+                print(character)
                 time.sleep(0.017)
         return result
 

@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-from jsonschema import validate, ValidationError
 from datetime import datetime
 from ui.app_state import app_state
 
@@ -219,22 +218,19 @@ class ImportJson(Command):
             bookmark = self.service.create(entry["url"], entry["title"])
             if bookmark is not None:
                 added.append(bookmark)
-                self.io.write(bookmark.short_str())
+                self.io.write("Added " + bookmark.short_str())
             else:
-                self.io.write("Invalid bookmark")
+                self.io.write("Invalid bookmark: " + entry["title"])
             
         return added
     
-    # def validate_json(self, data):
-        # valid_schema = {
-        #     "title": "string",
-        #     "url": "string"
-        # }
-        # try:
-        #     validate(data, valid_schema)
-        # except ValidationError as error:
-        #     return False
-        # return True
+    def validate_json(self, data) -> bool:
+        if "db" not in data:
+            return False
+        for e in data["db"]:
+            if "url" not in e or "title" not in e:
+                return False
+        return True
 
     
     

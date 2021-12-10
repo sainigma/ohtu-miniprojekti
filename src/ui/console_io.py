@@ -55,7 +55,7 @@ class ConsoleIO:
             if character in range(32, 122):
                 string_buffer += chr(character)
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
-            elif character == 263 and len(string_buffer) > 0: #backspace
+            elif self._is_backspace(character) and len(string_buffer) > 0: #backspace
                 string_buffer = string_buffer[:-1]
                 self.clear_line()
                 self.window.addstr(y_position, self.offset, prompt)
@@ -92,6 +92,9 @@ class ConsoleIO:
         curses.echo()
         curses.endwin()
         print(prompt)
+    
+    def _is_backspace(self, char: int) -> bool:
+        return char == 263 or char == 127
 
 class MockConsoleIO:
     def clear_line(self):

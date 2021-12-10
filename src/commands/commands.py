@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-# from jsonschema import validate, ValidationError
+from jsonschema import validate, ValidationError
 from datetime import datetime
 from ui.app_state import app_state
 
@@ -79,11 +79,9 @@ class Show(Command):
         if not bookmarks:
             self.io.write("No bookmarks")
         else:
-            should_show_next = self.io.print_bookmarks_range(bookmarks)
-            if should_show_next:
-                self._show_range(start=self.service.get_cursor())
+            self.io.print_bookmarks_range(bookmarks)
 
-    def _show_range(self, start, count=10):
+    def _show_range(self, start, count):
         bookmarks = self.service.get_all(start, count)
         if not bookmarks:
             self.io.write("No bookmarks")
@@ -118,9 +116,7 @@ class Select(Command):
             To go back: type in 'b'
         """)
 
-        show_command = Show(self.io, self.service)
-
-        show_command._run_command([])
+        Show._run_command(self, argv=[])
 
         id = self._read_new_arg("Id: ")
 
@@ -202,10 +198,11 @@ class Export(Command):
         return path
 
 class ImportJson(Command):
+
     def _run_command(self, argv):
         try:
-            with open(argv, "r") as file:
-                data = json.load(file.read())
+            with open("./src/commands/test.json", "r") as file:
+                data = json.load(file)
         except:
             raise InvalidInputException("File not found")
 
@@ -217,13 +214,18 @@ class ImportJson(Command):
 
     def add_bookmarks_to_repository(self, data):
         added = []
-
-        for bookmark in data:
-            bookmark = self.service.create(bookmark["url"], bookmark["title"])
-            added.append(bookmark)
+        
+        for entry in data["db"]:
+            bookmark = self.service.create(entry["url"], entry["title"])
+            if bookmark is not None:
+                added.append(bookmark)
+                self.io.write(bookmark.short_str())
+            else:
+                self.io.write("Invalid bookmark")
+            
         return added
     
-    def validate_json(self, data):
+    # def validate_json(self, data):
         # valid_schema = {
         #     "title": "string",
         #     "url": "string"
@@ -232,14 +234,14 @@ class ImportJson(Command):
         #     validate(data, valid_schema)
         # except ValidationError as error:
         #     return False
-        return True
+        # return True
 
     
     
 class Unknown(Command):
     def _run_command(self, argv):
         self.io.clear()
-        self.io.write('command unrecognized.')
+        self.io.write(f'command unrecognized.')
         self.io.write("""
             Acceptable commands:
             'q' - quit,

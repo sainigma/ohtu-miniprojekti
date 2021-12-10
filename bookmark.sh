@@ -8,7 +8,7 @@ if ! [$type "poetry" ]; then
 	read response
 	if [[ ( $response == "y" ) ]]; then
 		echo "Installing poetry...."
-		pip install --user poetry
+		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 		poetry install
 		poetry run python3 src/
 	else

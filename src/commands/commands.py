@@ -198,7 +198,7 @@ class Export(Command):
         return path
 
 class ImportJson(Command):
-    pass
+
     def _run_command(self, argv):
         try:
             with open("./src/commands/test.json", "r") as file:
@@ -225,7 +225,7 @@ class ImportJson(Command):
             
         return added
     
-    def validate_json(self, data):
+    # def validate_json(self, data):
         # valid_schema = {
         #     "title": "string",
         #     "url": "string"
@@ -234,7 +234,7 @@ class ImportJson(Command):
         #     validate(data, valid_schema)
         # except ValidationError as error:
         #     return False
-        return True
+        # return True
 
     
     

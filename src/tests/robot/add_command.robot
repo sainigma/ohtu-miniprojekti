@@ -22,8 +22,8 @@ Test Add With Usergiven Title
     Input  n
     Input  Not Spirited Away
     Execute Command
-    Output Should Contain  Title will be "Welcome to Princess Mononoke
-    Prompt Should Contain  y/n:
+    Prompt Should Contain  Do you want to keep the title "Welcome to Princess Mononoke
+    Prompt Should Contain  y/n
     Prompt Should Contain  Title:
     Output Should Contain  Bookmark "1: Not Spirited Away
 

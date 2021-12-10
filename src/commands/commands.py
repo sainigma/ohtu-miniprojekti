@@ -202,13 +202,13 @@ class ImportJson(Command):
 
     def _run_command(self, argv):
         try:
-            with open(argv, "r") as file:
+            with open(argv[0], "r") as file:
                 data = json.load(file)
         except:
             raise InvalidInputException("File not found")
 
-        #if not self.validate_json(data):
-        #    raise InvalidInputException("Invalid file format")
+        if not self.validate_json(data):
+            raise InvalidInputException("Invalid json")
 
         self.add_bookmarks_to_repository(data)
         self.io.write("Bookmarks imported successfully!")
@@ -222,7 +222,7 @@ class ImportJson(Command):
                 added.append(bookmark)
                 self.io.write("Added " + bookmark.short_str())
             else:
-                self.io.write("Invalid bookmark: " + entry["title"])
+                self.io.write("Invalid bookmark: " + entry_bookmark["title"])
             
         return added
     

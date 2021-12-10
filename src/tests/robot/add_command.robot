@@ -33,3 +33,4 @@ Test Add With Url Not Found
     Input  https://princess-mononoke-this-definitely-does-not-exist.fi
     Execute Command
     Output Should Contain  Invalid url
+    

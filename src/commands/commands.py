@@ -79,9 +79,11 @@ class Show(Command):
         if not bookmarks:
             self.io.write("No bookmarks")
         else:
-            self.io.print_bookmarks_range(bookmarks)
+            should_show_next = self.io.print_bookmarks_range(bookmarks)
+            if should_show_next:
+                self._show_range(start=self.service.get_cursor())
 
-    def _show_range(self, start, count):
+    def _show_range(self, start, count=10):
         bookmarks = self.service.get_all(start, count)
         if not bookmarks:
             self.io.write("No bookmarks")

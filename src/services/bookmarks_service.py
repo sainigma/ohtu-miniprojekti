@@ -14,7 +14,7 @@ class BookmarksService:
     def get_one(self, id:int) -> Bookmark:
         return self.repository.get_bookmark_complete(id)
 
-    def get_all(self, start=0, count=10) -> List[Bookmark]:
+    def get_all(self, start=0, count=1000000) -> List[Bookmark]:
         self.cursor = start
         self.bookmarks_returned_on_get_all = count
         return self.repository.get_bookmark_range(

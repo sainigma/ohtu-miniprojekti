@@ -7,7 +7,7 @@ class ConsoleFormatter(ConsoleIO):
     def __init__(self) -> None:
         super().__init__()
     
-    def print_bookmarks(self, bookmarks, title):
+    def _print_bookmarks_chunk(self, bookmarks, title):
         id_offset = 0
         title_offset = 5
         url_offset = 80
@@ -31,18 +31,30 @@ class ConsoleFormatter(ConsoleIO):
             for title_chunk in bookmark_title_chunks[1:]:
                 self.write(title_chunk, 0, title_offset)
     
-    def print_bookmarks_range(self, bookmarks, cursor=0, count=0):
+    def print_bookmarks(self, bookmarks, title="Bookmarks"):
         count = len(bookmarks)
-        self.print_bookmarks(bookmarks, "Bookmarks")
 
-        if len(bookmarks) <= count:
-            prompt = f"\nShowing results {cursor + 1} to {cursor + len(bookmarks)}/{count}."
-            if cursor + len(bookmarks) < count:
+        max_allowed_per_view = int(self.height * 0.8)
+
+        bookmarks_chunks = []
+        prints = 0
+        while prints < count:
+            cursor = prints
+            prints = prints + max_allowed_per_view
+            bookmarks_chunks.append(bookmarks[cursor:prints])
+
+        cursor = 1
+        for bookmarks_chunk in bookmarks_chunks:
+            prompt = f"\nShowing results {cursor} to {cursor + len(bookmarks_chunk) - 1}/{count}"
+            self._print_bookmarks_chunk(bookmarks_chunk, f"{title}:")
+            
+            if cursor + len(bookmarks_chunk) <= count:
                 user_input = ''
-                while user_input not in ['n', 'r']:
+                while user_input not in ['n','r']:
                     user_input = self.read_chr(f"{prompt} Press [n] for more, [r] to resume")
-                if user_input == 'n':
-                    return True
+                if user_input == 'r':
+                    break
             else:
                 self.write(f'{prompt} Reached end')
-        return False
+                
+            cursor = cursor + max_allowed_per_view

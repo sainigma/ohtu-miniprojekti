@@ -79,19 +79,16 @@ class Show(Command):
         if not bookmarks:
             self.io.write("No bookmarks")
         else:
-            should_show_next = self.io.print_bookmarks_range(bookmarks)
-            if should_show_next:
-                self._show_range(start=self.service.get_cursor())
+            self.io.print_bookmarks(bookmarks)
+            #if should_show_next:
+            #    self._show_range(start=self.service.get_cursor())
 
     def _show_range(self, start, count=10):
         bookmarks = self.service.get_all(start, count)
         if not bookmarks:
             self.io.write("No bookmarks")
             return
-        should_show_next_page = self.io.print_bookmarks_range(bookmarks)
-        if should_show_next_page:
-            self._show_range(start + count, count)
-
+        self.io.print_bookmarks(bookmarks)
 
 class Edit(Command):
     def _run_command(self, argv):
@@ -163,7 +160,7 @@ class Search(Command):
 
 class Quit(Command):
     def _run_command(self, argv):
-        self.io.exit()
+        self.io.exit("  Have a nice day!")
         sys.exit(0)
 
 class Export(Command):

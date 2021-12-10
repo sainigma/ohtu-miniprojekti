@@ -52,7 +52,7 @@ class ConsoleIO:
         self.window.addstr(y_position, self.offset, f"{prompt}{value}")
         while not result:
             character = self.window.getch()
-            if character in range(32, 122):
+            if character in range(32, 123):
                 string_buffer += chr(character)
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
             elif self._is_backspace(character) and len(string_buffer) > 0: #backspace

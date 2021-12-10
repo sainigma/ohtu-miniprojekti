@@ -3,10 +3,7 @@ from ui.console_io import ConsoleIO
 class ConsoleFormatter(ConsoleIO):
     """
     Provides high-level implementations to print formatted data to an ncurses window
-    """
-    def __init__(self) -> None:
-        super().__init__()
-    
+    """    
     def print_bookmarks(self, bookmarks, title):
         id_offset = 0
         title_offset = 5

@@ -115,7 +115,9 @@ class Select(Command):
             To go back: type in 'b'
         """)
 
-        Show._run_command(self, argv=[])
+        show = Show(self.io, self.service)
+
+        show._run_command([])
 
         id = self._read_new_arg("Id: ")
 
@@ -200,13 +202,13 @@ class ImportJson(Command):
 
     def _run_command(self, argv):
         try:
-            with open("./src/commands/test.json", "r") as file:
+            with open(argv, "r") as file:
                 data = json.load(file)
         except:
             raise InvalidInputException("File not found")
 
-        if not self.validate_json(data):
-            raise InvalidInputException("Invalid file format")
+        #if not self.validate_json(data):
+        #    raise InvalidInputException("Invalid file format")
 
         self.add_bookmarks_to_repository(data)
         self.io.write("Bookmarks imported successfully!")
@@ -214,8 +216,8 @@ class ImportJson(Command):
     def add_bookmarks_to_repository(self, data):
         added = []
         
-        for entry in data["db"]:
-            bookmark = self.service.create(entry["url"], entry["title"])
+        for entry_bookmark in data["db"]:
+            bookmark = self.service.create(entry_bookmark["url"], entry_bookmark["title"])
             if bookmark is not None:
                 added.append(bookmark)
                 self.io.write("Added " + bookmark.short_str())
@@ -237,7 +239,7 @@ class ImportJson(Command):
 class Unknown(Command):
     def _run_command(self, argv):
         self.io.clear()
-        self.io.write(f'command unrecognized.')
+        self.io.write('command unrecognized.')
         self.io.write("""
             Acceptable commands:
             'q' - quit,

@@ -30,9 +30,9 @@ def init_test_app() -> App:
     service = BookmarksService(repository=repository)
     ui = AppUi(io, service)
 
-    app = App(ui)
+    test_app = App(ui)
 
-    return app
+    return test_app
 
 def init_app() -> App:
     if testing():
@@ -44,8 +44,8 @@ def init_app() -> App:
     service = BookmarksService(repository=repository)
     ui = AppUi(io, service)
 
-    app = App(ui)
+    console_app = App(ui)
 
-    return app
+    return console_app
 
 app = init_app()

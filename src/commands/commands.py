@@ -124,26 +124,46 @@ class Edit(Command):
         self.io.write(f"Title: {bookmark.title}")
         self.io.write(f"Url: {bookmark.url}")
 
+    def help(self):
+        return "Bookmark editor usage: edit <int>"
+
     def _run_command(self, argv):
         def edit_entry(title, content, index):
             user_input = ''
             while user_input not in ['y','n']:
                 self._print(bookmark)
                 self.io.write('',-4 + index) # moves cursor
-                user_input = self.io.read_chr(f"{title}: {content} [y/n]?")
+                user_input = self.io.read_chr(f"{title}: {content}. Keep? [y/n]?")
             return user_input == 'n'
         super()._run_command(argv)
         if (len(argv) == 0):
-            self.invalid()
+            self.invalid(self)
             return
         id = self._get_int(argv[0])
         if id is None:
-            self.invalid()
+            self.invalid(self)
             return
         
         bookmark = self.service.get_one(id)
-        edit_entry("Title", bookmark.title, 1)
-        edit_entry("Url", bookmark.url, 2)
+        if bookmark is None:
+            self.io.write(f'Invalid id {id}!')
+            return
+        new_title = bookmark.title
+        new_url = bookmark.url
+        if edit_entry("Title", bookmark.title, 1):
+            new_title = self.io.read('Title: ', 2, bookmark.title)
+        if edit_entry("Url", bookmark.url, 2):
+            new_url = self.io.read('Url: ', 3)
+        bookmark_old = bookmark
+        bookmark.title = new_title
+        bookmark.url = new_url
+        bookmark_update_success = self.service.update_bookmark(bookmark)
+        if bookmark_update_success:
+            self._print(bookmark)
+            self.io.write('\nBookmark updated!')
+        else:
+            self._print(bookmark_old)
+            self.io.write('\nBookmark could not be updated')
 
 class Delete(Command):
     def _run_command(self, argv):

@@ -42,14 +42,14 @@ class ConsoleIO:
             self.window.refresh()
 
 
-    def read(self, prompt, y_position = -1) -> str:
+    def read(self, prompt, y_position = -1, value='') -> str:
         if y_position < 0:
             y_position = self.height -1
         
-        string_buffer = ""
+        string_buffer = value
         result = None
         self.clear_line(y_position)
-        self.window.addstr(y_position, self.offset, prompt)
+        self.window.addstr(y_position, self.offset, f"{prompt}{value}")
         while not result:
             character = self.window.getch()
             if character in range(32, 122):
@@ -106,7 +106,7 @@ class MockConsoleIO:
     def get_cursor(self):
         return 1
 
-    def read(self, prompt):
+    def read(self, prompt, y_position=0, value=''):
         return input(prompt)
 
     def read_chr(self, prompt):

@@ -38,6 +38,9 @@ class BookmarksService:
             return None
         return site_info['title']
 
+    def update_bookmark(self, bookmark:Bookmark) -> bool:
+        return True
+
     def clear(self):
         self.repository.clear()
 

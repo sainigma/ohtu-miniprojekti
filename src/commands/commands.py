@@ -64,7 +64,7 @@ class Add(Command):
     
     def _set_title(self, url_title):
         user_input = ''
-        while user_input not in ['y', 'n']:
+        while user_input not in ['y', 'n','enter']:
             self.io.write('')
             user_input = self.io.read_chr(f'Do you want to keep the title "{url_title}"? [y/n]')
         if user_input == 'n':
@@ -130,7 +130,7 @@ class Edit(Command):
     def _run_command(self, argv):
         def edit_entry(title, content, index):
             user_input = ''
-            while user_input not in ['y','n']:
+            while user_input not in ['y','n','enter']:
                 self._print(bookmark)
                 self.io.write('',-4 + index) # moves cursor
                 user_input = self.io.read_chr(f"{title}: {content}. Keep? [y/n]?")
@@ -151,11 +151,20 @@ class Edit(Command):
         old_title = bookmark.title
         old_url = bookmark.url
 
+        changes = 0
         if edit_entry("Title", bookmark.title, 1):
             bookmark.title = self.io.read('Title: ', 2, bookmark.title)
+            changes = changes + 1
         if edit_entry("Url", bookmark.url, 2):
             bookmark.url = self.io.read('Url: ', 3, bookmark.url)
+            changes = changes + 1
+        
+        if changes == 0:
+            self._print(bookmark)
+            self.io.write('\nNothing changed!')
+            return
 
+        self.io.write('\nWaiting for connection..')       
         bookmark_update_success = self.service.update_bookmark(bookmark)
         if bookmark_update_success:
             self._print(bookmark)

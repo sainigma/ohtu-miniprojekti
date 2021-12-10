@@ -119,3 +119,42 @@ class TestCommands(unittest.TestCase):
             raised = True
         self.assertTrue(raised)
     
+    def test_import_valid_json_validate_true(self):
+        data = {"db":[{"title": "Google", "url": "http://www.google.com"}]}
+        command = ImportJson(self.io, self.service)
+
+        self.assertTrue(command.validate_json(data))
+    
+    def test_import_invalid_json_validate_false(self):
+        data = {"db":[{"kissa": "koira", "vauva": "lapsi"}]}
+        command = ImportJson(self.io, self.service)
+
+        self.assertFalse(command.validate_json(data))
+    
+    def test_add_bookmark_calls_bookmark_service_create_method_with_arguments(self):
+        data = {"db":[{"title": "Google", "url": "http://www.google.com"}]}
+        command = ImportJson(self.io, self.service)
+        self.service.create.return_value = Bookmark(1, "Google", "http://www.google.com")
+        
+        command.add_bookmarks_to_repository(data)
+
+        self.service.create.assert_called_once_with("http://www.google.com", "Google")
+
+    def test_add_bookmark_text_when_bookmark_added(self):
+        data = {"db":[{"title": "Google", "url": "http://www.google.com"}]}
+        command = ImportJson(self.io, self.service)
+        bookmark = Bookmark(1, "Google", "http://www.google.com")
+        self.service.create.return_value = Bookmark(1, "Google", "http://www.google.com")
+
+        command.add_bookmarks_to_repository(data)
+        self.io.write.assert_called_with(f"Added " + bookmark.short_str())
+    
+    def test_add_bookmark_text_when_bookmark_not_added(self):
+        data = {"db":[{"title": "Google", "url": "google.com"}]}
+        command = ImportJson(self.io, self.service)
+        self.service.create.return_value = None
+
+        command.add_bookmarks_to_repository(data)
+        self.io.write.assert_called_with("Invalid bookmark: Google")
+    
+    

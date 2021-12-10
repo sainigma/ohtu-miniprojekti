@@ -17,6 +17,7 @@ class TestCommands(unittest.TestCase):
     def test_select(self):
         self.io.read.return_value = "0"
         self.io.get_cursor.return_value = 0
+        self.io.read_chr.return_value = 'b'
         self.select._run_command([])
-        self.io.read.assert_called_with("Id: ", 0)
-        self.assertEqual(self.bookmark, app_state.selected)
+        self.io.read.assert_called_with("enter bookmark id: ", 0)
+        self.io.read_chr.assert_called_with('\nAvailable commands: [e]dit, [d]elete, [b]ack')

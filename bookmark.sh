@@ -1,10 +1,11 @@
 # !/bin/bash
 # 
-cd ohtu-miniprojekti-0.1.0 #<--- Tähän viimeisin release
-# seuraava if lause ongelma
-if !["$type poetry"]; then
-	echo "In order to run the program poetry is needed. Do you wish to install it? (y/n)"
-	
+#cd ohtu-miniprojekti-0.1.0 #<--- Tähän viimeisin release
+
+if ! command -v poetry &> /dev/null
+then
+	echo "Poetry installation required, do you wish to install it? (y/n)"
+
 	read response
 	if [[ ( $response == "y" ) ]]; then
 		echo "Installing poetry...."

@@ -39,7 +39,7 @@ class BookmarksService:
         return site_info['title']
 
     def update_bookmark(self, bookmark:Bookmark) -> bool:
-        return True
+        return self.repository.update_bookmark(bookmark)
 
     def clear(self):
         self.repository.clear()

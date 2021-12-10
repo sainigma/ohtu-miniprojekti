@@ -148,21 +148,22 @@ class Edit(Command):
         if bookmark is None:
             self.io.write(f'Invalid id {id}!')
             return
-        new_title = bookmark.title
-        new_url = bookmark.url
+        old_title = bookmark.title
+        old_url = bookmark.url
+
         if edit_entry("Title", bookmark.title, 1):
-            new_title = self.io.read('Title: ', 2, bookmark.title)
+            bookmark.title = self.io.read('Title: ', 2, bookmark.title)
         if edit_entry("Url", bookmark.url, 2):
-            new_url = self.io.read('Url: ', 3)
-        bookmark_old = bookmark
-        bookmark.title = new_title
-        bookmark.url = new_url
+            bookmark.url = self.io.read('Url: ', 3, bookmark.url)
+
         bookmark_update_success = self.service.update_bookmark(bookmark)
         if bookmark_update_success:
             self._print(bookmark)
             self.io.write('\nBookmark updated!')
         else:
-            self._print(bookmark_old)
+            bookmark.title = old_title
+            bookmark.url = old_url
+            self._print(bookmark)
             self.io.write('\nBookmark could not be updated')
 
 class Delete(Command):

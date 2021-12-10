@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 from repositories.url_repository import UrlRepository
 from repositories.tags_repository import TagsRepository
 from entities.bookmark import Bookmark
@@ -13,14 +13,17 @@ class BookmarksRepository:
     def _get_last_insertation(self):
         return self.db.execute('select max(id) from Bookmarks;')[0][0]
 
+    def _get_url_info(self, url) -> Dict:
+        url_info = self.url_repository.create_url(url)
+        if not url_info:
+            return None
+        return url_info
+
     def create_bookmark(self, url, title) -> Bookmark:
         url_info = self.url_repository.create_url(url)
         if not url_info:
             return None
-
         url_id = url_info['id']
-        #site_info = url_info['info']
-        #meta_tags = site_info['meta']
 
         bookmark_create_query = f'insert into Bookmarks (title, urlid) values ("{title}", {url_id});'
         self.db.execute(bookmark_create_query)
@@ -71,12 +74,33 @@ class BookmarksRepository:
         result = self.db.execute(query)
         return parse_bookmark_list(result)
 
-    def delete(self, id):
+    def update_bookmark(self, bookmark) -> bool:
+        id = bookmark.id
+        title = bookmark.title
+        url = bookmark.url
+        if not self._bookmark_exists(id):
+            return False
+
+        url_info = self.url_repository.create_url(url)
+        if not url_info:
+            return False
+        url_id = url_info['id']
+
+        query = f"""update Bookmarks set title = "{title}", urlid = {url_id} where id = {id}"""
+        self.db.execute(query)
+        return True
+
+    def _bookmark_exists(self, id):
         exists_query = f"select count(id) from Bookmarks where id = {id};"
         bookmark_exists = self.db.execute(exists_query)[0][0]
         if bookmark_exists == 0:
             return False
+        return True
 
+    def delete(self, id):
+        if not self._bookmark_exists(id):
+            return False
+        
         self.count = self.count - 1
         query = f"delete from Bookmarks where id = {id};"
         self.db.execute(query)

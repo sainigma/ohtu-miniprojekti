@@ -198,11 +198,7 @@ class Delete(Command):
 class Select(Command):
 
     def help(self):
-        return """
-            To delete a bookmark: type in ID of the bookmark, press enter and then type 'delete'
-            To edit a bookmark: type in ID of the bookmark, press enter and then type 'edit'
-            To go back: type in 'b'
-        """
+        return "Bookmark select usage: select <int>"
 
     def _get_bookmark(self, argv):
         id = None
@@ -217,7 +213,7 @@ class Select(Command):
         self.io.clear()
         bookmark = self.service.get_one(id)
         if bookmark is None:
-            self.raise_exception(self)
+            self.raise_exception(self, "Invalid id")
         return bookmark
 
     def _run_command(self, argv):

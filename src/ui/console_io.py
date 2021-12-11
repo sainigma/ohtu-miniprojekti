@@ -6,6 +6,7 @@ class ConsoleIO:
     Implementation based on 
     https://github.com/ohjelmistotuotanto-hy/syksy2021-python/blob/master/koodi/viikko3/login-robot/src/console_io.py
     """
+    # pylint: disable=too-many-instance-attributes
     def __init__(self):
         self._string_buffer = ""
         self.window = curses.initscr()

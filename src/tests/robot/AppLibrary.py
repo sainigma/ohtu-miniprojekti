@@ -54,4 +54,4 @@ class AppLibrary:
         self._app.welcome()
 
     def reset(self):
-        self._app.service.clear()
+        self = AppLibrary()

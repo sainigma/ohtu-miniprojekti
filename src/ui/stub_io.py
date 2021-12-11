@@ -34,7 +34,7 @@ class StubIO:
     def get_cursor(self) -> int:
         return 0
 
-    def print_bookmarks(self, bookmarks, title):
+    def print_bookmarks(self, bookmarks, title="Bookmarks"):
         id_offset = 0
         title_offset = 5
         url_offset = 80

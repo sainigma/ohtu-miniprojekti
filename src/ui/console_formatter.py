@@ -4,8 +4,6 @@ class ConsoleFormatter(ConsoleIO):
     """
     Provides high-level implementations to print formatted data to an ncurses window
     """
-    def __init__(self) -> None:
-        super().__init__()
     
     def _print_bookmarks_chunk(self, bookmarks, title):
         id_offset = 0
@@ -55,7 +53,9 @@ class ConsoleFormatter(ConsoleIO):
             if chunk_cursor < chunks and chunks > 1:
                 user_input = ''
                 while user_input not in ['n','r','q','b','enter','right','left']:
-                    user_input = self.read_chr(f"{prompt} Navigate with arrow keys or [r]esume to return", 20000000)
+                    user_input = self.read_chr(
+                        f"{prompt} Navigate with arrow keys or [r]esume to return", 20000000
+                        )
                 if user_input in ['r','q','b']:
                     break
                 if user_input in ['right', 'n']:

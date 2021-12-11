@@ -28,7 +28,12 @@ class ConsoleIO:
         self.commands_down = []
 
     def clear_line(self, y_position, character=' ', underline=False):
-        self.window.addstr(y_position, 0, character * (self.width-1), curses.A_UNDERLINE if underline else curses.A_NORMAL)
+        self.window.addstr(
+            y_position,
+            0,
+            character * (self.width-1),
+            curses.A_UNDERLINE if underline else curses.A_NORMAL
+            )
         self.window.border()
 
     def _get_attributes(self, line):
@@ -109,7 +114,6 @@ class ConsoleIO:
                     self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
             if not ok:
                 time.sleep(0.017)
-
         return result
 
     def read_chr(self, prompt, y_position = None) -> chr:
@@ -125,7 +129,7 @@ class ConsoleIO:
             character = self.window.getch()
             if character in range(32, 123):
                 result = chr(character)
-            elif character in self.ascii_codes.keys():
+            elif character in self.ascii_codes:
                 result = self.ascii_codes[character]
             else:
                 print(character)
@@ -149,7 +153,9 @@ class ConsoleIO:
         print(prompt)
     
     def _is_backspace(self, char: int) -> bool:
-        return char == 263 or char == 127
+        if char in self.ascii_codes and self.ascii_codes[char] == 'backspace':
+            return True
+        return False
 
 class MockConsoleIO:
     def clear_line(self):

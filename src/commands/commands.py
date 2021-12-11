@@ -28,18 +28,16 @@ class Command:
         try:
             result = int(arg)
         except:
-            pass
+            raise InvalidInputException("Expected integer!")
         return result
     
-    def invalid(self, conditions=None, additional=''):
-        if conditions != None and type(conditions) is not str:
+    def raise_exception(self, conditions=None, additional=''):
+        if conditions is not None and not isinstance(conditions, str):
             conditions = conditions.help()
-        #self.io.write(f"Invalid command!\n{conditions}")
         raise InvalidInputException(f"Action failed!\n{conditions}\n{additional}")
     
     def _run_command(self, argv):
         self.io.clear()
-        pass
 
     
 class Help(Command):
@@ -50,7 +48,11 @@ class Help(Command):
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
         """)
 
-class Add(Command):    
+class Add(Command):
+    def __init__(self, io, service=None):
+        super().__init__(io, service)
+        self.url = ''
+
     def _run_command(self, argv):
         super()._run_command(argv)
         self.url = self._read_new_arg("Url: ", "New bookmark")
@@ -89,19 +91,19 @@ class Show(Command):
             self._show_all()
         elif len(argv) == 1:
             count = self._get_int(argv[0])
-            if count != None:
+            if count is not None:
                 self._show_range(0, count)
             elif argv[0] == 'help':
-                self._help()
+                self.help()
             else:
-                self.invalid(self)
+                self.raise_exception(self)
         elif len(argv) >= 2:
             start = self._get_int(argv[0])
             count = self._get_int(argv[1])
-            if start != None and count != None:
+            if start is not None and count is not None:
                 self._show_range(start, count)
             else:
-                self.invalid(self)
+                self.raise_exception(self)
     
     def _show_all(self):
         bookmarks = self.service.get_all()
@@ -128,6 +130,19 @@ class Edit(Command):
     def help(self):
         return "Bookmark editor usage: edit <int>"
 
+    def _get_bookmark(self, argv):
+        if len(argv) == 0:
+            self.raise_exception(self)
+          
+        id = self._get_int(argv[0])
+        if id is None:
+            self.raise_exception(self)
+          
+        bookmark = self.service.get_one(id)
+        if bookmark is None:
+            self.raise_exception(f'Invalid id {id}!')
+        return bookmark
+
     def _run_command(self, argv):
         def edit_entry(title, content, index):
             user_input = ''
@@ -137,19 +152,8 @@ class Edit(Command):
                 user_input = self.io.read_chr(f"{title}: {content}. Keep? [y/n]?")
             return user_input == 'n'
         super()._run_command(argv)
-        if (len(argv) == 0):
-            self.invalid(self)
-            return
+        bookmark = self._get_bookmark(argv)
 
-        id = self._get_int(argv[0])
-        if id is None:
-            self.invalid(self)
-            return
-        
-        bookmark = self.service.get_one(id)
-        if bookmark is None:
-            self.invalid(f'Invalid id {id}!')
-            return
         old_title = bookmark.title
         old_url = bookmark.url
 
@@ -200,7 +204,7 @@ class Select(Command):
             To go back: type in 'b'
         """
 
-    def _run_command(self, argv):
+    def _get_bookmark(self, argv):
         id = None
         if len(argv) > 0:
             id = self._get_int(argv[0])
@@ -208,13 +212,16 @@ class Select(Command):
         if id is None:
             id = self._get_int(self._read_new_arg("enter bookmark id: ", "Bookmark selector"))    
             if id is None:
-                self.invalid(self)
-                return
+                self.raise_exception(self)
 
         self.io.clear()
         bookmark = self.service.get_one(id)
         if bookmark is None:
-            raise InvalidInputException("Bookmark selector\nInvalid id")
+            self.raise_exception(self)
+        return bookmark
+
+    def _run_command(self, argv):
+        bookmark = self._get_bookmark(argv)
         app_state.selected = bookmark
         self.io.write("Selected " + bookmark.short_str() + "\n")
         user_input = ''

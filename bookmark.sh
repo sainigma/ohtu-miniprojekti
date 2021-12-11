@@ -1,7 +1,7 @@
 # !/bin/bash
 #
-unzip ohtu-miniprojekti.zip -d ohtu_miniprojekti_1.0.0
-cd ohtu_miniprojekti_1.0.0 #<--- Tähän viimeisin release
+tar -xvf ohtu-miniprojekti-0.1.0.tar.gz
+cd ohtu-miniprojekti-0.1.0 #<--- Tähän viimeisin release
 
 if ! command -v poetry &> /dev/null
 then
@@ -12,12 +12,12 @@ then
 		echo "Installing poetry...."
 		curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 		poetry install
-		poetry run python3 src/
+		poetry run python3 src
 	else
 		echo "Program requires poetry to be executed"
 	fi
 else
 echo "Launching the program"
 poetry install
-poetry run python3 src/
+poetry run python3 src
 fi

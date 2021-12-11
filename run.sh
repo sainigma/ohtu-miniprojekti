@@ -1,1 +1,0 @@
-export EXPERIMENTAL=True; python3 src

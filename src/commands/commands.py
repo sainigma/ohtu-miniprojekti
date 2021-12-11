@@ -31,10 +31,11 @@ class Command:
             pass
         return result
     
-    def invalid(self, conditions=None):
-        if conditions != None:
+    def invalid(self, conditions=None, additional=''):
+        if conditions != None and type(conditions) is not str:
             conditions = conditions.help()
-        self.io.write(f"Invalid command!\n{conditions}")
+        #self.io.write(f"Invalid command!\n{conditions}")
+        raise InvalidInputException(f"Action failed!\n{conditions}\n{additional}")
     
     def _run_command(self, argv):
         self.io.clear()
@@ -139,6 +140,7 @@ class Edit(Command):
         if (len(argv) == 0):
             self.invalid(self)
             return
+
         id = self._get_int(argv[0])
         if id is None:
             self.invalid(self)
@@ -146,7 +148,7 @@ class Edit(Command):
         
         bookmark = self.service.get_one(id)
         if bookmark is None:
-            self.io.write(f'Invalid id {id}!')
+            self.invalid(f'Invalid id {id}!')
             return
         old_title = bookmark.title
         old_url = bookmark.url

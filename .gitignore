@@ -13,3 +13,4 @@ log.html
 src/debug.py
 dist/
 export/
+build/

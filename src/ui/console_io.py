@@ -120,7 +120,7 @@ class ConsoleIO:
     def read_chr(self, prompt, y_position = None) -> chr:
         if len(prompt) > 0 and y_position is None:
             self.write(prompt)
-        else:
+        elif y_position is not None:
             if y_position >= self.height:
                 y_position = self.height - 2
             self.window.addstr(y_position, self.offset, prompt)

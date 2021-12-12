@@ -7,12 +7,16 @@ class ConsoleFormatter(ConsoleIO):
 
     def __init__(self):
         super().__init__()
-        self.max_per_view = int(self.height * 0.75)
+
+        self.max_per_view = int(
+            self.height * 
+            (0.0019 * self.width + 0.3534)
+        )
     
     def _print_bookmarks_chunk(self, bookmarks, title):
         id_offset = 0
         title_offset = 5
-        url_offset = 80
+        url_offset = int(self.width * 0.5)
         self.clear()
         self.write(f"{title}")
         self.clear_line(self.cursor + 1, ' ', True)
@@ -24,7 +28,7 @@ class ConsoleFormatter(ConsoleIO):
             return
         for bookmark in bookmarks:
             self.write(f'<dim>{bookmark.id}', 0, id_offset)
-            self.write(bookmark.url, -1, url_offset)
+            self.write(bookmark.url, -1, url_offset + 1)
             title_length = len(bookmark.title)
             title_max_length = url_offset - id_offset - title_offset
             bookmark_title_chunks = [

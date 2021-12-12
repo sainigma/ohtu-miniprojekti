@@ -12,5 +12,5 @@ log.html
 *.code-workspace
 src/debug.py
 dist/
-export/
+export/*.json
 build/

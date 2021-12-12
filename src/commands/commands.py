@@ -134,7 +134,7 @@ class Edit(Command):
     def _get_bookmark(self, argv):
         if len(argv) == 0:
             self.raise_exception(self)
-          
+
         id = self._get_int(argv[0])
         if id is None:
             self.raise_exception(self)
@@ -229,9 +229,9 @@ class Select(Command):
             self.io.write('',-2)
             user_input = self.io.read_chr('\nAvailable commands: [e]dit, [d]elete, [b]ack')
         if user_input == 'e':
-            Edit(self.io, self.service)._run_command([id])
+            Edit(self.io, self.service)._run_command([bookmark.id])
         elif user_input == 'd':
-            Delete(self.io, self.service)._run_command([id])
+            Delete(self.io, self.service)._run_command([bookmark.id])
         app_state.selected = None
 
 class Search(Command):

@@ -43,7 +43,8 @@ class Command:
 class Help(Command):
     def _run_command(self, argv):
         super()._run_command(argv)
-        Unknown._run_command(self, argv)
+        unknown = Unknown(self.io, self.service)
+        unknown._run_command(argv)
         self.io.write("""
             To delete a bookmark, first choose 'select', type the ID of the bookmark and then 'delete'
         """)

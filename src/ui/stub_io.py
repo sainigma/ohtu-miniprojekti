@@ -12,7 +12,7 @@ class StubIO:
     def write(self, value, a=0, b=0) -> None:
         self.output.append(value)
 
-    def read(self, prompt, y_position = -1) -> str:
+    def read(self, prompt, y_position = -1, value='') -> str:
         self.prompt.append(prompt)
         if self.input:
             return self.input.pop(0)

@@ -15,10 +15,10 @@ class Command:
     def execute(self, argv):
         self._run_command(argv)
     
-    def _read_new_arg(self, prompt, title='') -> str:
+    def _read_new_arg(self, prompt, title='', value='') -> str:
         if title != '':
             self.io.write(title)
-        arg = self.io.read(prompt, self.io.get_cursor())
+        arg = self.io.read(prompt, self.io.get_cursor(), value)
         if arg.strip() == 'b':
             raise CommandStoppedException()
         return arg
@@ -72,12 +72,12 @@ class Add(Command):
             self.io.write('')
             user_input = self.io.read_chr(f'Do you want to keep the title "{url_title}"? [y/n]')
         if user_input == 'n':
-            return self._create_new_title()
+            return self._create_new_title(url_title)
         return url_title
     
-    def _create_new_title(self):
+    def _create_new_title(self, suggested_title):
         self.io.clear()
-        return self._read_new_arg("Title: ", f'New bookmark\nUrl: {self.url}')
+        return self._read_new_arg("Title: ", f'New bookmark\nUrl: {self.url}', suggested_title)
 
 class Show(Command):
 

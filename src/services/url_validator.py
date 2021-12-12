@@ -62,7 +62,7 @@ class TitleMetaGrabber(HTMLParser):
         return self.meta
 
 def validate_url(url):
-    pattern = r'(http[s]*|ftp):\/\/[A-Za-z0-9\-\.\/]*'
+    pattern = r'(http[s]*|ftp):\/\/[A-Za-z0-9_%:?\-\.\/]*'
     matches = re.match(pattern, url)
     
     if matches and matches[0] == url:

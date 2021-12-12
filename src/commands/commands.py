@@ -56,7 +56,10 @@ class Add(Command):
 
     def _run_command(self, argv):
         super()._run_command(argv)
-        self.url = self._read_new_arg("Url: ", "New bookmark")
+        if len(argv) > 0:
+            self.url = argv[0]
+        else:
+            self.url = self._read_new_arg("Url: ", "New bookmark")
 
         url_title = self.service.get_title_by_url(self.url)
         if url_title is None:

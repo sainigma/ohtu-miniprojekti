@@ -16,7 +16,7 @@ class ConsoleFormatter(ConsoleIO):
     def _print_bookmarks_chunk(self, bookmarks, title):
         id_offset = 0
         title_offset = 5
-        url_offset = int(self.width * 0.5)
+        url_offset = int(self.width * 0.35)
         self.clear()
         self.write(f"{title}")
         self.clear_line(self.cursor + 1, ' ', True)

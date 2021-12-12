@@ -171,6 +171,9 @@ class Edit(Command):
             self.io.write('\nNothing changed!')
             return
 
+        self._update_bookmark(bookmark, old_title, old_url)
+    
+    def _update_bookmark(self, bookmark, old_title, old_url):
         self.io.write('\nWaiting for connection..')       
         bookmark_update_success = self.service.update_bookmark(bookmark)
         if bookmark_update_success:

@@ -143,6 +143,7 @@ class ConsoleIO:
     def clear(self) -> None:
         self.cursor = 1
         self.window.erase()
+        self.window.clear()
         self.window.border()
         self.height, self.width = self.window.getmaxyx()
 

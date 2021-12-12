@@ -145,6 +145,7 @@ class Edit(Command):
         return bookmark
 
     def _run_command(self, argv):
+        super()._run_command(argv)
         def edit_entry(title, content, index):
             user_input = ''
             while user_input not in ['y','n','enter']:
@@ -152,7 +153,6 @@ class Edit(Command):
                 self.io.write('',-4 + index) # moves cursor
                 user_input = self.io.read_chr(f"{title}: {content}. Keep? [y/n]?")
             return user_input == 'n'
-        super()._run_command(argv)
         bookmark = self._get_bookmark(argv)
 
         old_title = bookmark.title

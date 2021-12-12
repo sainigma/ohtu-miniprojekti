@@ -108,16 +108,6 @@ class TestCommands(unittest.TestCase):
 
         path = export.check_path("test")
         self.assertEqual(path, "export/test.json")
-
-
-    def test_edit_command(self):
-        edit = Edit(self.io, self.service)
-        raised = False
-        try:
-            edit._run_command([])
-        except InvalidInputException:
-            raised = True
-        self.assertTrue(raised)
     
     def test_import_valid_json_validate_true(self):
         data = {"db":[{"title": "Google", "url": "http://www.google.com"}]}

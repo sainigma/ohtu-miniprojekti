@@ -1,6 +1,6 @@
 [MASTER]
 
-ignore=tests,index.py
+ignore=tests,index.py,console_io.py
 
 good-names: id, db, ui
 

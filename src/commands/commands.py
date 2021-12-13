@@ -286,7 +286,8 @@ class Unknown(Command):
             'add' - add a new bookmark,
             'show' - show given amount of bookmarks,
             'search' - search bookmarks by a term,
-            'select' - select a bookmark
-            'edit' - edit a selected bookmark
-            'delete' - delete a selected bookmark
+            'select' - select a bookmark,
+            'edit' - edit a selected bookmark,
+            'delete' - delete a selected bookmark,
+            'export' - export current bookmarks to a json file in the directory 'export'
         """)

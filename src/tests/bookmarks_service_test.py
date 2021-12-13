@@ -1,5 +1,6 @@
 import unittest
 import json
+from unittest import result
 from utilities.test_utils import TestUtils
 
 class BookmarksServiceSQLTest(unittest.TestCase):
@@ -66,3 +67,43 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         dbLength1 = len(self.bookmarks.get_all())
 
         self.assertTrue(dbLength0 == dbLength1)
+    
+    def test_get_bookmark_by_title(self):
+        self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"])
+
+        title = self.mockEntry["title"]
+        result = self.bookmarks.get_by_title(title)[0].title
+
+        self.assertEqual(result, "Mockentry")
+    
+    def test_get_bookmark_by_url(self):
+        self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"])
+
+        url = self.mockEntry["url"]
+        result = self.bookmarks.get_by_url(url)[0].url
+
+        self.assertEqual(result, "https://google.com")
+    
+    def test_get_title_by_valid_url(self):
+        self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"])
+
+        url = self.mockEntry["url"]
+        result = self.bookmarks.get_title_by_url(url)
+
+        self.assertEqual(result, "Ennen kuin jatkat Google Hakuun")
+    
+    def test_get_title_by_invalid_url(self):
+        self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"])
+
+        url = "invalid"
+        result = self.bookmarks.get_title_by_url(url)
+
+        self.assertEqual(result, None)
+    
+    def test_get_cursor(self):
+        dbLength0 = self.bookmarks.bookmarks_amount()
+        self.assertLess(dbLength0, 10)
+
+        cursor = self.bookmarks.get_cursor()
+
+        self.assertEqual(cursor, 0)

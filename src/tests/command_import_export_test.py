@@ -1,6 +1,5 @@
 import unittest
-from unittest import mock
-from unittest.mock import Mock, MagicMock, patch, mock_open
+from unittest.mock import Mock, MagicMock, patch, mock_open, ANY
 from commands.commands import InvalidInputException
 from commands.commands_import_export import Export, ImportJson
 
@@ -33,7 +32,7 @@ class TestExport(unittest.TestCase):
             with open('export/test.json', 'w') as h:
                 h.write('{"bookmarks":[{"title":"Test","url":"test.com"}]}')
         
-        self.export.write_to_file({"bookmarks":[{"title":"Test","url":"test.com"}]}, ['export/test.json'])
+        self.export._write_to_file({"bookmarks":[{"title":"Test","url":"test.com"}]}, 'export/test.json')
         m.assert_called_with('export/test.json', 'w')
     
     def test_open_file_created_by_default(self):
@@ -45,18 +44,18 @@ class TestExport(unittest.TestCase):
             with open('export/2021-12-13 12:22:44.123456.json', 'w') as h:
                 h.write('{"bookmarks":[{"title":"Test","url":"test.com"}]}')
 
-        self.export.write_to_file({"bookmarks":[{"title":"Test","url":"test.com"}]}, [])
+        self.export._write_to_file({"bookmarks":[{"title":"Test","url":"test.com"}]}, self.export._parse_path([]))
         m.assert_called_with('export/2021-12-13 12:22:44.123456.json', 'w')
     
     def test_run_command(self):
         self.service.get_all.return_value = self.bookmark
         self.export.convert_to_json = MagicMock(return_value='{"bookmarks":[{"title":"Test","url":"test.com"}]}')
-        self.export.write_to_file = MagicMock()
+        self.export._write_to_file = MagicMock()
 
         self.export._run_command([])
 
         self.export.convert_to_json.assert_called_with(self.bookmark)
-        self.export.write_to_file.assert_called_with('{"bookmarks":[{"title":"Test","url":"test.com"}]}', [])
+        self.export._write_to_file.assert_called_with('{"bookmarks":[{"title":"Test","url":"test.com"}]}', ANY)
 
 class TestImportJson(unittest.TestCase):
     def setUp(self):

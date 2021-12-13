@@ -228,14 +228,32 @@ class Select(Command):
         app_state.selected = bookmark
         self.io.write("Selected " + bookmark.short_str() + "\n")
         user_input = ''
-        while user_input not in ['e','d','b']:
+        while user_input not in ['o', 'e','d','b']:
             self.io.write('',-2)
-            user_input = self.io.read_chr('\nAvailable commands: [e]dit, [d]elete, [b]ack')
+            user_input = self.io.read_chr('\nAvailable commands: [o]pen, [e]dit, [d]elete, [b]ack')
         if user_input == 'e':
             Edit(self.io, self.service)._run_command([bookmark.id])
         elif user_input == 'd':
             Delete(self.io, self.service)._run_command([bookmark.id])
+        elif user_input == 'o':
+            Open(self.io, self.service)._run_command([bookmark.id])
         app_state.selected = None
+
+class Open(Command):
+    def _run_command(self, argv):
+        super()._run_command(argv)
+        if len(argv) > 0:
+            id = self._get_int(argv[0])
+        else:
+            self.raise_exception(None, 'missing arguments')
+        
+        bookmark = self.service.get_one(id)
+        if bookmark is None:
+            self.raise_exception(f'Invalid id {id}!')
+        url = bookmark.url
+        
+        self.io.write(f'opening {url}..')
+        # tee tähän urlinavaustapahtuma
 
 class Search(Command):
     def _run_command(self, argv):

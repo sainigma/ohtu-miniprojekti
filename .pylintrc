@@ -102,7 +102,8 @@ disable=print-statement,
         missing-final-newline,
         protected-access,
         duplicate-code,
-	raise-missing-from
+	raise-missing-from,
+        consider-using-with
 
 [FORMAT]
 

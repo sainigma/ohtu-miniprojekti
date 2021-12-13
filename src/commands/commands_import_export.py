@@ -26,8 +26,7 @@ class Export(Command):
     def _parse_path(self, argv):
         if len(argv) == 1:
             return self.check_path(str(argv[0]))
-        else:
-            return "export/" + str(datetime.now()) + ".json"        
+        return "export/" + str(datetime.now()) + ".json"        
     
     def _write_to_file(self, data, path):
         try:

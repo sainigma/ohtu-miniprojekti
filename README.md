@@ -56,3 +56,8 @@ Acceptance criteria met.
 ### Robot tests
 
 [All robot tests](https://github.com/sainigma/ohtu-miniprojekti/tree/main/src/tests/robot)
+
+
+### Coverage report
+
+![coverage report](https://github.com/sainigma/ohtu-miniprojekti/blob/main/media/coverage-report.png)

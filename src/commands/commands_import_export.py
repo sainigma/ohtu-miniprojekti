@@ -8,7 +8,10 @@ class Export(Command):
         bookmarks = self.service.get_all()
         if bookmarks:
             data = self.convert_to_json(bookmarks)
-            self.write_to_file(data, argv)
+            self.io.write("Exporting...")
+            self._write_to_file(data, self._parse_path(argv))
+        else:
+            raise InvalidInputException("You have no bookmarks to export")
 
     def convert_to_json(self, bookmarks):
         data = {}
@@ -20,16 +23,22 @@ class Export(Command):
             })
         return data
     
-    def write_to_file(self, data, argv):
+    def _parse_path(self, argv):
         if len(argv) == 1:
-            path = self.check_path(str(argv[0]))
-            with open(path, "w") as outfile:
-                json.dump(data, outfile, sort_keys=True, indent=4)
-                self.io.write("Exported successfully!")
+            return self.check_path(str(argv[0]))
         else:
-            with open("export/" + str(datetime.now()) + ".json", "w") as outfile:
-                json.dump(data, outfile, sort_keys=True, indent=4)
-                self.io.write("Exported successfully!")
+            return "export/" + str(datetime.now()) + ".json"        
+    
+    def _write_to_file(self, data, path):
+        try:
+            outfile = open(path, "w")
+            json.dump(data, outfile, sort_keys=True, indent=4)
+            self.io.write("Exported successfully to " + path)
+        except:
+            raise InvalidInputException("Error: could not export to " + path)
+        finally:
+            outfile.close()
+        
     
     def check_path(self, path):
         if path.find("export/") != 0:

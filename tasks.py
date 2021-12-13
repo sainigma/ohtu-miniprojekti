@@ -12,7 +12,7 @@ def test(ctx):
 def coverage(ctx):
     ctx.run("export TESTING=True; coverage run --branc -m pytest src/tests")
 
-@task
+@task(coverage)
 def coverage_report(ctx):
     ctx.run("coverage html")
 

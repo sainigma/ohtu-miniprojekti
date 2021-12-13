@@ -87,28 +87,6 @@ class TestCommands(unittest.TestCase):
             'delete' - delete a selected bookmark,
             'export' - export current bookmarks to a json file in the directory 'export'
         """)
-
-    def test_convert_to_json_style(self):
-        export = Export(self.io)
-
-        bookmark = Mock(title="Test", url="test.com")
-        bookmarks = [bookmark]
-
-        self.assertEqual(export.convert_to_json(bookmarks), {"bookmarks":[{"title":"Test","url":"test.com"}]})
-
-
-
-    def test_check_path(self):
-        export = Export(self.io)
-
-        path = export.check_path("export/test.json")
-        self.assertEqual(path, "export/test.json")
-
-        path = export.check_path("test.json")
-        self.assertEqual(path, "export/test.json")
-
-        path = export.check_path("test")
-        self.assertEqual(path, "export/test.json")
     
     def test_import_valid_json_validate_true(self):
         data = {"db":[{"title": "Google", "url": "http://www.google.com"}]}

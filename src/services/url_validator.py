@@ -62,7 +62,8 @@ class TitleMetaGrabber(HTMLParser):
         return self.meta
 
 def validate_url(url):
-    pattern = r'(http[s]*|ftp):\/\/[A-Za-z0-9_%:?\-\.\/]*'
+    # https://www.gamasutra.com/view/news/249475/More_dirty_coding_tricks_from_game_developers.php#:~:text=Thanks%20for%20playing!
+    pattern = r'(http[s]*|ftp):\/\/[A-Za-z0-9_%:?!#=()+~\-\.\/]*'
     matches = re.match(pattern, url)
     
     if matches and matches[0] == url:

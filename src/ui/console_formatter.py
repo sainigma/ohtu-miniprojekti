@@ -11,6 +11,8 @@ class ConsoleFormatter(ConsoleIO):
         self.max_per_view = int(self.height * 0.72)
 
     def _shorten_string(self, string, max_length):
+        if string is None:
+            return ''
         if len(string) > max_length:
             string = string[:max_length-3] + '...'
         return string
@@ -22,7 +24,7 @@ class ConsoleFormatter(ConsoleIO):
     def _print_bookmarks_chunk(self, bookmarks, title):
         id_offset = 0
         title_offset = 5
-        url_offset = int(self.width * 0.35)
+        url_offset = int(self.width * 0.45)
         title_max_length = url_offset - id_offset - title_offset
         url_max_length = self.width - url_offset - 5
         self.clear()
@@ -35,19 +37,14 @@ class ConsoleFormatter(ConsoleIO):
             self.write("No bookmarks")
             return
         for bookmark in bookmarks:
-            self.write(f'<dim>{bookmark.id}', 0, id_offset)
+            if bookmark.id is not None:
+                self.write(f'<dim>{bookmark.id}', 0, id_offset)
 
-            url = self._shorten_string(bookmark.url, url_max_length)
-            self.write(url, -1, url_offset + 1)
-            
-            title = self._shorten_string(bookmark.title, title_max_length)
-            self.write(title, -1, title_offset)
-            ''' Jakaa liian pitkät otsikot usealle riville
-            bookmark_title_chunks = self._split_string_to_chunks(bookmark.title, title_max_length)
-            self.write(bookmark_title_chunks[0], -1, title_offset)
-            for title_chunk in bookmark_title_chunks[1:]:
-                self.write(title_chunk, 0, title_offset)
-            '''
+                url = self._shorten_string(bookmark.url, url_max_length)
+                self.write(url, -1, url_offset + 1)
+                
+                title = self._shorten_string(bookmark.title, title_max_length)
+                self.write(title, -1, title_offset)
 
     def print_bookmarks(self, bookmarks, title="Bookmarks"):
         count = len(bookmarks)

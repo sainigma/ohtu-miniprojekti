@@ -16,10 +16,10 @@ class AppUi:
         return self.io.read("Give command: ")
 
     def parse_command(self, command):
-        command = command.strip().lower()
+        command = command.strip()
         arguments = command.split(' ')
         self.argv = arguments[1:]
-        self.command = self.command_factory.get_command(arguments[0])
+        self.command = self.command_factory.get_command(arguments[0].lower())
 
     def execute_command(self):
         try:

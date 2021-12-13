@@ -51,6 +51,12 @@ class ConsoleIO:
         if '<u>' in line:
             attributes = attributes | curses.A_UNDERLINE
             line = line.replace('<u>','')
+        if '<italic>' in line:
+            attributes = attributes | curses.A_ITALIC
+            line = line.replace('<italic>', '')
+        if '<reverse>' in line:
+            attributes = attributes | curses.A_REVERSE
+            line = line.replace('<reverse>', '')
         return (line, attributes)
 
     def write(self, string :str, y_offset = 0, x_offset = 0) -> None:
@@ -88,7 +94,9 @@ class ConsoleIO:
         while not result:
             character = self.window.getch()
             ok = True
-            if character in range(32, 123):
+            if character in range(32, 127):
+                if character == 34:
+                    character = 39
                 string_buffer += chr(character)
                 self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
             elif self._is_backspace(character) and len(string_buffer) > 0: #backspace
@@ -128,7 +136,7 @@ class ConsoleIO:
         result = None
         while not result:
             character = self.window.getch()
-            if character in range(32, 123):
+            if character in range(32, 127):
                 result = chr(character)
             elif character in self.ascii_codes:
                 result = self.ascii_codes[character]

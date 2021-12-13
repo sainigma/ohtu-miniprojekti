@@ -20,7 +20,7 @@ class TestCommands(unittest.TestCase):
         self.io.read_chr.return_value = 'b'
         self.select._run_command([])
         self.io.read.assert_called_with("enter bookmark id: ", 0, '')
-        self.io.read_chr.assert_called_with('\nAvailable commands: [e]dit, [d]elete, [b]ack')
+        self.io.read_chr.assert_called_with('\nAvailable commands: [o]pen, [e]dit, [d]elete, [b]ack')
 
     def test_select_invalid(self):
         self.io.read.return_value = "-1"

@@ -8,15 +8,23 @@ class ConsoleFormatter(ConsoleIO):
     def __init__(self):
         super().__init__()
 
-        self.max_per_view = int(
-            self.height * 
-            (0.0019 * self.width + 0.3534)
-        )
-    
+        self.max_per_view = int(self.height * 0.72)
+
+    def _shorten_string(self, string, max_length):
+        if len(string) > max_length:
+            string = string[:max_length-3] + '...'
+        return string
+
+    def _split_string_to_chunks(self, string, max_length):
+        string_length = len(string)
+        return [string[i:i+max_length] for i in range(0, string_length, max_length)]
+
     def _print_bookmarks_chunk(self, bookmarks, title):
         id_offset = 0
         title_offset = 5
         url_offset = int(self.width * 0.35)
+        title_max_length = url_offset - id_offset - title_offset
+        url_max_length = self.width - url_offset - 5
         self.clear()
         self.write(f"{title}")
         self.clear_line(self.cursor + 1, ' ', True)
@@ -28,16 +36,19 @@ class ConsoleFormatter(ConsoleIO):
             return
         for bookmark in bookmarks:
             self.write(f'<dim>{bookmark.id}', 0, id_offset)
-            self.write(bookmark.url, -1, url_offset + 1)
-            title_length = len(bookmark.title)
-            title_max_length = url_offset - id_offset - title_offset
-            bookmark_title_chunks = [
-                bookmark.title[i:i+title_max_length] for i in range(0, title_length, title_max_length)
-            ]
-            self.write(bookmark_title_chunks[0], -1, title_offset)            
+
+            url = self._shorten_string(bookmark.url, url_max_length)
+            self.write(url, -1, url_offset + 1)
+            
+            title = self._shorten_string(bookmark.title, title_max_length)
+            self.write(title, -1, title_offset)
+            ''' Jakaa liian pitkät otsikot usealle riville
+            bookmark_title_chunks = self._split_string_to_chunks(bookmark.title, title_max_length)
+            self.write(bookmark_title_chunks[0], -1, title_offset)
             for title_chunk in bookmark_title_chunks[1:]:
                 self.write(title_chunk, 0, title_offset)
-    
+            '''
+
     def print_bookmarks(self, bookmarks, title="Bookmarks"):
         count = len(bookmarks)
         bookmarks_chunks = self._make_chunks(bookmarks)

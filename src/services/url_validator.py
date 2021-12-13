@@ -63,7 +63,7 @@ class TitleMetaGrabber(HTMLParser):
 
 def validate_url(url):
     # https://www.gamasutra.com/view/news/249475/More_dirty_coding_tricks_from_game_developers.php#:~:text=Thanks%20for%20playing!
-    pattern = r'(http[s]*|ftp):\/\/[A-Za-z0-9_%:?!#=()+~\-\.\/]*'
+    pattern = r'(http[s]*|ftp):\/\/[A-Za-z0-9_%&:?!#=()+~\-\.\/]*'
     matches = re.match(pattern, url)
     
     if matches and matches[0] == url:
@@ -73,8 +73,17 @@ def validate_url(url):
 def parse_results(response : requests.Response):
     parser = TitleMetaGrabber()
     if response.encoding is None:
-        return None
-    parser.parse_data(response.content.decode(response.encoding))
+        return {
+            'title':'URL is a file',
+            'meta':[]
+        }
+    try:
+        parser.parse_data(response.content.decode(response.encoding))
+    except UnicodeDecodeError:
+        return {
+            'title':'Extremely rare header/content encoding mismatch detected! :D',
+            'meta':[]
+        }
     if parser.success():
         return {
             'title':parser.get_title(),

@@ -63,9 +63,9 @@ class ConsoleFormatter(ConsoleIO):
                     break
                 cursor += move_dir * self.max_per_view
                 chunk_cursor += move_dir
-            else:
-                chunk_cursor = chunk_cursor + 1
-                self.write(f'{prompt} Reached end')
+            if chunk_cursor >= n_chunks:
+                chunk_cursor = n_chunks - 1
+                cursor -= move_dir * self.max_per_view
 
     def _make_chunks(self, bookmarks):
         bookmarks_chunks = []
@@ -78,7 +78,7 @@ class ConsoleFormatter(ConsoleIO):
     
     def _wait_user_input(self, prompt):
         user_input = ''
-        while user_input not in ['n','r','q','b','enter','right','left']:
+        while user_input not in ['n','r','q','b','enter','right','left','up','down']:
             user_input = self.read_chr(
                 f"{prompt} Navigate with arrow keys or [r]esume to return", 20000000
                 )
@@ -87,8 +87,8 @@ class ConsoleFormatter(ConsoleIO):
     def _do_input_action(self, user_input, chunk_cursor):
         if user_input in ['r','q','b']:
             return "break"
-        if user_input in ['right', 'n']:
+        if user_input in ['right', 'n', 'down']:
             return 1
-        if user_input in ['left'] and chunk_cursor > 0:
+        if user_input in ['left', 'up'] and chunk_cursor > 0:
             return -1
         return 0

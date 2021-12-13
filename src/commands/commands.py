@@ -1,4 +1,5 @@
 import sys
+import webbrowser
 from ui.app_state import app_state
 
 class InvalidInputException(Exception):
@@ -94,9 +95,9 @@ class Show(Command):
         if len(argv) == 0:
             self._show_all()
         elif len(argv) == 1:
-            count = self._get_int(argv[0])
-            if count is not None:
-                self._show_range(0, count)
+            start = self._get_int(argv[0])
+            if start is not None:
+                self._show_range(start - 1, 1000000)
             elif argv[0] == 'help':
                 self.help()
             else:
@@ -241,7 +242,6 @@ class Select(Command):
 
 class Open(Command):
     def _run_command(self, argv):
-        super()._run_command(argv)
         if len(argv) > 0:
             id = self._get_int(argv[0])
         else:
@@ -252,8 +252,7 @@ class Open(Command):
             self.raise_exception(f'Invalid id {id}!')
         url = bookmark.url
         
-        self.io.write(f'opening {url}..')
-        # tee tähän urlinavaustapahtuma
+        webbrowser.open(url)
 
 class Search(Command):
     def _run_command(self, argv):

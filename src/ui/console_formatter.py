@@ -47,20 +47,23 @@ class ConsoleFormatter(ConsoleIO):
                 self.write(title, -1, title_offset)
 
     def print_bookmarks(self, bookmarks, title="Bookmarks"):
-        count = len(bookmarks)
         bookmarks_chunks = self._make_chunks(bookmarks)
         cursor = 1
         chunk_cursor = 0
         n_chunks = len(bookmarks_chunks)
         while chunk_cursor < n_chunks:
             bookmarks_chunk = bookmarks_chunks[chunk_cursor]
-            prompt = f"\nShowing results {cursor} to {cursor + len(bookmarks_chunk) - 1}/{count}"
+            prompt = f"\nShowing results {cursor} to {cursor + len(bookmarks_chunk) - 1}/{len(bookmarks)}"
+            if n_chunks > 1:
+                prompt += ' Navigate with arrow keys or'
             self._print_bookmarks_chunk(bookmarks_chunk, f"{title}:")
+
+            user_input = self._wait_user_input(prompt)
+            move_dir = self._do_input_action(user_input, chunk_cursor)
+            if move_dir == "break":
+                break
+
             if chunk_cursor < n_chunks and n_chunks > 1:
-                user_input = self._wait_user_input(prompt)
-                move_dir = self._do_input_action(user_input, chunk_cursor)
-                if move_dir == "break":
-                    break
                 cursor += move_dir * self.max_per_view
                 chunk_cursor += move_dir
             if chunk_cursor >= n_chunks:
@@ -80,7 +83,7 @@ class ConsoleFormatter(ConsoleIO):
         user_input = ''
         while user_input not in ['n','r','q','b','enter','right','left','up','down']:
             user_input = self.read_chr(
-                f"{prompt} Navigate with arrow keys or [r]esume to return", 20000000
+                f"{prompt} [r]esume to return", 20000000
                 )
         return user_input
 

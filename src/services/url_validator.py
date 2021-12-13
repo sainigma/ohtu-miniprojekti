@@ -72,6 +72,8 @@ def validate_url(url):
 
 def parse_results(response : requests.Response):
     parser = TitleMetaGrabber()
+    if response.encoding is None:
+        return None
     parser.parse_data(response.content.decode(response.encoding))
     if parser.success():
         return {

@@ -25,8 +25,7 @@ class ConsoleIO:
             261:'right',
             259:'up',
         }
-        self.commands_up = []
-        self.commands_down = []
+        self.history = [[],[]] # up, down
 
     def clear_line(self, y_position, character=' ', underline=False):
         self.window.addstr(
@@ -81,48 +80,75 @@ class ConsoleIO:
             self.cursor = self.cursor + 1
             self.window.refresh()
 
+    def _get_character(self, character) -> chr:
+        if character in range(32, 127):
+            if character == 34:
+                character = 39
+            return chr(character)
+        return ''
+
+    def _get_special_character(self, character) -> str:
+        if character in self.ascii_codes:
+            return self.ascii_codes[character]
+        return ''
 
     def read(self, prompt, y_position = -1, value='') -> str:
+
+        def print_string_buffer(string, clear_line=False, print_prompt=False):
+            if clear_line:
+                self.clear_line(y_position)
+            if print_prompt:
+                self.window.addstr(y_position, self.offset, prompt)
+            self.window.addstr(y_position, len(prompt) + self.offset, string[-max_display_length:])
+        
+        def erase(string_buffer):
+            if len(string_buffer) > 0:
+                string_buffer = string_buffer[:-1]
+                print_string_buffer(string_buffer, True, True)
+            return string_buffer
+
         if y_position < 0:
             y_position = self.height -1
         
         string_buffer = value
         result = None
-        self.clear_line(y_position)
-        self.window.addstr(y_position, self.offset, f"{prompt}{value}")
-        
+        max_display_length = self.width - self.offset * 2 - len(prompt) - len(value)
+
+        print_string_buffer(value, True, True)
+
         while not result:
             character = self.window.getch()
-            ok = True
-            if character in range(32, 127):
-                if character == 34:
-                    character = 39
-                string_buffer += chr(character)
-                self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
-            elif self._is_backspace(character) and len(string_buffer) > 0: #backspace
-                string_buffer = string_buffer[:-1]
-                self.clear_line(y_position)
-                self.window.addstr(y_position, self.offset, prompt)
-                self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
-            elif character in self.ascii_codes:
-                if self.ascii_codes[character] == 'up' and len(self.commands_up) > 0:
-                    self.commands_down.append(string_buffer)
-                    string_buffer = self.commands_up.pop(-1)
-                elif self.ascii_codes[character] == 'down' and len(self.commands_down) > 0:
-                    self.commands_up.append(string_buffer)
-                    string_buffer = self.commands_down.pop(-1)
-                elif self.ascii_codes[character] == 'enter':
-                    result = string_buffer
-                    self.commands_up.append(result)
-                    self.commands_down = []
-                else:
-                    ok = False
-                if ok:
-                    self.clear_line(y_position)
-                    self.window.addstr(y_position, self.offset, prompt)
-                    self.window.addstr(y_position, len(prompt) + self.offset, string_buffer)
-            if not ok:
+            ascii_character = self._get_character(character)
+            special_character = self._get_special_character(character)
+
+            if ascii_character:
+                string_buffer += ascii_character
+                print_string_buffer(string_buffer, False, False)
+            if not special_character:
+                continue
+            
+            if not special_character in ['backspace', 'up', 'down', 'enter']:
                 time.sleep(0.017)
+                continue
+
+            if special_character == 'backspace':
+                string_buffer = erase(string_buffer)
+            elif special_character in ['up', 'down']:
+                if special_character == 'up':
+                    current = 0
+                    previous = 1
+                else:
+                    previous = 0
+                    current = 1
+                if len(self.history[current]) > 0:
+                    self.history[previous].append(string_buffer)
+                    string_buffer = self.history[current].pop(-1)
+            elif special_character == 'enter':
+                result = string_buffer
+                self.history[0].append(result)
+                self.history[1] = []
+            print_string_buffer(string_buffer, True, True)
+        
         return result
 
     def read_chr(self, prompt, y_position = None) -> chr:
@@ -136,10 +162,12 @@ class ConsoleIO:
         result = None
         while not result:
             character = self.window.getch()
-            if character in range(32, 127):
-                result = chr(character)
-            elif character in self.ascii_codes:
-                result = self.ascii_codes[character]
+            ascii_character = self._get_character(character)
+            special_character = self._get_special_character(character)
+            if ascii_character:
+                return ascii_character
+            elif special_character:
+                return special_character
             else:
                 print(character)
                 time.sleep(0.017)
@@ -161,11 +189,6 @@ class ConsoleIO:
         curses.echo()
         curses.endwin()
         print(prompt)
-    
-    def _is_backspace(self, char: int) -> bool:
-        if char in self.ascii_codes and self.ascii_codes[char] == 'backspace':
-            return True
-        return False
 
 class MockConsoleIO:
     def clear_line(self):

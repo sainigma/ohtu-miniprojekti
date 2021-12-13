@@ -2,13 +2,13 @@ import os
 import sqlite3
 
 class DBConnection:
-    def __init__(self, databasePath='./src/app.db', reinitialize=False):
+    def __init__(self, databasePath='./storage/app.db', reinitialize=False):
         self.dbPath = databasePath
         if not os.path.exists(databasePath):
-            self.initialize('./src/create.sql')
+            self.initialize('./storage/create.sql')
         elif reinitialize:
             os.remove(databasePath)
-            self.initialize('./src/create.sql')
+            self.initialize('./storage/create.sql')
     
     def initialize(self, path):
         with open(path) as createFile:

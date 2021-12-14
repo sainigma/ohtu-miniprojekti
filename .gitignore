@@ -7,7 +7,8 @@ __pycache__
 htmlcov
 output.xml
 report.html
-*.db
+storage/*.db
+src/*/*.db
 log.html
 *.code-workspace
 src/debug.py

@@ -7,7 +7,7 @@ class BookmarksServiceSQLTest(unittest.TestCase):
     def setUp(self):
         self.mockEntry = {
             "title":"Mockentry",
-            "url":"https://google.com",
+            "url":"http://www.princess-mononoke.com",
             "tags":[
                 {
                     "type":"Kirjoittaja",
@@ -82,15 +82,15 @@ class BookmarksServiceSQLTest(unittest.TestCase):
         url = self.mockEntry["url"]
         result = self.bookmarks.get_by_url(url)[0].url
 
-        self.assertEqual(result, "https://google.com")
-    
+        self.assertEqual(result, "http://www.princess-mononoke.com")
+
     def test_get_title_by_valid_url(self):
         self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"])
 
         url = self.mockEntry["url"]
         result = self.bookmarks.get_title_by_url(url)
 
-        self.assertEqual(result, "Ennen kuin jatkat Google Hakuun")
+        self.assertEqual(result, "Welcome to Princess Mononoke")
     
     def test_get_title_by_invalid_url(self):
         self.bookmarks.create(self.mockEntry["url"], self.mockEntry["title"])

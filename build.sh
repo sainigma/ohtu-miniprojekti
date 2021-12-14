@@ -9,6 +9,7 @@ if [ -d "build/" ]; then rm -R build/; fi
 pyinstaller src/__main__.py -F
 mv dist/__main__ dist/ohtu-miniprojekti
 cp -R storage/ dist/
+cp iceberg.db dist/storage/app.db
 
 # hakee viimeisimmän käytetyn tagin versionumeroksi
 VERSION=`git describe --tags --abbrev=0`

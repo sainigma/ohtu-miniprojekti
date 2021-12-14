@@ -62,6 +62,6 @@ Acceptance criteria met.
 
 ![coverage report](https://github.com/sainigma/ohtu-miniprojekti/blob/main/media/coverage-report.png)
 
-### Loppuraportti
+### Final report
 
 [Loppuraportti](https://docs.google.com/document/d/1c29YAMWLUKVchbylqG__A2cE1p6scvYuc220uDJzOXg/edit)

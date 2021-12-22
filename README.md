@@ -64,4 +64,4 @@ Acceptance criteria met.
 
 ### Final report
 
-[Loppuraportti](https://docs.google.com/document/d/1c29YAMWLUKVchbylqG__A2cE1p6scvYuc220uDJzOXg/edit)
+[Loppuraportti](./media/Loppuraportti.pdf)
